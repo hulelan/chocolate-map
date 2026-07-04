@@ -1,0 +1,7 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🍫 Suggest a place on the Chocolate Map
+    url: https://hulelan.github.io/chocolate-map/
+    about: >-
+      The easiest way to suggest a place: open the map, click "Suggest a place",
+      pick the exact spot, and it pre-fills this form for you (including coordinates).

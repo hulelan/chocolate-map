@@ -1,0 +1,60 @@
+name: Approve suggestion
+
+# When the maintainer adds the "approved" label to a suggestion issue,
+# parse it, append the pin to data/pins.json, push, and close the issue.
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  add-pin:
+    if: github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Parse issue and append pin
+        id: append
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/append-pin.mjs
+
+      - name: Commit and push
+        if: steps.append.outputs.added == 'true'
+        run: |
+          git config user.name "chocolate-map-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pins.json
+          git commit -m "Add community pin from #${{ github.event.issue.number }}: ${{ steps.append.outputs.name }}"
+          git push
+
+      - name: Comment on the issue
+        uses: actions/github-script@v7
+        env:
+          ADDED: ${{ steps.append.outputs.added }}
+          REASON: ${{ steps.append.outputs.reason }}
+        with:
+          script: |
+            const added = process.env.ADDED === 'true';
+            const reason = process.env.REASON || '';
+            const body = added
+              ? `✅ **Approved and added to the map!** It will appear on the live site within ~1 minute after the rebuild finishes.\n\nThanks for the suggestion. 🍫`
+              : `⚠️ I couldn't auto-add this one: **${reason}**\n\nFix the \`pin-data\` block in the issue description and re-apply the **approved** label, or add it to \`data/pins.json\` by hand.`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: context.issue.number, body,
+            });
+            if (added) {
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number, state: 'closed',
+              });
+            }

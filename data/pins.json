@@ -1,0 +1,330 @@
+[
+  {
+    "id": "c1",
+    "name": "Castronovo Chocolate (factory)",
+    "type": "facility",
+    "lat": 27.1975,
+    "lng": -80.2528,
+    "notes": "Bean-to-bar maker. 555 Colorado Ave, Stuart, Florida. First US maker to import cacao from Colombia’s Sierra Nevada de Santa Marta."
+  },
+  {
+    "id": "c2",
+    "name": "BOHO Chocolate (maker)",
+    "type": "facility",
+    "lat": 42.3223,
+    "lng": -72.6801,
+    "notes": "Organic bean-to-bar maker in Florence, Massachusetts. Sources via Uncommon/Meridian Cacao, Cacao Services, Invalsa."
+  },
+  {
+    "id": "c3",
+    "name": "SOMA Chocolatemaker",
+    "type": "facility",
+    "lat": 43.6503,
+    "lng": -79.3599,
+    "notes": "Craft bean-to-bar maker, Distillery District, Toronto. Single-origin microbatches from ~20 countries."
+  },
+  {
+    "id": "c4",
+    "name": "Sierra Nevada de Santa Marta (Arhuaco)",
+    "type": "farm",
+    "lat": 10.5896,
+    "lng": -74.19,
+    "notes": "Aracataca, Magdalena, Colombia. Native cacao harvested by the Arhuaco on ancestral land. Sourced by Castronovo & BOHO."
+  },
+  {
+    "id": "c5",
+    "name": "Tumaco",
+    "type": "farm",
+    "lat": 1.7925,
+    "lng": -78.7756,
+    "notes": "Nariño, Colombia. Pacific-coast cacao region sourced by Castronovo."
+  },
+  {
+    "id": "c6",
+    "name": "Kablon Farms",
+    "type": "farm",
+    "lat": 6.335,
+    "lng": 124.95,
+    "notes": "Tupi, South Cotabato, Philippines. Single-estate cacao sourced by BOHO Chocolate."
+  },
+  {
+    "id": "c7",
+    "name": "Alto Beni (wild harvest)",
+    "type": "farm",
+    "lat": -15.45,
+    "lng": -67.13,
+    "notes": "Bolivia. Wild-harvested cacao. Soma origin."
+  },
+  {
+    "id": "c8",
+    "name": "Fazenda Boa Vista",
+    "type": "farm",
+    "lat": -14.79,
+    "lng": -39.28,
+    "notes": "Bahia, Brazil. Soma origin."
+  },
+  {
+    "id": "c9",
+    "name": "CONACADO Co-op",
+    "type": "farm",
+    "lat": 19.3,
+    "lng": -70.25,
+    "notes": "Dominican Republic national co-op (San Francisco de Macorís area). Soma origin."
+  },
+  {
+    "id": "c10",
+    "name": "Hacienda Elvesia",
+    "type": "farm",
+    "lat": 19.15,
+    "lng": -70.35,
+    "notes": "Dominican Republic. Soma origin."
+  },
+  {
+    "id": "c11",
+    "name": "La Red Guaconejo",
+    "type": "farm",
+    "lat": 19.28,
+    "lng": -69.85,
+    "notes": "Nagua area, Dominican Republic. Soma origin."
+  },
+  {
+    "id": "c12",
+    "name": "Costa Esmeraldas",
+    "type": "farm",
+    "lat": 0.98,
+    "lng": -79.65,
+    "notes": "Esmeraldas, Ecuador. Nacional cacao. Soma origin (also an early HCP-designated flavor)."
+  },
+  {
+    "id": "c13",
+    "name": "Hacienda Victoria",
+    "type": "farm",
+    "lat": -2.2,
+    "lng": -79.9,
+    "notes": "Guayas, Ecuador. Soma origin."
+  },
+  {
+    "id": "c14",
+    "name": "Camino Verde",
+    "type": "farm",
+    "lat": -2.9,
+    "lng": -79.8,
+    "notes": "Balao, Guayas, Ecuador. Renowned fermentary. Soma origin."
+  },
+  {
+    "id": "c15",
+    "name": "PISA co-op (\"El Negrito\")",
+    "type": "farm",
+    "lat": 19.68,
+    "lng": -72.28,
+    "notes": "Produits Des Iles SA, near Cap-Haïtien, Haiti. Soma origin."
+  },
+  {
+    "id": "c16",
+    "name": "El Negrito",
+    "type": "farm",
+    "lat": 15.15,
+    "lng": -87.8,
+    "notes": "Yoro, Honduras. Soma origin."
+  },
+  {
+    "id": "c17",
+    "name": "Bachelors Hall Estate",
+    "type": "farm",
+    "lat": 18.18,
+    "lng": -76.45,
+    "notes": "Portland Parish, Jamaica. Soma origin."
+  },
+  {
+    "id": "c18",
+    "name": "Akesson's Farm",
+    "type": "farm",
+    "lat": -13.68,
+    "lng": 48.45,
+    "notes": "Sambirano Valley, Ambanja, Madagascar. Soma origin."
+  },
+  {
+    "id": "c19",
+    "name": "Somia / Ambolikapiky",
+    "type": "farm",
+    "lat": -13.65,
+    "lng": 48.47,
+    "notes": "Sambirano Valley, Madagascar. Soma origins."
+  },
+  {
+    "id": "c20",
+    "name": "Lacandon",
+    "type": "farm",
+    "lat": 16.9,
+    "lng": -91,
+    "notes": "Lacandon Jungle, Chiapas, Mexico. Soma origin."
+  },
+  {
+    "id": "c21",
+    "name": "Rancho La Joya",
+    "type": "farm",
+    "lat": 18.26,
+    "lng": -93.22,
+    "notes": "Comalcalco, Tabasco, Mexico. Soma origin."
+  },
+  {
+    "id": "c22",
+    "name": "Cacao Bisiesto",
+    "type": "farm",
+    "lat": 13.5,
+    "lng": -85,
+    "notes": "Nicaragua. Soma origin."
+  },
+  {
+    "id": "c23",
+    "name": "Ingemann Farms",
+    "type": "farm",
+    "lat": 12.9,
+    "lng": -85.9,
+    "notes": "Nicaragua. Fine-flavor fermentary. Soma origin."
+  },
+  {
+    "id": "c24",
+    "name": "Marañón Valley (Fortunato No. 4)",
+    "type": "farm",
+    "lat": -5.9,
+    "lng": -78.6,
+    "notes": "Jaén/Bagua, Peru. Rare white Nacional (Pure Nacional). Soma origin; also HCP-recognized."
+  },
+  {
+    "id": "c25",
+    "name": "Satipo",
+    "type": "farm",
+    "lat": -11.25,
+    "lng": -74.64,
+    "notes": "Junín, Peru. Soma origin."
+  },
+  {
+    "id": "c26",
+    "name": "Ucayali River",
+    "type": "farm",
+    "lat": -8.38,
+    "lng": -74.53,
+    "notes": "Pucallpa, Peru. Soma origin."
+  },
+  {
+    "id": "c27",
+    "name": "Apurímac",
+    "type": "farm",
+    "lat": -12.6,
+    "lng": -73.8,
+    "notes": "VRAEM region, Peru. Soma origin."
+  },
+  {
+    "id": "c28",
+    "name": "Markham Farms",
+    "type": "farm",
+    "lat": -6.6,
+    "lng": 146.6,
+    "notes": "Markham Valley, Papua New Guinea. Soma origin."
+  },
+  {
+    "id": "c29",
+    "name": "Kokoa Kamili",
+    "type": "farm",
+    "lat": -8,
+    "lng": 36.1,
+    "notes": "Kilombero, Morogoro, Tanzania. Central fermentary. Soma origin."
+  },
+  {
+    "id": "c30",
+    "name": "Pinalum",
+    "type": "farm",
+    "lat": -16.15,
+    "lng": 167.4,
+    "notes": "Malekula island, Vanuatu. Soma origin."
+  },
+  {
+    "id": "c31",
+    "name": "Chuao",
+    "type": "farm",
+    "lat": 10.51,
+    "lng": -67.62,
+    "notes": "Aragua, Venezuela. Legendary appellation cacao. Soma origin."
+  },
+  {
+    "id": "c32",
+    "name": "Porcelana / Ocumare",
+    "type": "farm",
+    "lat": 10.45,
+    "lng": -67.77,
+    "notes": "Ocumare de la Costa, Venezuela (Porcelana also from Sur del Lago, Zulia). Soma origins."
+  },
+  {
+    "id": "c33",
+    "name": "Patanemo",
+    "type": "farm",
+    "lat": 10.45,
+    "lng": -68.05,
+    "notes": "Carabobo, Venezuela. Soma origin."
+  },
+  {
+    "id": "c34",
+    "name": "Alberto Adriani (El Vigía)",
+    "type": "farm",
+    "lat": 8.62,
+    "lng": -71.65,
+    "notes": "Mérida, Venezuela. Soma origin."
+  },
+  {
+    "id": "c35",
+    "name": "Guasare",
+    "type": "farm",
+    "lat": 10.9,
+    "lng": -72.3,
+    "notes": "Zulia, Venezuela. Soma origin."
+  },
+  {
+    "id": "c36",
+    "name": "Semuliki Forest",
+    "type": "farm",
+    "lat": 0.83,
+    "lng": 30.15,
+    "notes": "Bundibugyo, Uganda. Soma origin; HCP-recognized flavor."
+  },
+  {
+    "id": "c37",
+    "name": "Ben Tre / Tien Giang",
+    "type": "farm",
+    "lat": 10.3,
+    "lng": 106.36,
+    "notes": "Mekong Delta, Vietnam. Soma origins."
+  },
+  {
+    "id": "c38",
+    "name": "Malagos / Puentespina Farms",
+    "type": "farm",
+    "lat": 7.05,
+    "lng": 125.42,
+    "notes": "Davao, Philippines. HCP #16 (2019) heirloom designee."
+  },
+  {
+    "id": "c39",
+    "name": "Kampura Farm",
+    "type": "farm",
+    "lat": 15.47,
+    "lng": -90.2,
+    "notes": "Guatemala. HCP #17 (2023) designee — Rodrigo Sevilla."
+  },
+  {
+    "id": "c40",
+    "name": "Maya Mountain Cacao",
+    "type": "farm",
+    "lat": 16.22,
+    "lng": -88.94,
+    "notes": "Toledo District, Belize. HCP-recognized heirloom cacao."
+  },
+  {
+    "id": "c41",
+    "name": "Zorzal Cacao",
+    "type": "farm",
+    "lat": 19.38,
+    "lng": -70.1,
+    "notes": "Dominican Republic. Bird-reserve estate; HCP-recognized heirloom cacao."
+  }
+]
