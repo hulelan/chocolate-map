@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chocolate Map</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <style>
+    :root {
+      --farm: #2e7d32;
+      --facility: #b5651d;
+      --bg: #1f1a17;
+      --panel: #2a2320;
+      --panel-2: #352c27;
+      --text: #f3ece7;
+      --muted: #b7a99f;
+      --border: #443a34;
+      --accent: #d98e3b;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    #app {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    #sidebar {
+      width: 340px;
+      min-width: 340px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    #sidebar header {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    #sidebar header h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #sidebar header p {
+      margin: 6px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    button, select, input, textarea {
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    .btn {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 11px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn:hover { background: #40352f; border-color: var(--accent); }
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #241a10;
+      font-weight: 600;
+    }
+    .btn.primary:hover { background: #e8a04f; }
+    .btn.small { padding: 4px 8px; font-size: 12px; }
+
+    #search {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+    }
+    #search::placeholder { color: var(--muted); }
+
+    .filters {
+      display: flex;
+      gap: 14px;
+      padding: 10px 18px;
+      font-size: 12px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .filters label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .dot.farm { background: var(--farm); }
+    .dot.facility { background: var(--facility); }
+
+    #list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px 40px;
+    }
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 40px 20px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card.farm { border-left-color: var(--farm); }
+    .card.facility { border-left-color: var(--facility); }
+    .card .name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .card .meta { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .card .note {
+      font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* Map */
+    #map { flex: 1; height: 100%; }
+
+    /* Popup form */
+    .leaflet-popup-content { margin: 12px 14px; min-width: 220px; }
+    .form-row { margin-bottom: 8px; }
+    .form-row label { display: block; font-size: 11px; color: #555; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .form-row input, .form-row textarea, .form-row select {
+      width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; color: #222; background: #fff;
+    }
+    .form-row textarea { resize: vertical; min-height: 54px; }
+    .form-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; }
+    .pf-btn { border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
+    .pf-save { background: var(--accent); color: #241a10; font-weight: 600; }
+    .pf-del { background: #eee; color: #b02a2a; }
+    .pf-cancel { background: #eee; color: #444; }
+
+    .hint {
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.72); color: #fff; padding: 8px 16px; border-radius: 20px;
+      font-size: 13px; z-index: 500; pointer-events: none; transition: opacity 0.3s;
+    }
+
+    @media (max-width: 720px) {
+      #app { flex-direction: column; }
+      #sidebar { width: 100%; min-width: 0; height: 44%; }
+      #map { height: 56%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <header>
+        <h1>🍫 Chocolate Map</h1>
+        <p>Click anywhere on the map to drop a pin. Everything saves in this browser.</p>
+      </header>
+
+      <div class="toolbar">
+        <input id="search" type="text" placeholder="Search pins…" />
+      </div>
+
+      <div class="filters">
+        <label><input type="checkbox" id="f-farm" checked /><span class="dot farm"></span> Farms</label>
+        <label><input type="checkbox" id="f-facility" checked /><span class="dot facility"></span> Facilities</label>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn small" id="export">⬇ Export</button>
+        <button class="btn small" id="import">⬆ Import</button>
+        <input type="file" id="import-file" accept="application/json" style="display:none" />
+      </div>
+
+      <div id="list"></div>
+    </aside>
+
+    <div id="map"></div>
+  </div>
+
+  <div class="hint" id="hint">Click the map to add your first pin</div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script>
+    'use strict';
+
+    const STORE_KEY = 'chocolate-map-pins-v1';
+    const TYPES = {
+      farm: { label: 'Farm', color: getComputedStyle(document.documentElement).getPropertyValue('--farm').trim() || '#2e7d32' },
+      facility: { label: 'Facility', color: getComputedStyle(document.documentElement).getPropertyValue('--facility').trim() || '#b5651d' },
+    };
+
+    /* ---------- Data ---------- */
+    let pins = [];
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error('Failed to load pins', e);
+        return [];
+      }
+    }
+    function save() {
+      localStorage.setItem(STORE_KEY, JSON.stringify(pins));
+    }
+    function uid() {
+      return 'p_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+    }
+
+    /* ---------- Seed data (from research; region-level coords, all editable) ---------- */
+    /* Sources: somachocolate.com/pages/farms-and-origins, castronovochocolate.com,
+       bohochocolate.com, hcpcacao.org. Coordinates are approximate to the town/region. */
+    const SEED = [
+      // ---- Chocolate makers / facilities ----
+      { name: 'Castronovo Chocolate (factory)', type: 'facility', lat: 27.1975, lng: -80.2528, notes: 'Bean-to-bar maker. 555 Colorado Ave, Stuart, Florida. First US maker to import cacao from Colombia’s Sierra Nevada de Santa Marta.' },
+      { name: 'BOHO Chocolate (maker)', type: 'facility', lat: 42.3223, lng: -72.6801, notes: 'Organic bean-to-bar maker in Florence, Massachusetts. Sources via Uncommon/Meridian Cacao, Cacao Services, Invalsa.' },
+      { name: 'SOMA Chocolatemaker', type: 'facility', lat: 43.6503, lng: -79.3599, notes: 'Craft bean-to-bar maker, Distillery District, Toronto. Single-origin microbatches from ~20 countries.' },
+
+      // ---- Castronovo origins ----
+      { name: 'Sierra Nevada de Santa Marta (Arhuaco)', type: 'farm', lat: 10.5896, lng: -74.1900, notes: 'Aracataca, Magdalena, Colombia. Native cacao harvested by the Arhuaco on ancestral land. Sourced by Castronovo & BOHO.' },
+      { name: 'Tumaco', type: 'farm', lat: 1.7925, lng: -78.7756, notes: 'Nariño, Colombia. Pacific-coast cacao region sourced by Castronovo.' },
+
+      // ---- BOHO origins ----
+      { name: 'Kablon Farms', type: 'farm', lat: 6.3350, lng: 124.9500, notes: 'Tupi, South Cotabato, Philippines. Single-estate cacao sourced by BOHO Chocolate.' },
+
+      // ---- SOMA origins ----
+      { name: 'Alto Beni (wild harvest)', type: 'farm', lat: -15.4500, lng: -67.1300, notes: 'Bolivia. Wild-harvested cacao. Soma origin.' },
+      { name: 'Fazenda Boa Vista', type: 'farm', lat: -14.7900, lng: -39.2800, notes: 'Bahia, Brazil. Soma origin.' },
+      { name: 'CONACADO Co-op', type: 'farm', lat: 19.3000, lng: -70.2500, notes: 'Dominican Republic national co-op (San Francisco de Macorís area). Soma origin.' },
+      { name: 'Hacienda Elvesia', type: 'farm', lat: 19.1500, lng: -70.3500, notes: 'Dominican Republic. Soma origin.' },
+      { name: 'La Red Guaconejo', type: 'farm', lat: 19.2800, lng: -69.8500, notes: 'Nagua area, Dominican Republic. Soma origin.' },
+      { name: 'Costa Esmeraldas', type: 'farm', lat: 0.9800, lng: -79.6500, notes: 'Esmeraldas, Ecuador. Nacional cacao. Soma origin (also an early HCP-designated flavor).' },
+      { name: 'Hacienda Victoria', type: 'farm', lat: -2.2000, lng: -79.9000, notes: 'Guayas, Ecuador. Soma origin.' },
+      { name: 'Camino Verde', type: 'farm', lat: -2.9000, lng: -79.8000, notes: 'Balao, Guayas, Ecuador. Renowned fermentary. Soma origin.' },
+      { name: 'PISA co-op ("El Negrito")', type: 'farm', lat: 19.6800, lng: -72.2800, notes: 'Produits Des Iles SA, near Cap-Haïtien, Haiti. Soma origin.' },
+      { name: 'El Negrito', type: 'farm', lat: 15.1500, lng: -87.8000, notes: 'Yoro, Honduras. Soma origin.' },
+      { name: 'Bachelors Hall Estate', type: 'farm', lat: 18.1800, lng: -76.4500, notes: 'Portland Parish, Jamaica. Soma origin.' },
+      { name: "Akesson's Farm", type: 'farm', lat: -13.6800, lng: 48.4500, notes: 'Sambirano Valley, Ambanja, Madagascar. Soma origin.' },
+      { name: 'Somia / Ambolikapiky', type: 'farm', lat: -13.6500, lng: 48.4700, notes: 'Sambirano Valley, Madagascar. Soma origins.' },
+      { name: 'Lacandon', type: 'farm', lat: 16.9000, lng: -91.0000, notes: 'Lacandon Jungle, Chiapas, Mexico. Soma origin.' },
+      { name: 'Rancho La Joya', type: 'farm', lat: 18.2600, lng: -93.2200, notes: 'Comalcalco, Tabasco, Mexico. Soma origin.' },
+      { name: 'Cacao Bisiesto', type: 'farm', lat: 13.5000, lng: -85.0000, notes: 'Nicaragua. Soma origin.' },
+      { name: 'Ingemann Farms', type: 'farm', lat: 12.9000, lng: -85.9000, notes: 'Nicaragua. Fine-flavor fermentary. Soma origin.' },
+      { name: 'Marañón Valley (Fortunato No. 4)', type: 'farm', lat: -5.9000, lng: -78.6000, notes: 'Jaén/Bagua, Peru. Rare white Nacional (Pure Nacional). Soma origin; also HCP-recognized.' },
+      { name: 'Satipo', type: 'farm', lat: -11.2500, lng: -74.6400, notes: 'Junín, Peru. Soma origin.' },
+      { name: 'Ucayali River', type: 'farm', lat: -8.3800, lng: -74.5300, notes: 'Pucallpa, Peru. Soma origin.' },
+      { name: 'Apurímac', type: 'farm', lat: -12.6000, lng: -73.8000, notes: 'VRAEM region, Peru. Soma origin.' },
+      { name: 'Markham Farms', type: 'farm', lat: -6.6000, lng: 146.6000, notes: 'Markham Valley, Papua New Guinea. Soma origin.' },
+      { name: 'Kokoa Kamili', type: 'farm', lat: -8.0000, lng: 36.1000, notes: 'Kilombero, Morogoro, Tanzania. Central fermentary. Soma origin.' },
+      { name: 'Pinalum', type: 'farm', lat: -16.1500, lng: 167.4000, notes: 'Malekula island, Vanuatu. Soma origin.' },
+      { name: 'Chuao', type: 'farm', lat: 10.5100, lng: -67.6200, notes: 'Aragua, Venezuela. Legendary appellation cacao. Soma origin.' },
+      { name: 'Porcelana / Ocumare', type: 'farm', lat: 10.4500, lng: -67.7700, notes: 'Ocumare de la Costa, Venezuela (Porcelana also from Sur del Lago, Zulia). Soma origins.' },
+      { name: 'Patanemo', type: 'farm', lat: 10.4500, lng: -68.0500, notes: 'Carabobo, Venezuela. Soma origin.' },
+      { name: 'Alberto Adriani (El Vigía)', type: 'farm', lat: 8.6200, lng: -71.6500, notes: 'Mérida, Venezuela. Soma origin.' },
+      { name: 'Guasare', type: 'farm', lat: 10.9000, lng: -72.3000, notes: 'Zulia, Venezuela. Soma origin.' },
+      { name: 'Semuliki Forest', type: 'farm', lat: 0.8300, lng: 30.1500, notes: 'Bundibugyo, Uganda. Soma origin; HCP-recognized flavor.' },
+      { name: 'Ben Tre / Tien Giang', type: 'farm', lat: 10.3000, lng: 106.3600, notes: 'Mekong Delta, Vietnam. Soma origins.' },
+
+      // ---- HCP-designated heirloom farms (verify #/details on hcpcacao.org globe) ----
+      { name: 'Malagos / Puentespina Farms', type: 'farm', lat: 7.0500, lng: 125.4200, notes: 'Davao, Philippines. HCP #16 (2019) heirloom designee.' },
+      { name: 'Kampura Farm', type: 'farm', lat: 15.4700, lng: -90.2000, notes: 'Guatemala. HCP #17 (2023) designee — Rodrigo Sevilla.' },
+      { name: 'Maya Mountain Cacao', type: 'farm', lat: 16.2200, lng: -88.9400, notes: 'Toledo District, Belize. HCP-recognized heirloom cacao.' },
+      { name: 'Zorzal Cacao', type: 'farm', lat: 19.3800, lng: -70.1000, notes: 'Dominican Republic. Bird-reserve estate; HCP-recognized heirloom cacao.' },
+    ];
+
+    /* Load saved pins; on very first run, seed from research above. */
+    pins = load();
+    if (pins.length === 0 && !localStorage.getItem('choco-seeded')) {
+      pins = SEED.map(p => ({ ...p, id: uid() }));
+      localStorage.setItem('choco-seeded', '1');
+      save();
+    }
+
+    /* ---------- Map ---------- */
+    const map = L.map('map', { worldCopyJump: true }).setView([15, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    const markers = new Map(); // id -> L.marker
+
+    function makeIcon(type) {
+      const color = (TYPES[type] || TYPES.farm).color;
+      return L.divIcon({
+        className: 'choco-pin',
+        html: `<div style="
+          width:20px;height:20px;border-radius:50% 50% 50% 0;
+          background:${color};border:2px solid #fff;transform:rotate(-45deg);
+          box-shadow:0 1px 4px rgba(0,0,0,0.4);"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 20],
+        popupAnchor: [0, -20],
+      });
+    }
+
+    function escapeHtml(s) {
+      return (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    /* Build the popup form for a pin (existing or new draft) */
+    function popupForm(pin) {
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
+        <div class="form-row">
+          <label>Name</label>
+          <input type="text" class="pf-name" placeholder="e.g. Hacienda Victoria" value="${escapeHtml(pin.name)}" />
+        </div>
+        <div class="form-row">
+          <label>Type</label>
+          <select class="pf-type">
+            <option value="farm" ${pin.type === 'farm' ? 'selected' : ''}>Farm</option>
+            <option value="facility" ${pin.type === 'facility' ? 'selected' : ''}>Facility</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Notes</label>
+          <textarea class="pf-notes" placeholder="Varietal, contact, harvest notes…">${escapeHtml(pin.notes)}</textarea>
+        </div>
+        <div class="form-actions">
+          ${pin._draft ? '' : '<button class="pf-btn pf-del">Delete</button>'}
+          <button class="pf-btn pf-cancel">Cancel</button>
+          <button class="pf-btn pf-save">Save</button>
+        </div>
+      `;
+
+      wrap.querySelector('.pf-save').onclick = () => {
+        pin.name = wrap.querySelector('.pf-name').value.trim() || 'Untitled';
+        pin.type = wrap.querySelector('.pf-type').value;
+        pin.notes = wrap.querySelector('.pf-notes').value.trim();
+        if (pin._draft) {
+          delete pin._draft;
+          pins.push(pin);
+        }
+        save();
+        renderMarker(pin);
+        renderList();
+        map.closePopup();
+      };
+
+      wrap.querySelector('.pf-cancel').onclick = () => {
+        if (pin._draft && markers.has(pin.id)) {
+          map.removeLayer(markers.get(pin.id));
+          markers.delete(pin.id);
+        }
+        map.closePopup();
+      };
+
+      const delBtn = wrap.querySelector('.pf-del');
+      if (delBtn) {
+        delBtn.onclick = () => {
+          pins = pins.filter(p => p.id !== pin.id);
+          if (markers.has(pin.id)) { map.removeLayer(markers.get(pin.id)); markers.delete(pin.id); }
+          save();
+          renderList();
+          map.closePopup();
+        };
+      }
+
+      return wrap;
+    }
+
+    function renderMarker(pin) {
+      let m = markers.get(pin.id);
+      if (!m) {
+        m = L.marker([pin.lat, pin.lng], { icon: makeIcon(pin.type) });
+        m.addTo(map);
+        markers.set(pin.id, m);
+      } else {
+        m.setIcon(makeIcon(pin.type));
+      }
+      m.bindPopup(() => popupForm(pin), { closeButton: false, minWidth: 240 });
+      applyFilter();
+      return m;
+    }
+
+    /* ---------- List / sidebar ---------- */
+    const listEl = document.getElementById('list');
+    const searchEl = document.getElementById('search');
+
+    function visibleTypes() {
+      return {
+        farm: document.getElementById('f-farm').checked,
+        facility: document.getElementById('f-facility').checked,
+      };
+    }
+
+    function matches(pin) {
+      const vt = visibleTypes();
+      if (!vt[pin.type]) return false;
+      const q = searchEl.value.trim().toLowerCase();
+      if (!q) return true;
+      return (pin.name + ' ' + pin.notes).toLowerCase().includes(q);
+    }
+
+    function renderList() {
+      const shown = pins.filter(matches).sort((a, b) => a.name.localeCompare(b.name));
+      if (shown.length === 0) {
+        listEl.innerHTML = `<div class="empty">${pins.length === 0
+          ? 'No pins yet.<br>Click the map to add one.'
+          : 'No pins match your filters.'}</div>`;
+        return;
+      }
+      listEl.innerHTML = '';
+      for (const pin of shown) {
+        const card = document.createElement('div');
+        card.className = 'card ' + pin.type;
+        card.innerHTML = `
+          <div class="name">${escapeHtml(pin.name)}</div>
+          <div class="meta">${(TYPES[pin.type] || {}).label || pin.type}</div>
+          ${pin.notes ? `<div class="note">${escapeHtml(pin.notes)}</div>` : ''}
+        `;
+        card.onclick = () => {
+          map.setView([pin.lat, pin.lng], Math.max(map.getZoom(), 6), { animate: true });
+          const m = markers.get(pin.id);
+          if (m) m.openPopup();
+        };
+        listEl.appendChild(card);
+      }
+    }
+
+    function applyFilter() {
+      const vt = visibleTypes();
+      for (const pin of pins) {
+        const m = markers.get(pin.id);
+        if (!m) continue;
+        if (vt[pin.type]) { if (!map.hasLayer(m)) m.addTo(map); }
+        else { if (map.hasLayer(m)) map.removeLayer(m); }
+      }
+    }
+
+    /* ---------- Add pin on click ---------- */
+    map.on('click', (e) => {
+      const pin = {
+        id: uid(), name: '', type: 'farm', notes: '',
+        lat: e.latlng.lat, lng: e.latlng.lng, _draft: true,
+      };
+      const m = renderMarker(pin);
+      m.openPopup();
+      hideHint();
+    });
+
+    /* ---------- Filters & search ---------- */
+    document.getElementById('f-farm').onchange = () => { applyFilter(); renderList(); };
+    document.getElementById('f-facility').onchange = () => { applyFilter(); renderList(); };
+    searchEl.oninput = renderList;
+
+    /* ---------- Export / Import ---------- */
+    document.getElementById('export').onclick = () => {
+      const blob = new Blob([JSON.stringify(pins, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'chocolate-map-pins.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    };
+    document.getElementById('import').onclick = () => document.getElementById('import-file').click();
+    document.getElementById('import-file').onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (!Array.isArray(data)) throw new Error('Not a pin list');
+          const existing = new Set(pins.map(p => p.id));
+          let added = 0;
+          for (const p of data) {
+            if (p && typeof p.lat === 'number' && typeof p.lng === 'number') {
+              if (!p.id || existing.has(p.id)) p.id = uid();
+              delete p._draft;
+              pins.push(p);
+              renderMarker(p);
+              added++;
+            }
+          }
+          save();
+          renderList();
+          alert(`Imported ${added} pin${added === 1 ? '' : 's'}.`);
+        } catch (err) {
+          alert('Could not import that file: ' + err.message);
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    };
+
+    /* ---------- Hint ---------- */
+    const hintEl = document.getElementById('hint');
+    function hideHint() { hintEl.style.opacity = '0'; setTimeout(() => hintEl.remove(), 400); }
+    if (pins.length > 0) hintEl.remove();
+    else setTimeout(hideHint, 6000);
+
+    /* ---------- Init ---------- */
+    pins.forEach(renderMarker);
+    renderList();
+  </script>
+</body>
+</html>
