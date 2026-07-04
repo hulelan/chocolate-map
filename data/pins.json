@@ -326,14 +326,5 @@
     "lat": 19.38,
     "lng": -70.1,
     "notes": "Dominican Republic. Bird-reserve estate; HCP-recognized heirloom cacao."
-  },
-  {
-    "id": "c_mr6zf79319ei",
-    "name": "ZZZ Clean Test 2 (delete me)",
-    "type": "facility",
-    "lat": -1.25,
-    "lng": 36.8,
-    "notes": "Verifying the hardened single-run path.",
-    "source": "setup"
   }
 ]
