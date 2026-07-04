@@ -15,8 +15,8 @@
 
   <style>
     :root {
-      --farm: #2e7d32;
-      --facility: #b5651d;
+      --farm: #4caf50;
+      --facility: #e08a3c;
       --bg: #1f1a17;
       --panel: #2a2320;
       --panel-2: #352c27;
@@ -24,6 +24,7 @@
       --muted: #b7a99f;
       --border: #443a34;
       --accent: #d98e3b;
+      --danger: #d9534f;
     }
 
     * { box-sizing: border-box; }
@@ -36,146 +37,86 @@
       background: var(--bg);
     }
 
-    #app {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
+    #app { display: flex; height: 100vh; overflow: hidden; }
 
-    /* Sidebar */
+    /* ---------- Sidebar ---------- */
     #sidebar {
-      width: 340px;
-      min-width: 340px;
+      width: 340px; min-width: 340px;
       background: var(--panel);
       border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+      display: flex; flex-direction: column; height: 100%;
     }
+    #sidebar header { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); }
+    #sidebar header h1 { margin: 0; font-size: 18px; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; }
+    #sidebar header p { margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
 
-    #sidebar header {
-      padding: 16px 18px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    #sidebar header h1 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: 0.3px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    #sidebar header p {
-      margin: 6px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
+    .toolbar { display: flex; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
 
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      padding: 12px 18px;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-
-    button, select, input, textarea {
-      font-family: inherit;
-      font-size: 13px;
-    }
+    button, select, input, textarea { font-family: inherit; font-size: 13px; }
 
     .btn {
-      background: var(--panel-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 7px 11px;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
+      background: var(--panel-2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 7px 11px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
     }
     .btn:hover { background: #40352f; border-color: var(--accent); }
-    .btn.primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #241a10;
-      font-weight: 600;
-    }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #241a10; font-weight: 600; }
     .btn.primary:hover { background: #e8a04f; }
     .btn.small { padding: 4px 8px; font-size: 12px; }
+    .btn.danger { color: #fff; background: var(--danger); border-color: var(--danger); }
+    .btn.danger:hover { background: #c9433f; }
 
     #search {
-      width: 100%;
-      padding: 8px 10px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
+      width: 100%; padding: 8px 10px; background: var(--panel-2);
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text);
     }
     #search::placeholder { color: var(--muted); }
 
-    .filters {
-      display: flex;
-      gap: 14px;
-      padding: 10px 18px;
-      font-size: 12px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-    }
+    .filters { display: flex; gap: 14px; padding: 10px 18px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border); }
     .filters label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
     .dot.farm { background: var(--farm); }
     .dot.facility { background: var(--facility); }
 
-    #list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 12px 40px;
-    }
-    .empty {
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
-      padding: 40px 20px;
-      line-height: 1.5;
-    }
+    #list { flex: 1; overflow-y: auto; padding: 8px 12px 40px; }
+    .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 40px 20px; line-height: 1.5; }
 
     .card {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: border-color 0.15s;
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-left: 4px solid var(--border); border-radius: 8px;
+      padding: 10px 12px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s;
     }
     .card:hover { border-color: var(--accent); }
     .card.farm { border-left-color: var(--farm); }
     .card.facility { border-left-color: var(--facility); }
     .card .name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
     .card .meta { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-    .card .note {
-      font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.4;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    }
+    .card .note { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-    /* Map */
+    /* ---------- Map ---------- */
     #map { flex: 1; height: 100%; }
 
-    /* Popup form */
-    .leaflet-popup-content { margin: 12px 14px; min-width: 220px; }
+    /* Leaflet dark layer control */
+    .leaflet-control-layers { background: var(--panel) !important; color: var(--text); border: 1px solid var(--border) !important; border-radius: 8px !important; }
+    .leaflet-control-layers-toggle { filter: invert(0.9); }
+    .leaflet-control-layers label { font-size: 13px; }
+    .leaflet-bar a { background: var(--panel); color: var(--text); border-bottom-color: var(--border); }
+    .leaflet-bar a:hover { background: var(--panel-2); }
+
+    /* Compact marker popup */
+    .leaflet-popup-content { margin: 12px 14px; min-width: 200px; }
+    .pop-title { font-weight: 700; font-size: 15px; color: #222; }
+    .pop-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: #777; margin: 2px 0 8px; }
+    .pop-note { font-size: 12px; color: #444; margin-bottom: 8px; max-height: 60px; overflow: hidden; }
+    .pop-actions { display: flex; gap: 6px; flex-wrap: wrap; }
     .form-row { margin-bottom: 8px; }
     .form-row label { display: block; font-size: 11px; color: #555; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
-    .form-row input, .form-row textarea, .form-row select {
-      width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; color: #222; background: #fff;
-    }
-    .form-row textarea { resize: vertical; min-height: 54px; }
-    .form-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; }
-    .pf-btn { border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
+    .form-row input, .form-row select { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; color: #222; background: #fff; }
+    .pf-btn { border: none; border-radius: 6px; padding: 6px 11px; cursor: pointer; font-size: 13px; }
     .pf-save { background: var(--accent); color: #241a10; font-weight: 600; }
-    .pf-del { background: #eee; color: #b02a2a; }
+    .pf-open { background: #2e6da4; color: #fff; }
     .pf-cancel { background: #eee; color: #444; }
+    .pf-del { background: #eee; color: #b02a2a; }
 
     .hint {
       position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
@@ -183,10 +124,80 @@
       font-size: 13px; z-index: 500; pointer-events: none; transition: opacity 0.3s;
     }
 
+    /* ---------- Full-page detail view ---------- */
+    .detail {
+      position: fixed; inset: 0; z-index: 2000; background: var(--bg);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .detail[hidden] { display: none; }
+    .detail-top {
+      display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+      border-bottom: 1px solid var(--border); background: var(--panel);
+    }
+    .d-crumb { font-size: 13px; color: var(--muted); flex: 1; }
+    .d-crumb b { color: var(--text); }
+    .d-top-actions { display: flex; gap: 8px; }
+
+    .detail-body { flex: 1; display: grid; grid-template-columns: 1fr 420px; overflow: hidden; }
+    .detail-main { padding: 24px 32px; overflow-y: auto; }
+    .detail-side { border-left: 1px solid var(--border); padding: 20px; overflow-y: auto; background: var(--panel); }
+
+    .d-name {
+      width: 100%; background: transparent; border: none; color: var(--text);
+      font-size: 28px; font-weight: 700; padding: 4px 0; border-bottom: 2px solid transparent;
+    }
+    .d-name:focus { outline: none; border-bottom-color: var(--accent); }
+    .d-typerow { display: flex; align-items: center; gap: 10px; margin: 8px 0 24px; }
+    .type-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+    #d-type { padding: 5px 8px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); }
+
+    .d-section-head { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 8px; }
+    .d-section-head span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
+
+    .d-notes-view {
+      font-size: 15px; line-height: 1.65; color: var(--text); min-height: 60px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px;
+    }
+    .d-notes-view:empty::before { content: "No notes yet — click Edit to add some."; color: var(--muted); }
+    .d-notes-view h1, .d-notes-view h2, .d-notes-view h3 { margin: 0.6em 0 0.3em; line-height: 1.25; }
+    .d-notes-view h1 { font-size: 22px; } .d-notes-view h2 { font-size: 19px; } .d-notes-view h3 { font-size: 16px; }
+    .d-notes-view ul { margin: 0.4em 0; padding-left: 1.4em; }
+    .d-notes-view a { color: var(--accent); }
+    .d-notes-view code { background: var(--panel-2); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+    .d-notes-view p { margin: 0.6em 0; }
+    .d-notes-edit {
+      width: 100%; min-height: 320px; resize: vertical; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px;
+      color: var(--text); font-size: 15px; line-height: 1.6;
+    }
+    .d-notes-edit[hidden] { display: none; }
+    .md-hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+    .d-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin: 6px 0 10px; }
+    .d-photo { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; border: 1px solid var(--border); }
+    .d-photo img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; display: block; }
+    .d-photo .rm { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 13px; line-height: 1; }
+
+    .d-map { width: 100%; height: 300px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 16px; }
+    .d-facts label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin: 12px 0 4px; }
+    .d-facts input { width: 100%; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+    .d-coords { font-size: 12px; color: var(--muted); margin: 12px 0 6px; font-variant-numeric: tabular-nums; }
+    .d-facts a { display: block; margin-top: 8px; color: var(--accent); font-size: 13px; text-decoration: none; }
+    .d-facts a:hover { text-decoration: underline; }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
+    .lightbox[hidden] { display: none; }
+    .lightbox img { max-width: 92vw; max-height: 92vh; border-radius: 6px; }
+
+    @media (max-width: 820px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-side { border-left: none; border-top: 1px solid var(--border); }
+    }
     @media (max-width: 720px) {
       #app { flex-direction: column; }
-      #sidebar { width: 100%; min-width: 0; height: 44%; }
-      #map { height: 56%; }
+      #sidebar { width: 100%; min-width: 0; height: 42%; }
+      #map { height: 58%; }
     }
   </style>
 </head>
@@ -195,7 +206,7 @@
     <aside id="sidebar">
       <header>
         <h1>🍫 Chocolate Map</h1>
-        <p>Click anywhere on the map to drop a pin. Everything saves in this browser.</p>
+        <p>Click the map to drop a pin. Click a pin in this list to open its full page.</p>
       </header>
 
       <div class="toolbar">
@@ -210,6 +221,7 @@
       <div class="toolbar">
         <button class="btn small" id="export">⬇ Export</button>
         <button class="btn small" id="import">⬆ Import</button>
+        <button class="btn small" id="mapbox-key" title="Paste a Mapbox token to unlock HD satellite">🛰 HD key</button>
         <input type="file" id="import-file" accept="application/json" style="display:none" />
       </div>
 
@@ -219,7 +231,58 @@
     <div id="map"></div>
   </div>
 
-  <div class="hint" id="hint">Click the map to add your first pin</div>
+  <div class="hint" id="hint">Click the map to add a pin · use the layer switcher (top-right) for satellite</div>
+
+  <!-- Full-page detail view -->
+  <div id="detail" class="detail" hidden>
+    <div class="detail-top">
+      <button class="btn" id="d-back">← Back to map</button>
+      <div class="d-crumb" id="d-crumb"></div>
+      <div class="d-top-actions">
+        <button class="btn" id="d-locate">◎ Show on map</button>
+        <button class="btn danger" id="d-delete">Delete</button>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-main">
+        <input id="d-name" class="d-name" placeholder="Untitled pin" />
+        <div class="d-typerow">
+          <span class="type-badge"><span class="dot" id="d-type-dot"></span> Type</span>
+          <select id="d-type">
+            <option value="farm">Farm</option>
+            <option value="facility">Facility</option>
+          </select>
+        </div>
+
+        <div class="d-section-head">
+          <span>Notes</span>
+          <button class="btn small" id="d-edit-toggle">Edit</button>
+        </div>
+        <div id="d-notes-view" class="d-notes-view"></div>
+        <textarea id="d-notes-edit" class="d-notes-edit" hidden placeholder="Write anything — varietal, contact, harvest window, tasting notes, directions…"></textarea>
+        <div class="md-hint" id="d-md-hint" hidden>Markdown: <b>**bold**</b>, <i>*italic*</i>, # headings, - lists, [links](url). Saves automatically.</div>
+
+        <div class="d-section-head"><span>Photos</span>
+          <button class="btn small" id="d-add-photo">+ Add photos</button>
+        </div>
+        <div id="d-photos" class="d-photos"></div>
+        <input type="file" id="d-photo-input" accept="image/*" multiple hidden />
+      </div>
+
+      <div class="detail-side">
+        <div id="d-map" class="d-map"></div>
+        <div class="d-facts">
+          <label for="d-address">Address / location</label>
+          <input id="d-address" placeholder="Street, town, region…" />
+          <div class="d-coords" id="d-coords"></div>
+          <a id="d-gmaps" target="_blank" rel="noopener">🛰 Open in Google Maps (sharpest imagery) ↗</a>
+          <a id="d-osm" target="_blank" rel="noopener">🗺 Open in OpenStreetMap ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden><img id="lightbox-img" alt="" /></div>
 
   <!-- Leaflet JS -->
   <script
@@ -232,9 +295,11 @@
     'use strict';
 
     const STORE_KEY = 'chocolate-map-pins-v1';
+    const MAPBOX_KEY = 'chocolate-map-mapbox-token';
+    const rootStyle = getComputedStyle(document.documentElement);
     const TYPES = {
-      farm: { label: 'Farm', color: getComputedStyle(document.documentElement).getPropertyValue('--farm').trim() || '#2e7d32' },
-      facility: { label: 'Facility', color: getComputedStyle(document.documentElement).getPropertyValue('--facility').trim() || '#b5651d' },
+      farm: { label: 'Farm', color: rootStyle.getPropertyValue('--farm').trim() || '#4caf50' },
+      facility: { label: 'Facility', color: rootStyle.getPropertyValue('--facility').trim() || '#e08a3c' },
     };
 
     /* ---------- Data ---------- */
@@ -244,35 +309,25 @@
       try {
         const raw = localStorage.getItem(STORE_KEY);
         return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error('Failed to load pins', e);
-        return [];
-      }
+      } catch (e) { console.error('Failed to load pins', e); return []; }
     }
     function save() {
-      localStorage.setItem(STORE_KEY, JSON.stringify(pins));
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(pins)); }
+      catch (e) {
+        console.error(e);
+        alert('Could not save — browser storage is full (usually too many/large photos). Export a backup, then remove some photos.');
+      }
     }
-    function uid() {
-      return 'p_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-    }
+    function uid() { return 'p_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
 
     /* ---------- Seed data (from research; region-level coords, all editable) ---------- */
-    /* Sources: somachocolate.com/pages/farms-and-origins, castronovochocolate.com,
-       bohochocolate.com, hcpcacao.org. Coordinates are approximate to the town/region. */
     const SEED = [
-      // ---- Chocolate makers / facilities ----
       { name: 'Castronovo Chocolate (factory)', type: 'facility', lat: 27.1975, lng: -80.2528, notes: 'Bean-to-bar maker. 555 Colorado Ave, Stuart, Florida. First US maker to import cacao from Colombia’s Sierra Nevada de Santa Marta.' },
       { name: 'BOHO Chocolate (maker)', type: 'facility', lat: 42.3223, lng: -72.6801, notes: 'Organic bean-to-bar maker in Florence, Massachusetts. Sources via Uncommon/Meridian Cacao, Cacao Services, Invalsa.' },
       { name: 'SOMA Chocolatemaker', type: 'facility', lat: 43.6503, lng: -79.3599, notes: 'Craft bean-to-bar maker, Distillery District, Toronto. Single-origin microbatches from ~20 countries.' },
-
-      // ---- Castronovo origins ----
       { name: 'Sierra Nevada de Santa Marta (Arhuaco)', type: 'farm', lat: 10.5896, lng: -74.1900, notes: 'Aracataca, Magdalena, Colombia. Native cacao harvested by the Arhuaco on ancestral land. Sourced by Castronovo & BOHO.' },
       { name: 'Tumaco', type: 'farm', lat: 1.7925, lng: -78.7756, notes: 'Nariño, Colombia. Pacific-coast cacao region sourced by Castronovo.' },
-
-      // ---- BOHO origins ----
       { name: 'Kablon Farms', type: 'farm', lat: 6.3350, lng: 124.9500, notes: 'Tupi, South Cotabato, Philippines. Single-estate cacao sourced by BOHO Chocolate.' },
-
-      // ---- SOMA origins ----
       { name: 'Alto Beni (wild harvest)', type: 'farm', lat: -15.4500, lng: -67.1300, notes: 'Bolivia. Wild-harvested cacao. Soma origin.' },
       { name: 'Fazenda Boa Vista', type: 'farm', lat: -14.7900, lng: -39.2800, notes: 'Bahia, Brazil. Soma origin.' },
       { name: 'CONACADO Co-op', type: 'farm', lat: 19.3000, lng: -70.2500, notes: 'Dominican Republic national co-op (San Francisco de Macorís area). Soma origin.' },
@@ -304,15 +359,12 @@
       { name: 'Guasare', type: 'farm', lat: 10.9000, lng: -72.3000, notes: 'Zulia, Venezuela. Soma origin.' },
       { name: 'Semuliki Forest', type: 'farm', lat: 0.8300, lng: 30.1500, notes: 'Bundibugyo, Uganda. Soma origin; HCP-recognized flavor.' },
       { name: 'Ben Tre / Tien Giang', type: 'farm', lat: 10.3000, lng: 106.3600, notes: 'Mekong Delta, Vietnam. Soma origins.' },
-
-      // ---- HCP-designated heirloom farms (verify #/details on hcpcacao.org globe) ----
       { name: 'Malagos / Puentespina Farms', type: 'farm', lat: 7.0500, lng: 125.4200, notes: 'Davao, Philippines. HCP #16 (2019) heirloom designee.' },
       { name: 'Kampura Farm', type: 'farm', lat: 15.4700, lng: -90.2000, notes: 'Guatemala. HCP #17 (2023) designee — Rodrigo Sevilla.' },
       { name: 'Maya Mountain Cacao', type: 'farm', lat: 16.2200, lng: -88.9400, notes: 'Toledo District, Belize. HCP-recognized heirloom cacao.' },
       { name: 'Zorzal Cacao', type: 'farm', lat: 19.3800, lng: -70.1000, notes: 'Dominican Republic. Bird-reserve estate; HCP-recognized heirloom cacao.' },
     ];
 
-    /* Load saved pins; on very first run, seed from research above. */
     pins = load();
     if (pins.length === 0 && !localStorage.getItem('choco-seeded')) {
       pins = SEED.map(p => ({ ...p, id: uid() }));
@@ -320,27 +372,58 @@
       save();
     }
 
-    /* ---------- Map ---------- */
-    const map = L.map('map', { worldCopyJump: true }).setView([15, 0], 2);
+    /* ---------- Base map layers ---------- */
+    const ESRI_ATTR = 'Imagery &copy; <a href="https://www.esri.com">Esri</a>, Maxar, Earthstar Geographics, USDA, USGS, and the GIS User Community';
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    function esriTiles(service, opts) {
+      return L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/' + service + '/MapServer/tile/{z}/{y}/{x}',
+        Object.assign({ maxZoom: 21, maxNativeZoom: 19 }, opts || {})
+      );
+    }
 
-    const markers = new Map(); // id -> L.marker
+    const satImagery = esriTiles('World_Imagery', { attribution: ESRI_ATTR });
+    const roadOverlay = esriTiles('Reference/World_Transportation', {});
+    const placeOverlay = esriTiles('Reference/World_Boundaries_and_Places', {});
+
+    const hybrid = L.layerGroup([satImagery, roadOverlay, placeOverlay]); // satellite + roads + labels
+    const satelliteClean = esriTiles('World_Imagery', { attribution: ESRI_ATTR });
+    const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 21, maxNativeZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    });
+    const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      maxZoom: 21, maxNativeZoom: 17, attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
+    });
+
+    const baseLayers = {
+      '🛰 Satellite + Roads': hybrid,
+      '🛰 Satellite (clean)': satelliteClean,
+      '🗺 Streets': streets,
+      '⛰ Terrain': terrain,
+    };
+
+    // Optional Mapbox HD satellite if the user has stored a token
+    const mbToken = localStorage.getItem(MAPBOX_KEY);
+    if (mbToken) {
+      baseLayers['🛰 Satellite HD (Mapbox)'] = L.tileLayer(
+        'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}?access_token=' + encodeURIComponent(mbToken),
+        { maxZoom: 22, maxNativeZoom: 22, tileSize: 512, zoomOffset: -1, attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; Maxar' }
+      );
+    }
+
+    /* ---------- Main map ---------- */
+    const map = L.map('map', { worldCopyJump: true, maxZoom: 21, layers: [hybrid] }).setView([15, 0], 3);
+    L.control.layers(baseLayers, null, { position: 'topright', collapsed: false }).addTo(map);
+
+    const markers = new Map();
 
     function makeIcon(type) {
       const color = (TYPES[type] || TYPES.farm).color;
       return L.divIcon({
         className: 'choco-pin',
-        html: `<div style="
-          width:20px;height:20px;border-radius:50% 50% 50% 0;
-          background:${color};border:2px solid #fff;transform:rotate(-45deg);
-          box-shadow:0 1px 4px rgba(0,0,0,0.4);"></div>`,
-        iconSize: [20, 20],
-        iconAnchor: [10, 20],
-        popupAnchor: [0, -20],
+        html: '<div style="width:20px;height:20px;border-radius:50% 50% 50% 0;background:' + color +
+              ';border:2px solid #fff;transform:rotate(-45deg);box-shadow:0 1px 4px rgba(0,0,0,0.6);"></div>',
+        iconSize: [20, 20], iconAnchor: [10, 20], popupAnchor: [0, -20],
       });
     }
 
@@ -348,166 +431,156 @@
       return (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
 
-    /* Build the popup form for a pin (existing or new draft) */
-    function popupForm(pin) {
-      const wrap = document.createElement('div');
-      wrap.innerHTML = `
-        <div class="form-row">
-          <label>Name</label>
-          <input type="text" class="pf-name" placeholder="e.g. Hacienda Victoria" value="${escapeHtml(pin.name)}" />
-        </div>
-        <div class="form-row">
-          <label>Type</label>
-          <select class="pf-type">
-            <option value="farm" ${pin.type === 'farm' ? 'selected' : ''}>Farm</option>
-            <option value="facility" ${pin.type === 'facility' ? 'selected' : ''}>Facility</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label>Notes</label>
-          <textarea class="pf-notes" placeholder="Varietal, contact, harvest notes…">${escapeHtml(pin.notes)}</textarea>
-        </div>
-        <div class="form-actions">
-          ${pin._draft ? '' : '<button class="pf-btn pf-del">Delete</button>'}
-          <button class="pf-btn pf-cancel">Cancel</button>
-          <button class="pf-btn pf-save">Save</button>
-        </div>
-      `;
+    /* Minimal, safe Markdown -> HTML (escape first, then apply tokens) */
+    function markdown(src) {
+      const esc = escapeHtml(src || '').trim();
+      if (!esc) return '';
+      const lines = esc.split('\n');
+      let html = '', inList = false;
+      const inline = (t) => t
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+        .replace(/(^|[\s(])((https?:\/\/)[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+      for (let raw of lines) {
+        const line = raw.trimEnd();
+        const h = line.match(/^(#{1,3})\s+(.*)$/);
+        const li = line.match(/^\s*[-*]\s+(.*)$/);
+        if (li) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + inline(li[1]) + '</li>'; continue; }
+        if (inList) { html += '</ul>'; inList = false; }
+        if (h) { const lvl = h[1].length; html += '<h' + lvl + '>' + inline(h[2]) + '</h' + lvl + '>'; }
+        else if (line === '') { html += ''; }
+        else { html += '<p>' + inline(line) + '</p>'; }
+      }
+      if (inList) html += '</ul>';
+      return html;
+    }
 
-      wrap.querySelector('.pf-save').onclick = () => {
-        pin.name = wrap.querySelector('.pf-name').value.trim() || 'Untitled';
-        pin.type = wrap.querySelector('.pf-type').value;
-        pin.notes = wrap.querySelector('.pf-notes').value.trim();
-        if (pin._draft) {
+    /* ---------- Marker popup ---------- */
+    function compactPopup(pin) {
+      const wrap = document.createElement('div');
+      if (pin._draft) {
+        wrap.innerHTML =
+          '<div class="form-row"><label>Name</label><input class="pf-name" placeholder="e.g. Hacienda Victoria" value="' + escapeHtml(pin.name) + '"/></div>' +
+          '<div class="form-row"><label>Type</label><select class="pf-type">' +
+            '<option value="farm"' + (pin.type === 'farm' ? ' selected' : '') + '>Farm</option>' +
+            '<option value="facility"' + (pin.type === 'facility' ? ' selected' : '') + '>Facility</option></select></div>' +
+          '<div class="pop-actions"><button class="pf-btn pf-save">Save</button>' +
+          '<button class="pf-btn pf-open">Save &amp; open page</button>' +
+          '<button class="pf-btn pf-cancel">Cancel</button></div>';
+        const commit = () => {
+          pin.name = wrap.querySelector('.pf-name').value.trim() || 'Untitled';
+          pin.type = wrap.querySelector('.pf-type').value;
           delete pin._draft;
           pins.push(pin);
-        }
-        save();
-        renderMarker(pin);
-        renderList();
-        map.closePopup();
-      };
-
-      wrap.querySelector('.pf-cancel').onclick = () => {
-        if (pin._draft && markers.has(pin.id)) {
-          map.removeLayer(markers.get(pin.id));
-          markers.delete(pin.id);
-        }
-        map.closePopup();
-      };
-
-      const delBtn = wrap.querySelector('.pf-del');
-      if (delBtn) {
-        delBtn.onclick = () => {
-          pins = pins.filter(p => p.id !== pin.id);
+          save(); renderMarker(pin); renderList();
+        };
+        wrap.querySelector('.pf-save').onclick = () => { commit(); map.closePopup(); };
+        wrap.querySelector('.pf-open').onclick = () => { commit(); map.closePopup(); location.hash = '#/pin/' + pin.id; };
+        wrap.querySelector('.pf-cancel').onclick = () => {
           if (markers.has(pin.id)) { map.removeLayer(markers.get(pin.id)); markers.delete(pin.id); }
-          save();
-          renderList();
           map.closePopup();
         };
+      } else {
+        wrap.innerHTML =
+          '<div class="pop-title">' + escapeHtml(pin.name) + '</div>' +
+          '<div class="pop-type">' + ((TYPES[pin.type] || {}).label || pin.type) + '</div>' +
+          (pin.notes ? '<div class="pop-note">' + escapeHtml(pin.notes.split('\n')[0]) + '</div>' : '') +
+          '<div class="pop-actions"><button class="pf-btn pf-open">Open full page ⤢</button>' +
+          '<button class="pf-btn pf-del">Delete</button></div>';
+        wrap.querySelector('.pf-open').onclick = () => { map.closePopup(); location.hash = '#/pin/' + pin.id; };
+        wrap.querySelector('.pf-del').onclick = () => {
+          if (!confirm('Delete "' + pin.name + '"?')) return;
+          deletePin(pin.id); map.closePopup();
+        };
       }
-
       return wrap;
     }
 
     function renderMarker(pin) {
       let m = markers.get(pin.id);
       if (!m) {
-        m = L.marker([pin.lat, pin.lng], { icon: makeIcon(pin.type) });
-        m.addTo(map);
+        m = L.marker([pin.lat, pin.lng], { icon: makeIcon(pin.type) }).addTo(map);
         markers.set(pin.id, m);
       } else {
         m.setIcon(makeIcon(pin.type));
       }
-      m.bindPopup(() => popupForm(pin), { closeButton: false, minWidth: 240 });
+      m.bindPopup(() => compactPopup(pin), { closeButton: false, minWidth: 210 });
       applyFilter();
       return m;
     }
 
-    /* ---------- List / sidebar ---------- */
+    function deletePin(id) {
+      pins = pins.filter(p => p.id !== id);
+      if (markers.has(id)) { map.removeLayer(markers.get(id)); markers.delete(id); }
+      save(); renderList();
+      if (location.hash === '#/pin/' + id) location.hash = '';
+    }
+
+    /* ---------- Sidebar list ---------- */
     const listEl = document.getElementById('list');
     const searchEl = document.getElementById('search');
 
     function visibleTypes() {
-      return {
-        farm: document.getElementById('f-farm').checked,
-        facility: document.getElementById('f-facility').checked,
-      };
+      return { farm: document.getElementById('f-farm').checked, facility: document.getElementById('f-facility').checked };
     }
-
     function matches(pin) {
       const vt = visibleTypes();
       if (!vt[pin.type]) return false;
       const q = searchEl.value.trim().toLowerCase();
       if (!q) return true;
-      return (pin.name + ' ' + pin.notes).toLowerCase().includes(q);
+      return (pin.name + ' ' + (pin.notes || '') + ' ' + (pin.address || '')).toLowerCase().includes(q);
     }
-
     function renderList() {
       const shown = pins.filter(matches).sort((a, b) => a.name.localeCompare(b.name));
       if (shown.length === 0) {
-        listEl.innerHTML = `<div class="empty">${pins.length === 0
-          ? 'No pins yet.<br>Click the map to add one.'
-          : 'No pins match your filters.'}</div>`;
+        listEl.innerHTML = '<div class="empty">' + (pins.length === 0
+          ? 'No pins yet.<br>Click the map to add one.' : 'No pins match your filters.') + '</div>';
         return;
       }
       listEl.innerHTML = '';
       for (const pin of shown) {
         const card = document.createElement('div');
         card.className = 'card ' + pin.type;
-        card.innerHTML = `
-          <div class="name">${escapeHtml(pin.name)}</div>
-          <div class="meta">${(TYPES[pin.type] || {}).label || pin.type}</div>
-          ${pin.notes ? `<div class="note">${escapeHtml(pin.notes)}</div>` : ''}
-        `;
-        card.onclick = () => {
-          map.setView([pin.lat, pin.lng], Math.max(map.getZoom(), 6), { animate: true });
-          const m = markers.get(pin.id);
-          if (m) m.openPopup();
-        };
+        card.innerHTML =
+          '<div class="name">' + escapeHtml(pin.name) + '</div>' +
+          '<div class="meta">' + ((TYPES[pin.type] || {}).label || pin.type) + '</div>' +
+          (pin.notes ? '<div class="note">' + escapeHtml(pin.notes.split('\n')[0]) + '</div>' : '');
+        card.onclick = () => { location.hash = '#/pin/' + pin.id; };
         listEl.appendChild(card);
       }
     }
-
     function applyFilter() {
       const vt = visibleTypes();
       for (const pin of pins) {
         const m = markers.get(pin.id);
         if (!m) continue;
         if (vt[pin.type]) { if (!map.hasLayer(m)) m.addTo(map); }
-        else { if (map.hasLayer(m)) map.removeLayer(m); }
+        else if (map.hasLayer(m)) map.removeLayer(m);
       }
     }
 
-    /* ---------- Add pin on click ---------- */
     map.on('click', (e) => {
-      const pin = {
-        id: uid(), name: '', type: 'farm', notes: '',
-        lat: e.latlng.lat, lng: e.latlng.lng, _draft: true,
-      };
-      const m = renderMarker(pin);
-      m.openPopup();
+      const pin = { id: uid(), name: '', type: 'farm', notes: '', address: '', photos: [], lat: e.latlng.lat, lng: e.latlng.lng, _draft: true };
+      renderMarker(pin).openPopup();
       hideHint();
     });
 
-    /* ---------- Filters & search ---------- */
     document.getElementById('f-farm').onchange = () => { applyFilter(); renderList(); };
     document.getElementById('f-facility').onchange = () => { applyFilter(); renderList(); };
     searchEl.oninput = renderList;
 
-    /* ---------- Export / Import ---------- */
+    /* ---------- Export / Import / Mapbox key ---------- */
     document.getElementById('export').onclick = () => {
       const blob = new Blob([JSON.stringify(pins, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'chocolate-map-pins.json';
-      a.click();
+      a.href = URL.createObjectURL(blob); a.download = 'chocolate-map-pins.json'; a.click();
       URL.revokeObjectURL(a.href);
     };
     document.getElementById('import').onclick = () => document.getElementById('import-file').click();
     document.getElementById('import-file').onchange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+      const file = e.target.files[0]; if (!file) return;
       const reader = new FileReader();
       reader.onload = () => {
         try {
@@ -519,31 +592,177 @@
             if (p && typeof p.lat === 'number' && typeof p.lng === 'number') {
               if (!p.id || existing.has(p.id)) p.id = uid();
               delete p._draft;
-              pins.push(p);
-              renderMarker(p);
-              added++;
+              pins.push(p); renderMarker(p); added++;
             }
           }
-          save();
-          renderList();
-          alert(`Imported ${added} pin${added === 1 ? '' : 's'}.`);
-        } catch (err) {
-          alert('Could not import that file: ' + err.message);
-        }
+          save(); renderList();
+          alert('Imported ' + added + ' pin' + (added === 1 ? '' : 's') + '.');
+        } catch (err) { alert('Could not import that file: ' + err.message); }
         e.target.value = '';
       };
       reader.readAsText(file);
     };
+    document.getElementById('mapbox-key').onclick = () => {
+      const current = localStorage.getItem(MAPBOX_KEY) || '';
+      const val = prompt('Paste a Mapbox access token for HD satellite (leave blank to remove).\nGet one free at mapbox.com → Account → Tokens.', current);
+      if (val === null) return;
+      if (val.trim()) localStorage.setItem(MAPBOX_KEY, val.trim());
+      else localStorage.removeItem(MAPBOX_KEY);
+      location.reload();
+    };
+
+    /* ---------- Full-page detail view ---------- */
+    let current = null;         // pin being viewed
+    let detailMap = null, detailMarker = null;
+    let saveTimer = null;
+
+    const el = (id) => document.getElementById(id);
+
+    function queueSave() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { save(); }, 350); }
+
+    function ensureDetailMap() {
+      if (detailMap) return;
+      detailMap = L.map('d-map', { maxZoom: 21, zoomControl: true, attributionControl: false });
+      L.layerGroup([
+        esriTiles('World_Imagery', {}),
+        esriTiles('Reference/World_Transportation', {}),
+        esriTiles('Reference/World_Boundaries_and_Places', {}),
+      ]).addTo(detailMap);
+      // Let the user reposition the pin by dragging on the mini-map
+      detailMarker = L.marker([0, 0], { draggable: true }).addTo(detailMap);
+      detailMarker.on('dragend', () => {
+        if (!current) return;
+        const ll = detailMarker.getLatLng();
+        current.lat = ll.lat; current.lng = ll.lng;
+        const m = markers.get(current.id); if (m) m.setLatLng(ll);
+        updateCoords(); save();
+      });
+    }
+
+    function updateCoords() {
+      if (!current) return;
+      el('d-coords').textContent = current.lat.toFixed(5) + ', ' + current.lng.toFixed(5) + '  ·  drag the pin on the map to fix its position';
+      el('d-gmaps').href = 'https://www.google.com/maps/search/?api=1&query=' + current.lat + ',' + current.lng;
+      el('d-osm').href = 'https://www.openstreetmap.org/?mlat=' + current.lat + '&mlon=' + current.lng + '#map=16/' + current.lat + '/' + current.lng;
+    }
+
+    function renderPhotos() {
+      const box = el('d-photos'); box.innerHTML = '';
+      const photos = current.photos || [];
+      photos.forEach((src, i) => {
+        const d = document.createElement('div'); d.className = 'd-photo';
+        d.innerHTML = '<img src="' + src + '" alt="photo"/><button class="rm" title="Remove">✕</button>';
+        d.querySelector('img').onclick = () => { el('lightbox-img').src = src; el('lightbox').hidden = false; };
+        d.querySelector('.rm').onclick = () => { current.photos.splice(i, 1); save(); renderPhotos(); };
+        box.appendChild(d);
+      });
+    }
+
+    function fileToDataURL(file, maxDim, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (Math.max(w, h) > maxDim) { const s = maxDim / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
+            const c = document.createElement('canvas'); c.width = w; c.height = h;
+            c.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(c.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = reject; img.src = reader.result;
+        };
+        reader.onerror = reject; reader.readAsDataURL(file);
+      });
+    }
+
+    function setEditMode(editing) {
+      el('d-notes-edit').hidden = !editing;
+      el('d-notes-view').hidden = editing;
+      el('d-md-hint').hidden = !editing;
+      el('d-edit-toggle').textContent = editing ? 'Done' : 'Edit';
+      if (editing) el('d-notes-edit').focus();
+      else el('d-notes-view').innerHTML = markdown(current.notes);
+    }
+
+    function openDetail(id) {
+      const pin = pins.find(p => p.id === id);
+      if (!pin) { location.hash = ''; return; }
+      current = pin;
+      el('detail').hidden = false;
+
+      el('d-crumb').innerHTML = 'Chocolate Map / <b>' + escapeHtml(pin.name || 'Untitled') + '</b>';
+      el('d-name').value = pin.name || '';
+      el('d-type').value = pin.type;
+      el('d-type-dot').style.background = (TYPES[pin.type] || TYPES.farm).color;
+      el('d-address').value = pin.address || '';
+      el('d-notes-edit').value = pin.notes || '';
+      el('d-notes-view').innerHTML = markdown(pin.notes);
+      setEditMode(false);
+      renderPhotos();
+      updateCoords();
+
+      ensureDetailMap();
+      detailMarker.setLatLng([pin.lat, pin.lng]);
+      detailMap.setView([pin.lat, pin.lng], 16);
+      setTimeout(() => detailMap.invalidateSize(), 60);
+    }
+
+    function closeDetail() { el('detail').hidden = true; current = null; }
+
+    // Detail field wiring (once)
+    el('d-name').oninput = () => {
+      if (!current) return;
+      current.name = el('d-name').value.trim() || 'Untitled';
+      el('d-crumb').innerHTML = 'Chocolate Map / <b>' + escapeHtml(current.name) + '</b>';
+      const m = markers.get(current.id); if (m) m.bindPopup(() => compactPopup(current), { closeButton: false, minWidth: 210 });
+      renderList(); queueSave();
+    };
+    el('d-type').onchange = () => {
+      if (!current) return;
+      current.type = el('d-type').value;
+      el('d-type-dot').style.background = (TYPES[current.type] || TYPES.farm).color;
+      const m = markers.get(current.id); if (m) m.setIcon(makeIcon(current.type));
+      applyFilter(); renderList(); save();
+    };
+    el('d-address').oninput = () => { if (current) { current.address = el('d-address').value; queueSave(); } };
+    el('d-notes-edit').oninput = () => { if (current) { current.notes = el('d-notes-edit').value; queueSave(); } };
+    el('d-edit-toggle').onclick = () => setEditMode(el('d-notes-edit').hidden);
+    el('d-add-photo').onclick = () => el('d-photo-input').click();
+    el('d-photo-input').onchange = async (e) => {
+      const files = Array.from(e.target.files || []);
+      if (!current.photos) current.photos = [];
+      for (const f of files) {
+        try { current.photos.push(await fileToDataURL(f, 1400, 0.82)); } catch (err) { console.error(err); }
+      }
+      save(); renderPhotos(); e.target.value = '';
+    };
+    el('d-back').onclick = () => { location.hash = ''; };
+    el('d-locate').onclick = () => {
+      const p = current; location.hash = '';
+      map.setView([p.lat, p.lng], Math.max(map.getZoom(), 14), { animate: true });
+      const m = markers.get(p.id); if (m) setTimeout(() => m.openPopup(), 250);
+    };
+    el('d-delete').onclick = () => { if (current && confirm('Delete "' + current.name + '"?')) { const id = current.id; location.hash = ''; deletePin(id); } };
+    el('lightbox').onclick = () => { el('lightbox').hidden = true; };
+
+    /* ---------- Hash routing ---------- */
+    function router() {
+      const m = location.hash.match(/^#\/pin\/(.+)$/);
+      if (m) openDetail(decodeURIComponent(m[1]));
+      else closeDetail();
+    }
+    window.addEventListener('hashchange', router);
 
     /* ---------- Hint ---------- */
     const hintEl = document.getElementById('hint');
-    function hideHint() { hintEl.style.opacity = '0'; setTimeout(() => hintEl.remove(), 400); }
-    if (pins.length > 0) hintEl.remove();
-    else setTimeout(hideHint, 6000);
+    function hideHint() { if (!hintEl.parentNode) return; hintEl.style.opacity = '0'; setTimeout(() => hintEl.remove(), 400); }
+    if (pins.length > 0) setTimeout(hideHint, 5000);
 
     /* ---------- Init ---------- */
     pins.forEach(renderMarker);
     renderList();
+    router();
   </script>
 </body>
 </html>
