@@ -2,7 +2,7 @@
 
 A personal, zoomable world map for taking notes on cacao farms and chocolate facilities.
 
-**Live site:** _(GitHub Pages URL — see repo Settings → Pages)_
+**Live site:** https://hulelan.github.io/chocolate-map/
 
 ## Features
 
