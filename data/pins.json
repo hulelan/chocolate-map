@@ -326,14 +326,5 @@
     "lat": 19.38,
     "lng": -70.1,
     "notes": "Dominican Republic. Bird-reserve estate; HCP-recognized heirloom cacao."
-  },
-  {
-    "id": "c_mr6zale3y3m",
-    "name": "ZZZ Pipeline Test (delete me)",
-    "type": "farm",
-    "lat": 5.5,
-    "lng": -73.5,
-    "notes": "Automated end-to-end test of the approval workflow.",
-    "source": "setup test"
   }
 ]
