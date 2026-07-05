@@ -41,6 +41,35 @@ rejected with an explanatory comment instead of being added.
   workflow. If a run ever fails to push, enable **Settings → Actions → General → Workflow
   permissions → “Read and write permissions.”**
 
+## Email notifications
+
+Two ways to get emailed when a suggestion arrives:
+
+1. **Built-in (zero setup).** As the repo owner you're watching the repo, so GitHub emails
+   you on every new issue. Check **github.com → your avatar → Settings → Notifications** and
+   make sure email is enabled. This works today.
+2. **Custom branded email** via [`notify-suggestion.yml`](.github/workflows/notify-suggestion.yml).
+   It stays dormant until you add these repo secrets under
+   **Settings → Secrets and variables → Actions → New repository secret**:
+
+   | Secret | Example |
+   |---|---|
+   | `MAIL_SERVER` | `smtp.gmail.com` |
+   | `MAIL_PORT` | `465` |
+   | `MAIL_USERNAME` | `you@gmail.com` |
+   | `MAIL_PASSWORD` | a Gmail **App Password** (not your login password) |
+   | `MAIL_TO` | `lelan@lelanhu.com` |
+
+   For Gmail/Workspace, create an App Password at
+   [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (requires
+   2-step verification). For another provider, use its SMTP host/port and credentials.
+
+## Address search
+
+The sidebar's **🔎 Find a place** box geocodes towns/addresses via OpenStreetMap Nominatim
+(no key). Pick a result to fly there, then add a private pin or start a suggestion at that
+spot. Business names are hit-or-miss in OSM; towns and addresses work best.
+
 ## Data & privacy
 
 - **Community pins** live in `data/pins.json` in this public repo.

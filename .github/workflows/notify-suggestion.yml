@@ -1,0 +1,39 @@
+name: Notify on new suggestion
+
+# Emails the maintainer when someone opens a suggestion issue.
+# Dormant until the mail secrets are set (see README → Email notifications):
+#   MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_TO
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  email:
+    runs-on: ubuntu-latest
+    env:
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+    steps:
+      - name: Send email
+        if: ${{ env.MAIL_PASSWORD != '' }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "🍫 New Cacao Map suggestion: ${{ github.event.issue.title }}"
+          to: ${{ secrets.MAIL_TO }}
+          from: Cacao Map <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            A new place was suggested on cacaomap.com.
+
+            ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            ── Review & approve (add the "approved" label to publish):
+            ${{ github.event.issue.html_url }}

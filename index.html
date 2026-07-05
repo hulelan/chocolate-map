@@ -48,8 +48,16 @@
     .btn.danger { color: #fff; background: var(--danger); border-color: var(--danger); }
     .btn.danger:hover { background: #c9433f; }
 
-    #search { width: 100%; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
-    #search::placeholder { color: var(--muted); }
+    #search, #geo-search { width: 100%; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+    #search::placeholder, #geo-search::placeholder { color: var(--muted); }
+    #geo-search:focus { outline: none; border-color: var(--suggest); }
+    .geo-results { margin: 0 18px 6px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-2); max-height: 220px; overflow: auto; }
+    .geo-results[hidden] { display: none; }
+    .geo-item { padding: 8px 10px; font-size: 12px; color: var(--text); cursor: pointer; border-bottom: 1px solid var(--border); line-height: 1.35; }
+    .geo-item:last-child { border-bottom: none; }
+    .geo-item:hover { background: #40352f; }
+    .geo-empty { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+    .geo-credit { font-size: 10px; color: var(--muted); padding: 0 18px 2px; }
 
     .filters { display: flex; gap: 12px; padding: 10px 18px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
     .filters label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
@@ -162,7 +170,12 @@
       </div>
 
       <div class="toolbar">
-        <input id="search" type="text" placeholder="Search pins…" />
+        <input id="geo-search" type="text" placeholder="🔎 Find a place (town, address, farm)…" autocomplete="off" />
+      </div>
+      <div id="geo-results" class="geo-results" hidden></div>
+
+      <div class="toolbar">
+        <input id="search" type="text" placeholder="Search my pins…" />
       </div>
 
       <div class="filters">
@@ -352,7 +365,7 @@
       const wrap = document.createElement('div');
       wrap.innerHTML =
         '<div class="pop-head">🍫 Suggest this place</div>' +
-        '<div class="form-row"><label>Name</label><input class="s-name" placeholder="e.g. Hacienda Victoria"/></div>' +
+        '<div class="form-row"><label>Name</label><input class="s-name" placeholder="e.g. Hacienda Victoria" value="' + escapeHtml(pin.prefillName || '') + '"/></div>' +
         '<div class="form-row"><label>Type</label><select class="s-type"><option value="farm">Farm / origin</option><option value="facility">Facility / maker</option></select></div>' +
         '<div class="form-row"><label>Notes (optional)</label><textarea class="s-notes" placeholder="What is it? Varietal, who sources it…"></textarea></div>' +
         '<div class="form-row"><label>Your name (optional)</label><input class="s-source" placeholder="credited on the suggestion"/></div>' +
@@ -649,6 +662,71 @@
     el('d-locate').onclick = () => { const p = current; location.hash = ''; map.setView([p.lat, p.lng], Math.max(map.getZoom(), 14), { animate: true }); const m = markers.get(p.id); if (m) setTimeout(() => m.openPopup(), 250); };
     el('d-delete').onclick = () => { if (current && !readOnly && confirm('Delete "' + current.name + '"?')) { const id = current.id; location.hash = ''; deletePin(id); } };
     el('lightbox').onclick = () => { el('lightbox').hidden = true; };
+
+    /* ---------- Address search (OpenStreetMap Nominatim) ---------- */
+    const geoInput = el('geo-search'), geoResults = el('geo-results');
+    let geoTimer = null, geoController = null, placeMarker = null;
+
+    function renderGeoResults(items) {
+      if (!items || !items.length) { geoResults.innerHTML = '<div class="geo-empty">No matches. Try a town or fuller address.</div>'; geoResults.hidden = false; return; }
+      geoResults.innerHTML = '';
+      items.forEach(r => {
+        const d = document.createElement('div'); d.className = 'geo-item'; d.textContent = r.display_name;
+        d.onclick = () => { geoResults.hidden = true; geoInput.value = r.display_name.split(',')[0]; goToPlace(parseFloat(r.lat), parseFloat(r.lon), r.display_name); };
+        geoResults.appendChild(d);
+      });
+      geoResults.hidden = false;
+    }
+    async function geocode(q) {
+      if (geoController) geoController.abort();
+      geoController = new AbortController();
+      geoResults.innerHTML = '<div class="geo-empty">Searching…</div>'; geoResults.hidden = false;
+      try {
+        const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&q=' + encodeURIComponent(q);
+        const res = await fetch(url, { signal: geoController.signal, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error('geocode failed');
+        renderGeoResults(await res.json());
+      } catch (e) {
+        if (e.name !== 'AbortError') { geoResults.innerHTML = '<div class="geo-empty">Search unavailable — try again in a moment.</div>'; geoResults.hidden = false; }
+      }
+    }
+    geoInput.oninput = () => {
+      const q = geoInput.value.trim(); clearTimeout(geoTimer);
+      if (q.length < 3) { geoResults.hidden = true; return; }
+      geoTimer = setTimeout(() => geocode(q), 700);
+    };
+    geoInput.onkeydown = (e) => { if (e.key === 'Enter') { clearTimeout(geoTimer); const q = geoInput.value.trim(); if (q) geocode(q); } };
+    document.addEventListener('click', (e) => { if (!geoResults.contains(e.target) && e.target !== geoInput) geoResults.hidden = true; });
+
+    function goToPlace(lat, lon, label) {
+      map.setView([lat, lon], 14, { animate: true });
+      if (placeMarker) { map.removeLayer(placeMarker); placeMarker = null; }
+      placeMarker = L.marker([lat, lon]).addTo(map);
+      placeMarker.bindPopup(placeActionsPopup(lat, lon, label), { closeButton: true, minWidth: 210 }).openPopup();
+    }
+    function clearPlaceMarker() { if (placeMarker) { map.removeLayer(placeMarker); placeMarker = null; } }
+    function placeActionsPopup(lat, lon, label) {
+      const short = (label || '').split(',')[0];
+      const wrap = document.createElement('div');
+      wrap.innerHTML =
+        '<div class="pop-title">' + escapeHtml(short) + '</div>' +
+        '<div class="pop-type">' + escapeHtml((label || '').slice(0, 90)) + '</div>' +
+        '<div class="pop-actions"><button class="pf-btn pf-save pf-addpriv">📌 Add private pin</button>' +
+        '<button class="pf-btn pf-submit pf-sugg">🍫 Suggest here</button></div>';
+      wrap.querySelector('.pf-addpriv').onclick = () => {
+        clearPlaceMarker();
+        const pin = { id: uid(), name: short, type: 'farm', notes: '', address: label || '', photos: [], lat, lng: lon, _source: 'personal', _draft: true };
+        renderMarker(pin).openPopup();
+      };
+      wrap.querySelector('.pf-sugg').onclick = () => {
+        clearPlaceMarker();
+        const pin = { id: 'sug_' + uid(), lat, lng: lon, prefillName: short };
+        const m = L.marker([lat, lon], { icon: makeIcon('farm', false) }).addTo(map);
+        markers.set(pin.id, m);
+        m.bindPopup(() => suggestionPopup(pin), { closeButton: false, minWidth: 230 }).openPopup();
+      };
+      return wrap;
+    }
 
     /* ---------- Routing ---------- */
     function router() {
