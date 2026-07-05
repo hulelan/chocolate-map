@@ -94,6 +94,8 @@
     .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; color: #222; background: #fff; }
     .form-row textarea { resize: vertical; min-height: 48px; }
     .pop-head { font-weight: 700; color: #222; margin-bottom: 8px; }
+    .pop-warn { background: #fff6e6; border: 1px solid #e0b055; color: #7a5200; padding: 7px 9px; border-radius: 6px; font-size: 11px; line-height: 1.4; margin-bottom: 10px; }
+    .pop-warn ul { margin: 4px 0 4px 0; padding-left: 16px; }
     .pf-btn { border: none; border-radius: 6px; padding: 6px 11px; cursor: pointer; font-size: 13px; }
     .pf-save { background: var(--accent); color: #241a10; font-weight: 600; }
     .pf-open { background: #2e6da4; color: #fff; }
@@ -323,6 +325,18 @@
     }
     function escapeHtml(s) { return (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
+    function haversineKm(a, b) {
+      const R = 6371, toR = x => x * Math.PI / 180;
+      const dLat = toR(b.lat - a.lat), dLng = toR(b.lng - a.lng);
+      const s = Math.sin(dLat / 2) ** 2 + Math.cos(toR(a.lat)) * Math.cos(toR(b.lat)) * Math.sin(dLng / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(s));
+    }
+    function nearbyPins(lat, lng, km) {
+      return allPins().filter(p => !p._draft)
+        .map(p => ({ p, d: haversineKm({ lat, lng }, { lat: p.lat, lng: p.lng }) }))
+        .filter(x => x.d <= km).sort((a, b) => a.d - b.d);
+    }
+
     function markdown(src) {
       const esc = escapeHtml(src || '').trim();
       if (!esc) return '';
@@ -363,8 +377,14 @@
 
     function suggestionPopup(pin) {
       const wrap = document.createElement('div');
+      const near = nearbyPins(pin.lat, pin.lng, 10);
+      const warnHtml = near.length
+        ? '<div class="pop-warn">⚠️ ' + near.length + ' place' + (near.length > 1 ? 's' : '') + ' already mapped within 10&nbsp;km:<ul>' +
+          near.slice(0, 3).map(x => '<li>' + escapeHtml(x.p.name) + ' — ' + (x.d < 10 ? x.d.toFixed(1) : Math.round(x.d)) + ' km</li>').join('') +
+          '</ul>Please only suggest if it’s genuinely different.</div>'
+        : '';
       wrap.innerHTML =
-        '<div class="pop-head">🍫 Suggest this place</div>' +
+        '<div class="pop-head">🍫 Suggest this place</div>' + warnHtml +
         '<div class="form-row"><label>Name</label><input class="s-name" placeholder="e.g. Hacienda Victoria" value="' + escapeHtml(pin.prefillName || '') + '"/></div>' +
         '<div class="form-row"><label>Type</label><select class="s-type"><option value="farm">Farm / origin</option><option value="facility">Facility / maker</option></select></div>' +
         '<div class="form-row"><label>Notes (optional)</label><textarea class="s-notes" placeholder="What is it? Varietal, who sources it…"></textarea></div>' +
