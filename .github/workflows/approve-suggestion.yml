@@ -34,11 +34,15 @@ jobs:
 
       - name: Commit and push
         if: steps.append.outputs.added == 'true'
+        # Pin name comes from the issue body (untrusted): pass it via env, never interpolate it into the script.
+        env:
+          PIN_NAME: ${{ steps.append.outputs.name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           git config user.name "chocolate-map-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/pins.json
-          git commit -m "Add community pin from #${{ github.event.issue.number }}: ${{ steps.append.outputs.name }}"
+          git commit -m "Add community pin from #${ISSUE_NUMBER}: ${PIN_NAME}"
           # Rebase-and-retry in case another run pushed first.
           for attempt in 1 2 3 4 5; do
             if git push; then echo "pushed on attempt $attempt"; exit 0; fi

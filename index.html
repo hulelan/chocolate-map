@@ -25,6 +25,7 @@
       --accent: #d98e3b;
       --danger: #d9534f;
       --suggest: #2e8b9e;
+      --coll: #7b4a1e;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
@@ -64,6 +65,19 @@
     .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
     .dot.farm { background: var(--farm); }
     .dot.facility { background: var(--facility); }
+    .dot.coll { background: var(--coll); border-radius: 3px; }
+    .coll-link { display: block; width: 100%; text-align: center; text-decoration: none; }
+
+    /* My collection: one marker per origin, badge = number of bars from there */
+    .coll-pin { background: var(--coll); color: #fff; border: 2px solid #f3d9b8; border-radius: 6px; font: 700 11px/1 -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+    .coll-pop { max-height: 300px; overflow-y: auto; margin: 6px 0; }
+    .coll-item { display: flex; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid #eee; color: #222; text-decoration: none; font-size: 12px; line-height: 1.3; }
+    .coll-item:hover { background: #f6efe8; }
+    .coll-item img { width: 32px; height: 42px; object-fit: cover; border-radius: 3px; flex: none; background: #eee; }
+    .coll-item .x { margin-left: auto; font-weight: 700; color: #7b4a1e; padding-left: 6px; }
+    .coll-item .m { color: #777; }
+    .leaflet-popup-content a.coll-item { color: #222; }
+    .leaflet-popup-content a.pf-open { color: #fff; }
 
     #list { flex: 1; overflow-y: auto; padding: 8px 12px 40px; }
     .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 40px 20px; line-height: 1.5; }
@@ -184,6 +198,11 @@
         <label><input type="checkbox" id="f-farm" checked /><span class="dot farm"></span> Farms</label>
         <label><input type="checkbox" id="f-facility" checked /><span class="dot facility"></span> Facilities</label>
         <label><input type="checkbox" id="f-private" checked /> 🔒 My private</label>
+        <label><input type="checkbox" id="f-coll" checked /><span class="dot coll"></span> My collection</label>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn coll-link" href="collection.html">🍫 My chocolate collection — table</a>
       </div>
 
       <div class="toolbar">
@@ -759,6 +778,52 @@
     function showHint(text, suggesting) { hintEl.textContent = text; hintEl.classList.toggle('suggesting', !!suggesting); hintEl.style.opacity = '1'; if (!hintEl.parentNode) document.body.appendChild(hintEl); }
     function hideHint() { if (!hintEl.parentNode) return; hintEl.style.opacity = '0'; }
 
+    /* ---------- My collection (data/collection.json, built by scripts/build_collection.py) ---------- */
+    const collLayer = L.layerGroup().addTo(map);
+    const collByBar = new Map();   // bar record id -> marker, for ?bar= deep links
+    function collIcon(n) {
+      const s = n > 9 ? 28 : 24;
+      return L.divIcon({ className: '', html: '<div class="coll-pin" style="width:' + s + 'px;height:' + s + 'px;">' + n + '</div>', iconSize: [s, s], iconAnchor: [s / 2, s / 2], popupAnchor: [0, -s / 2] });
+    }
+    function collPopup(pt) {
+      const wrap = document.createElement('div');
+      const bars = new Map();   // group copies of the same bar
+      for (const r of pt.items) { const k = r['Brand'] + '|' + r['Bar name']; if (!bars.has(k)) bars.set(k, []); bars.get(k).push(r); }
+      const prec = pt.precision === 'country' ? ' · approximate (country)' : pt.precision === 'region' ? ' · approximate (region)' : '';
+      wrap.innerHTML =
+        '<div class="pop-title">' + escapeHtml(pt.place) + '</div>' +
+        '<div class="pop-type">My collection · ' + pt.items.length + ' bar' + (pt.items.length > 1 ? 's' : '') + escapeHtml(prec) + '</div>' +
+        '<div class="coll-pop">' + [...bars.values()].map(copies => {
+          const r = copies[0];
+          return '<a class="coll-item" href="collection.html?bar=' + encodeURIComponent(r.id) + '">' +
+            (r.photos && r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
+            '<span><b>' + escapeHtml(r['Bar name']) + '</b><br><span class="m">' + escapeHtml(r['Brand']) + (r['Cacao %'] ? ' · ' + escapeHtml(String(r['Cacao %'])) + '%' : '') + '</span></span>' +
+            (copies.length > 1 ? '<span class="x">×' + copies.length + '</span>' : '') + '</a>';
+        }).join('') + '</div>' +
+        '<div class="pop-actions"><a class="pf-btn pf-open" style="text-decoration:none" href="collection.html?place=' + encodeURIComponent(pt.place) + '">Open in table ⤢</a></div>';
+      return wrap;
+    }
+    async function loadCollection() {
+      let arr;
+      try { const res = await fetch('data/collection.json', { cache: 'no-store' }); if (!res.ok) return; arr = await res.json(); }
+      catch { return; }
+      const pts = new Map();
+      for (const r of arr) {
+        if (typeof r.lat !== 'number' || typeof r.lng !== 'number') continue;
+        const k = r.lat + ',' + r.lng;
+        if (!pts.has(k)) pts.set(k, { lat: r.lat, lng: r.lng, place: r.place, precision: r.precision, items: [] });
+        pts.get(k).items.push(r);
+      }
+      for (const pt of pts.values()) {
+        const m = L.marker([pt.lat, pt.lng], { icon: collIcon(pt.items.length), title: pt.place, zIndexOffset: -100 }).addTo(collLayer);
+        m.bindPopup(() => collPopup(pt), { closeButton: true, minWidth: 250, maxWidth: 300 });
+        pt.items.forEach(r => collByBar.set(r.id, m));
+      }
+      const focus = new URLSearchParams(location.search).get('bar');
+      if (focus && collByBar.has(focus)) { const m = collByBar.get(focus); map.setView(m.getLatLng(), 6); m.openPopup(); }
+    }
+    document.getElementById('f-coll').onchange = (e) => { e.target.checked ? collLayer.addTo(map) : map.removeLayer(collLayer); };
+
     /* ---------- Init ---------- */
     async function init() {
       personal = loadPersonal().map(p => ({ ...p, _source: 'personal' }));
@@ -773,6 +838,7 @@
       }
       allPins().forEach(renderMarker);
       renderList();
+      loadCollection();
       router();
       showHint('Click "Suggest a place" to add one for everyone, or click the map for a private pin', false);
       setTimeout(hideHint, 6000);

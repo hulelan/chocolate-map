@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chocolate Collection</title>
+  <style>
+    :root {
+      --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
+      --border: #443a34; --accent: #d98e3b; --suggest: #2e8b9e; --row-hover: #3a302b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
+    body { display: flex; flex-direction: column; }
+    header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--panel); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    header h1 { margin: 0; font-size: 18px; }
+    header .stats { font-size: 13px; color: var(--muted); }
+    a { color: var(--accent); }
+    .btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .btn:hover { border-color: var(--accent); }
+    .btn.on { background: var(--accent); border-color: var(--accent); color: #241a10; font-weight: 600; }
+    .controls { display: flex; gap: 8px; padding: 10px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+    #q { flex: 1; min-width: 180px; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font: inherit; font-size: 13px; }
+    .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .seg button { background: var(--panel-2); color: var(--text); border: none; padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; }
+    .seg button.on { background: var(--accent); color: #241a10; font-weight: 600; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 20px; }
+    .chips:empty { display: none; }
+    .chip { margin-top: 8px; font-size: 12px; background: #23343a; border: 1px solid #2e8b9e88; color: #bfe3ec; border-radius: 12px; padding: 3px 8px 3px 10px; display: inline-flex; gap: 6px; align-items: center; }
+    .chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 13px; padding: 0; }
+
+    .wrap { flex: 1; overflow: auto; margin-top: 8px; }
+    table { border-collapse: separate; border-spacing: 0; font-size: 13px; min-width: 100%; }
+    th, td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { position: sticky; top: 0; background: var(--panel); z-index: 2; white-space: nowrap; font-weight: 600; user-select: none; }
+    th .h { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+    th .fbtn { background: none; border: 1px solid transparent; border-radius: 4px; color: var(--muted); cursor: pointer; padding: 0 4px; margin-left: 4px; font-size: 11px; }
+    th .fbtn:hover { border-color: var(--border); color: var(--text); }
+    th.filtered .fbtn { color: #04252b; background: var(--suggest); }
+    th .sort { font-size: 10px; color: var(--accent); }
+    td { max-width: 340px; }
+    td.clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover td { background: var(--row-hover); }
+    td img.thumb { width: 44px; height: 58px; object-fit: cover; border-radius: 4px; display: block; background: var(--panel-2); }
+    .count { display: inline-block; min-width: 22px; text-align: center; background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 0 6px; font-weight: 600; }
+    .count.multi { background: var(--accent); color: #241a10; border-color: var(--accent); }
+    .empty { padding: 40px; text-align: center; color: var(--muted); }
+
+    /* Excel-style filter menu */
+    .menu { position: fixed; z-index: 50; width: 260px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); padding: 10px; font-size: 13px; }
+    .menu[hidden] { display: none; }
+    .menu .row { display: flex; gap: 6px; margin-bottom: 8px; }
+    .menu .row .btn { flex: 1; justify-content: center; padding: 5px 6px; font-size: 12px; }
+    .menu input[type=text] { width: 100%; padding: 6px 8px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font: inherit; margin-bottom: 6px; }
+    .menu .vals { max-height: 240px; overflow: auto; border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; background: var(--bg); }
+    .menu label { display: flex; gap: 6px; align-items: flex-start; padding: 2px 0; cursor: pointer; line-height: 1.3; }
+    .menu label .n { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .menu .links { display: flex; gap: 10px; font-size: 12px; margin: 4px 0 8px; }
+    .menu .links a { cursor: pointer; }
+    .colmenu label { padding: 3px 0; }
+
+    /* Detail drawer */
+    .drawer { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.55); display: flex; justify-content: flex-end; }
+    .drawer[hidden] { display: none; }
+    .drawer .panel { width: min(720px, 100%); height: 100%; overflow-y: auto; background: var(--bg); border-left: 1px solid var(--border); padding: 18px 22px 40px; }
+    .drawer h2 { margin: 6px 0 2px; font-size: 22px; }
+    .drawer .sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+    .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .photos a { display: block; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 3/4; background: var(--panel-2); }
+    .photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    dl { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 6px 14px; font-size: 13px; margin: 0; }
+    dt { color: var(--muted); }
+    dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .copies { font-size: 13px; margin: 0 0 14px; }
+    .copies a { cursor: pointer; margin-right: 10px; }
+    .copies a.cur { color: var(--text); font-weight: 700; text-decoration: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
+    .lightbox[hidden] { display: none; }
+    .lightbox img { max-width: 94vw; max-height: 94vh; border-radius: 6px; }
+    @media (max-width: 640px) {
+      header, .controls { padding-left: 16px; padding-right: 16px; }
+      .chips { padding: 0 16px; }
+      dl { grid-template-columns: 1fr; } dt { margin-top: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="btn" href="./">← Map</a>
+    <h1>🍫 My chocolate collection</h1>
+    <span class="stats" id="stats">Loading…</span>
+  </header>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search everything (maker, origin, notes, ingredients…)" />
+    <div class="seg" id="view">
+      <button data-v="copies" class="on">Every bar</button>
+      <button data-v="unique">One row per bar</button>
+    </div>
+    <button class="btn" id="cols-btn">Columns ▾</button>
+    <button class="btn" id="clear">Clear filters</button>
+    <button class="btn" id="csv">⬇ CSV</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="wrap"><table id="t"><thead></thead><tbody></tbody></table><div class="empty" id="empty" hidden>No bars match these filters.</div></div>
+
+  <div class="menu" id="menu" hidden></div>
+  <div class="menu colmenu" id="colmenu" hidden></div>
+  <div class="drawer" id="drawer" hidden><div class="panel" id="panel"></div></div>
+  <div class="lightbox" id="lightbox" hidden><img id="lightbox-img" alt="" /></div>
+
+  <script>
+    'use strict';
+    // All text comes from wrapper transcriptions: render with textContent / escapeHtml only.
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const $ = id => document.getElementById(id);
+    const COL_KEY = 'chocolate-collection-cols-v1';
+
+    // [field, label, default-visible, kind]
+    const COLUMNS = [
+      ['_photo', 'Photo', true, 'photo'], ['Brand', 'Maker', true], ['Bar name', 'Bar', true], ['_count', 'Copies', true, 'num'],
+      ['Chocolate type', 'Type', true], ['Cacao %', 'Cacao %', true, 'num'], ['country', 'Country', true],
+      ['place', 'Map place', true], ['Tasting notes (EN)', 'Tasting notes', true, 'clip'], ['Best before (this bar)', 'Best before', true],
+      ['Cacao origin: Country', 'Country (as printed)', false], ['Cacao origin: Region', 'Region', false], ['Cacao origin: Locality / Farm', 'Locality / farm', false, 'clip'],
+      ['Cacao variety', 'Variety', false], ['Harvest', 'Harvest', false], ['Inclusion / infusion', 'Inclusions', false],
+      ['Net wt (g)', 'Net wt (g)', false, 'num'], ['Ingredients (EN)', 'Ingredients', false, 'clip'], ['CONTAINS', 'Contains', false],
+      ['MAY CONTAIN', 'May contain', false, 'clip'], ['Awards', 'Awards', false, 'clip'], ['Certifications', 'Certifications', false, 'clip'],
+      ['Lot / batch (this bar)', 'Lot', false], ['Maker (legal)', 'Maker (legal)', false], ['Maker location', 'Maker location', false, 'clip'],
+      ['Collaboration partner', 'Collaboration', false], ['Barcode', 'Barcode', false], ['Notes / caveats', 'Notes', false, 'clip'],
+    ];
+    const DETAIL_SKIP = new Set(['id', 'photos', 'lat', 'lng', '#', 'Copy', 'Copies owned']);
+
+    let data = [], view = 'copies', sort = { key: null, dir: 1 }, filters = {}, q = '';
+    let visible = loadCols();
+
+    function loadCols() {
+      try { const v = JSON.parse(localStorage.getItem(COL_KEY)); if (Array.isArray(v) && v.length) return new Set(v); } catch {}
+      return new Set(COLUMNS.filter(c => c[2]).map(c => c[0]));
+    }
+    function saveCols() { try { localStorage.setItem(COL_KEY, JSON.stringify([...visible])); } catch {} }
+
+    const barKey = r => r['Brand'] + '|' + r['Bar name'];
+    function rowsForView() {
+      if (view === 'copies') return data;
+      const g = new Map();
+      for (const r of data) {
+        const k = barKey(r);
+        if (!g.has(k)) g.set(k, { ...r, _copies: [] });
+        g.get(k)._copies.push(r);
+      }
+      return [...g.values()].map(r => {
+        const bbs = [...new Set(r._copies.map(c => c['Best before (this bar)']).filter(Boolean))];
+        return { ...r, 'Best before (this bar)': bbs.join('; '), 'Lot / batch (this bar)': [...new Set(r._copies.map(c => c['Lot / batch (this bar)']).filter(Boolean))].join('; ') };
+      });
+    }
+    function val(r, key) {
+      if (key === '_count') return r._count;
+      if (key === '_photo') return '';
+      return r[key] ?? '';
+    }
+    function numeric(v) { const m = String(v).match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : NaN; }
+
+    function filtered() {
+      const rows = rowsForView();
+      const ql = q.toLowerCase();
+      return rows.filter(r => {
+        for (const [k, set] of Object.entries(filters)) if (!set.has(String(val(r, k)))) return false;
+        if (!ql) return true;
+        return Object.entries(r).some(([k, v]) => typeof v === 'string' && v.toLowerCase().includes(ql));
+      });
+    }
+
+    function render() {
+      const cols = COLUMNS.filter(c => visible.has(c[0]));
+      let rows = filtered();
+      if (sort.key) {
+        const col = COLUMNS.find(c => c[0] === sort.key);
+        rows = rows.slice().sort((a, b) => {
+          const x = val(a, sort.key), y = val(b, sort.key);
+          if (col && col[3] === 'num') { const nx = numeric(x), ny = numeric(y); if (isNaN(nx) !== isNaN(ny)) return isNaN(nx) ? 1 : -1; if (nx !== ny) return (nx - ny) * sort.dir; }
+          return String(x).localeCompare(String(y), undefined, { numeric: true, sensitivity: 'base' }) * sort.dir;
+        });
+      }
+      const thead = $('t').tHead;
+      thead.innerHTML = '<tr>' + cols.map(c =>
+        '<th class="' + (filters[c[0]] ? 'filtered' : '') + '" data-k="' + esc(c[0]) + '"><span class="h">' + esc(c[1]) +
+        (sort.key === c[0] ? '<span class="sort">' + (sort.dir > 0 ? '▲' : '▼') + '</span>' : '') + '</span>' +
+        (c[3] === 'photo' ? '' : '<button class="fbtn" title="Filter / sort">▾</button>') + '</th>').join('') + '</tr>';
+      thead.querySelectorAll('th').forEach(th => {
+        const k = th.dataset.k;
+        th.querySelector('.h').onclick = () => { if (k === '_photo') return; sort = sort.key === k ? { key: k, dir: -sort.dir } : { key: k, dir: 1 }; render(); };
+        const fb = th.querySelector('.fbtn'); if (fb) fb.onclick = (e) => { e.stopPropagation(); openMenu(k, fb); };
+      });
+      const tb = $('t').tBodies[0];
+      const frag = document.createDocumentFragment();
+      for (const r of rows) {
+        const tr = document.createElement('tr');
+        for (const c of cols) {
+          const td = document.createElement('td');
+          if (c[3] === 'photo') {
+            if (r.photos && r.photos[0]) { const img = document.createElement('img'); img.className = 'thumb'; img.loading = 'lazy'; img.alt = ''; img.src = 'collection/thumb/' + r.photos[0]; td.appendChild(img); }
+          } else if (c[0] === '_count') {
+            const s = document.createElement('span'); s.className = 'count' + (r._count > 1 ? ' multi' : ''); s.textContent = r._count; td.appendChild(s); td.className = 'num';
+          } else {
+            const v = val(r, c[0]); td.textContent = v; td.title = String(v).length > 40 ? v : '';
+            if (c[3] === 'clip') td.className = 'clip'; if (c[3] === 'num') td.className = 'num';
+          }
+          tr.appendChild(td);
+        }
+        tr.onclick = () => openDetail(r.id);
+        frag.appendChild(tr);
+      }
+      tb.replaceChildren(frag);
+      $('empty').hidden = rows.length > 0;
+      const bars = new Set(rows.map(barKey)).size, copies = view === 'copies' ? rows.length : rows.reduce((n, r) => n + r._count, 0);
+      $('stats').textContent = copies + ' bars · ' + bars + ' different · ' + new Set(rows.map(r => r['Brand'])).size + ' makers' +
+        (rows.length !== rowsForView().length ? '  (filtered from ' + data.length + ')' : '');
+      renderChips();
+      syncUrl();
+    }
+
+    function renderChips() {
+      const box = $('chips'); box.innerHTML = '';
+      for (const [k, set] of Object.entries(filters)) {
+        const col = COLUMNS.find(c => c[0] === k);
+        const vals = [...set]; const label = (col ? col[1] : k) + ': ' + (vals.length > 2 ? vals.length + ' values' : vals.map(v => v || '(blank)').join(', '));
+        const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = label;
+        const x = document.createElement('button'); x.textContent = '✕'; x.title = 'Remove filter'; x.onclick = () => { delete filters[k]; render(); };
+        chip.appendChild(x); box.appendChild(chip);
+      }
+    }
+
+    /* Excel-style column menu: sort + searchable checkbox list of distinct values */
+    function openMenu(key, anchor) {
+      const menu = $('menu'); $('colmenu').hidden = true;
+      // Values counted over rows that pass every OTHER filter, like a spreadsheet autofilter
+      const saved = filters[key]; delete filters[key];
+      const base = filtered(); if (saved) filters[key] = saved;
+      const counts = new Map();
+      for (const r of base) { const v = String(val(r, key)); counts.set(v, (counts.get(v) || 0) + 1); }
+      const col = COLUMNS.find(c => c[0] === key);
+      const values = [...counts.keys()].sort((a, b) => col && col[3] === 'num' ? (numeric(a) || 0) - (numeric(b) || 0) : a.localeCompare(b, undefined, { sensitivity: 'base' }));
+      const checked = new Set(saved ? [...saved] : values);
+      menu.innerHTML =
+        '<div class="row"><button class="btn" data-s="1">Sort A→Z</button><button class="btn" data-s="-1">Sort Z→A</button></div>' +
+        '<input type="text" placeholder="Search values…" />' +
+        '<div class="links"><a data-a="all">Select all</a><a data-a="none">Select none</a></div>' +
+        '<div class="vals"></div>' +
+        '<div class="row" style="margin:8px 0 0"><button class="btn on" data-ok>Apply</button><button class="btn" data-cancel>Cancel</button></div>';
+      const list = menu.querySelector('.vals'), search = menu.querySelector('input');
+      function draw() {
+        const s = search.value.toLowerCase(); list.innerHTML = '';
+        for (const v of values) {
+          if (s && !v.toLowerCase().includes(s)) continue;
+          const lab = document.createElement('label');
+          const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = checked.has(v);
+          cb.onchange = () => { cb.checked ? checked.add(v) : checked.delete(v); };
+          const t = document.createElement('span'); t.textContent = v || '(blank)';
+          const n = document.createElement('span'); n.className = 'n'; n.textContent = counts.get(v);
+          lab.append(cb, t, n); list.appendChild(lab);
+        }
+      }
+      draw(); search.oninput = draw;
+      menu.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { sort = { key, dir: +b.dataset.s }; menu.hidden = true; render(); });
+      menu.querySelector('[data-a=all]').onclick = () => { const s = search.value.toLowerCase(); values.forEach(v => { if (!s || v.toLowerCase().includes(s)) checked.add(v); }); draw(); };
+      menu.querySelector('[data-a=none]').onclick = () => { const s = search.value.toLowerCase(); values.forEach(v => { if (!s || v.toLowerCase().includes(s)) checked.delete(v); }); draw(); };
+      menu.querySelector('[data-ok]').onclick = () => {
+        if (checked.size === values.length) delete filters[key]; else filters[key] = new Set(checked);
+        menu.hidden = true; render();
+      };
+      menu.querySelector('[data-cancel]').onclick = () => { menu.hidden = true; };
+      placeMenu(menu, anchor); search.focus();
+    }
+    function placeMenu(menu, anchor) {
+      menu.hidden = false;
+      const r = anchor.getBoundingClientRect(), w = menu.offsetWidth, h = menu.offsetHeight;
+      menu.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px';
+      menu.style.top = Math.max(8, Math.min(r.bottom + 4, innerHeight - h - 8)) + 'px';
+    }
+    document.addEventListener('mousedown', e => {
+      for (const id of ['menu', 'colmenu']) { const m = $(id); if (!m.hidden && !m.contains(e.target) && e.target.id !== 'cols-btn' && !e.target.classList.contains('fbtn')) m.hidden = true; }
+    });
+
+    $('cols-btn').onclick = () => {
+      const m = $('colmenu'); $('menu').hidden = true;
+      if (!m.hidden) { m.hidden = true; return; }
+      m.innerHTML = '';
+      for (const c of COLUMNS) {
+        const lab = document.createElement('label'); const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = visible.has(c[0]);
+        cb.onchange = () => { cb.checked ? visible.add(c[0]) : visible.delete(c[0]); saveCols(); render(); };
+        const t = document.createElement('span'); t.textContent = c[1]; lab.append(cb, t); m.appendChild(lab);
+      }
+      placeMenu(m, $('cols-btn'));
+    };
+
+    /* Detail drawer */
+    function openDetail(id) {
+      const r = data.find(x => x.id === id); if (!r) return;
+      const copies = data.filter(x => barKey(x) === barKey(r));
+      const p = $('panel');
+      p.innerHTML =
+        '<button class="btn" id="d-close">✕ Close</button>' +
+        '<h2></h2><div class="sub"></div>' +
+        (copies.length > 1 ? '<div class="copies">You have ' + copies.length + ' of this bar: ' +
+          copies.map((c, i) => '<a data-id="' + esc(c.id) + '"' + (c.id === r.id ? ' class="cur"' : '') + '>copy ' + (i + 1) + '</a>').join('') + '</div>' : '') +
+        '<div class="photos"></div>' +
+        (r.lat != null ? '<p><a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">📍 Show origin on map</a></p>' : '') +
+        '<dl></dl>';
+      p.querySelector('h2').textContent = r['Bar name'];
+      p.querySelector('.sub').textContent = [r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r['Chocolate type'], r.place].filter(Boolean).join(' · ');
+      p.querySelectorAll('.copies a').forEach(a => a.onclick = () => openDetail(a.dataset.id));
+      const ph = p.querySelector('.photos');
+      for (const f of r.photos || []) {
+        const a = document.createElement('a'); a.href = 'collection/img/' + f; a.target = '_blank'; a.rel = 'noopener';
+        const img = document.createElement('img'); img.src = 'collection/thumb/' + f; img.alt = ''; img.loading = 'lazy'; a.appendChild(img);
+        a.onclick = (e) => { e.preventDefault(); $('lightbox-img').src = 'collection/img/' + f; $('lightbox').hidden = false; };
+        ph.appendChild(a);
+      }
+      const dl = p.querySelector('dl');
+      for (const [k, v] of Object.entries(r)) {
+        if (DETAIL_SKIP.has(k) || k.startsWith('_') || v === '' || v == null) continue;
+        const dt = document.createElement('dt'); dt.textContent = k === 'place' ? 'Map place' : k === 'precision' ? 'Map precision' : k === 'country' ? 'Country' : k;
+        const dd = document.createElement('dd'); dd.textContent = v; dl.append(dt, dd);
+      }
+      $('d-close').onclick = closeDetail;
+      $('drawer').hidden = false; p.scrollTop = 0;
+    }
+    function closeDetail() { $('drawer').hidden = true; }
+    $('drawer').onclick = e => { if (e.target.id === 'drawer') closeDetail(); };
+    $('lightbox').onclick = () => { $('lightbox').hidden = true; };
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { $('lightbox').hidden ? closeDetail() : ($('lightbox').hidden = true); $('menu').hidden = true; $('colmenu').hidden = true; } });
+
+    /* Controls */
+    $('q').oninput = () => { q = $('q').value.trim(); render(); };
+    $('view').querySelectorAll('button').forEach(b => b.onclick = () => {
+      view = b.dataset.v; $('view').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render();
+    });
+    $('clear').onclick = () => { filters = {}; q = ''; $('q').value = ''; render(); };
+    $('csv').onclick = () => {
+      const cols = COLUMNS.filter(c => visible.has(c[0]) && c[3] !== 'photo');
+      const cell = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+      const lines = [cols.map(c => cell(c[1])).join(',')].concat(filtered().map(r => cols.map(c => cell(val(r, c[0]))).join(',')));
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + lines.join('\n')], { type: 'text/csv' }));
+      a.download = 'chocolate-collection.csv'; a.click(); URL.revokeObjectURL(a.href);
+    };
+
+    /* ?place=… (from the map) pre-filters to one origin */
+    function syncUrl() {
+      const u = new URL(location.href);
+      const pf = filters.place; if (pf && pf.size === 1) u.searchParams.set('place', [...pf][0]); else u.searchParams.delete('place');
+      history.replaceState(null, '', u);
+    }
+
+    fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()).then(arr => {
+      const counts = new Map(); arr.forEach(r => counts.set(barKey(r), (counts.get(barKey(r)) || 0) + 1));
+      data = arr.map(r => ({ ...r, _count: counts.get(barKey(r)) }));
+      const place = new URL(location.href).searchParams.get('place');
+      if (place) filters.place = new Set([place]);
+      sort = { key: 'Brand', dir: 1 };
+      render();
+      const open = new URL(location.href).searchParams.get('bar'); if (open) openDetail(open);
+    }).catch(() => { $('stats').textContent = 'Could not load the collection.'; });
+  </script>
+</body>
+</html>
