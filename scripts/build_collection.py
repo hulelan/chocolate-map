@@ -154,7 +154,7 @@ def main():
         for p in photos:
             src = os.path.join(folder, p)
             if not os.path.exists(src):
-                for d in ["chocolate_collection2", "chocolate_collection3"]:
+                for d in ["chocolate_collection2", "chocolate_collection3", "chocolate_collection_dump2"]:
                     alt = os.path.expanduser(f"~/Desktop/chocolate_tasting/{d}/{p}")
                     if os.path.exists(alt): src = alt; break
             n = norm_name(os.path.splitext(p)[0]) + ".jpg"
