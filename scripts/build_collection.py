@@ -117,10 +117,37 @@ COUNTRIES = {  # fallback: country centroid
     "vanuatu": (-15.4, 166.9), "honduras": (14.9, -87.98),
 }
 
+# Map pins in data/pins.json -> the bars they apply to.
+# Farm pins match on origin keywords (whole words, in the origin fields or bar name); maker pins match on brand.
+PIN_ORIGIN_KEYS = {
+    "c4": ["sierra nevada", "arhuaco", "arhuacos"], "c5": ["tumaco"], "c6": ["kablon", "south cotabato"], "c7": ["alto beni"],
+    "c8": ["boa vista"], "c9": ["conacado"], "c10": ["elvesia"], "c11": ["guaconejo"], "c12": ["costa esmeraldas"],
+    "c13": ["hacienda victoria"], "c14": ["camino verde"], "c15": ["pisa", "produits des iles"], "c16": ["el negrito"],
+    "c17": ["bachelors hall", "bachelor's hall"], "c18": ["akesson", "akesson's", "bejofo"], "c19": ["somia", "ambolikapiky"],
+    "c20": ["lacandon", "lacandona"], "c21": ["la joya"], "c22": ["bisiesto"], "c23": ["ingemann"],
+    "c24": ["marañón", "maranon", "fortunato"], "c25": ["satipo"], "c26": ["ucayali"], "c27": ["apurímac", "apurimac", "vraem"],
+    "c28": ["markham"], "c29": ["kokoa kamili"], "c30": ["pinalum", "malekula"], "c31": ["chuao"], "c32": ["porcelana", "ocumare"],
+    "c33": ["patanemo"], "c34": ["alberto adriani", "el vigía", "el vigia"], "c35": ["guasare"], "c36": ["semuliki"],
+    "c37": ["ben tre", "bến tre", "tien giang", "tiền giang"], "c38": ["malagos", "puentespina"], "c39": ["kampura"],
+    "c40": ["maya mountain"], "c41": ["zorzal"],
+}
+PIN_COUNTRY = {"c15": "haiti", "c16": "honduras"}   # same keyword used in two countries
+PIN_BRANDS = {"c1": "Castronovo Chocolate", "c2": "Boho Chocolate", "c3": "Soma Chocolatemaker"}
+
+def pins_for(rec):
+    text = " ".join(rec.get(k, "") for k in ["Cacao origin: Country", "Cacao origin: Region / Dept", "Cacao origin: Province / Area", "Cacao origin: District / Locality / Farm",
+                                             "Cacao origin (verbatim)", "Bar name"]).lower()
+    country = rec.get("Cacao origin: Country", "").lower()
+    out = [pid for pid, brand in PIN_BRANDS.items() if rec.get("Brand") == brand]
+    for pid, keys in PIN_ORIGIN_KEYS.items():
+        if pid in PIN_COUNTRY and PIN_COUNTRY[pid] not in country: continue
+        if any(re.search(r"(?<!\w)" + re.escape(k) + r"(?!\w)", text) for k in keys): out.append(pid)
+    return out
+
 def norm_name(f): return re.sub(r"[^A-Za-z0-9_.-]+", "_", f)
 
 def locate(rec):
-    text = " ".join(rec.get(k, "") for k in ["Cacao origin: Country", "Cacao origin: Region", "Cacao origin: Locality / Farm", "Cacao origin (verbatim)", "Bar name"]).lower()
+    text = " ".join(rec.get(k, "") for k in ["Cacao origin: Country", "Cacao origin: Region / Dept", "Cacao origin: Province / Area", "Cacao origin: District / Locality / Farm", "Cacao origin (verbatim)", "Bar name"]).lower()
     country = rec.get("Cacao origin: Country", "").lower()
     for keys, lat, lng, label, prec in PLACES:
         if any(k in text for k in keys): return lat, lng, label, prec
@@ -163,11 +190,15 @@ def main():
         rec = {k: v for k, v in r.items() if k not in ("Best photo", "Accessory photos", "Instance ID") and v != ""}
         rec["id"] = r["Instance ID"]; rec["photos"] = names
         rec["country"] = clean_country(r.get("Cacao origin: Country", ""))
+        rec["pins"] = pins_for(r)
         if loc: rec["lat"], rec["lng"], rec["place"], rec["precision"] = loc
         else: unplaced.append(f'{r["Brand"]} | {r["Bar name"]}')
         out.append(rec)
     json.dump(out, open(os.path.join(ROOT, "data/collection.json"), "w"), ensure_ascii=False, separators=(",", ":"))
     print(len(out), "records;", len(out) - len(unplaced), "mapped;", len({(o.get('lat'), o.get('lng')) for o in out if 'lat' in o}), "map points")
+    from collections import Counter
+    pc = Counter(p for o in out for p in o["pins"])
+    print("bars per map pin:", dict(sorted(pc.items(), key=lambda kv: int(kv[0][1:]))))
     print("no origin pin:", *unplaced, sep="\n  ")
 
 if __name__ == "__main__":

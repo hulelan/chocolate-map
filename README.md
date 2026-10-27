@@ -1,98 +1,40 @@
-# 🍫 Chocolate Map
+# Cacao Map
 
-A zoomable, satellite world map of cacao farms and chocolate facilities — part shared
-community map, part personal notebook.
+A map of cacao farms and chocolate makers, and a table of the bars in my collection.
 
-**Live site:** https://hulelan.github.io/chocolate-map/
+Live at https://cacaomap.com
 
-## Features
+## Map (`index.html`)
 
-- **Satellite + terrain basemaps** (Esri imagery with a roads/labels overlay, plus Streets
-  and Terrain) via a layer switcher — no API key. Deep zoom past native resolution.
-- **Community pins** — a shared, curated set everyone sees (stored in `data/pins.json`).
-- **Suggest a place** — any visitor can propose a pin; it opens a pre-filled GitHub issue.
-  The maintainer approves before it appears (see below).
-- **Private pins** — anyone can drop pins saved only in their own browser (`localStorage`),
-  with full-page Markdown notes, photos, and a draggable satellite mini-map.
-- **Full-page pin view** at `#/pin/<id>` with shareable URLs.
-- Optional **Mapbox HD satellite** if you paste a free token (🛰 HD key button).
+- Green pins are farms, orange pins are makers. Both come from `data/pins.json`; edit that file to add, change or remove one.
+- Brown numbered squares are origins of bars in my collection. The number is how many bars come from there.
+- A farm pin links to the bars in the collection from that origin; a maker pin links to that maker's bars.
+  The matching is done by `PIN_ORIGIN_KEYS` and `PIN_BRANDS` in `scripts/build_collection.py`.
 
-## How suggestions & approval work
+## Collection table (`collection.html`)
 
-1. A visitor clicks **“Suggest a place for everyone,”** picks the exact spot on the map,
-   and fills a short form. This opens a **pre-filled GitHub issue** (a free GitHub account
-   is required to post — a natural spam barrier).
-2. The maintainer reviews the issue at
-   [Issues](https://github.com/hulelan/chocolate-map/issues).
-3. To publish, the maintainer adds the **`approved`** label. That's the only manual step.
-4. The [`Approve suggestion`](.github/workflows/approve-suggestion.yml) GitHub Action then:
-   - parses and validates the suggestion (name, type, in-range coordinates, no duplicates),
-   - appends a clean pin to `data/pins.json`,
-   - commits, and closes the issue with a confirmation comment.
-5. GitHub Pages rebuilds and the pin appears for everyone within ~1 minute.
+Every bar, with the same columns as `chocolatelist_processed.xlsx`. Each column header has a filter menu.
+"One row per bar" groups copies of the same bar. Click a row for photos and all fields.
 
-Nothing is published without the maintainer's label. Invalid or duplicate suggestions are
-rejected with an explanatory comment instead of being added.
+URL parameters: `?bar=<id>` opens a bar, `?place=<map place>` filters to a collection origin, `?pin=<pin id>` filters to the bars linked to a map pin.
 
-### Maintainer notes
+## Updating the collection
 
-- Edit or remove a community pin by editing `data/pins.json` directly and committing.
-- The Action needs write access to push. It declares `permissions: contents: write` in the
-  workflow. If a run ever fails to push, enable **Settings → Actions → General → Workflow
-  permissions → “Read and write permissions.”**
+1. Update `~/Desktop/chocolate_tasting/chocolate_collection.csv`.
+2. Run `python3 scripts/build_collection.py` from the repo root. It writes `data/collection.json` and web-size photos to `collection/img` and `collection/thumb`.
+3. Commit and push.
 
-## Email notifications
+The script re-encodes every photo, which drops all metadata. The original iPhone photos contain GPS coordinates, so never commit them.
 
-Two ways to get emailed when a suggestion arrives:
-
-1. **Built-in (zero setup).** As the repo owner you're watching the repo, so GitHub emails
-   you on every new issue. Check **github.com → your avatar → Settings → Notifications** and
-   make sure email is enabled. This works today.
-2. **Custom branded email** via [`notify-suggestion.yml`](.github/workflows/notify-suggestion.yml).
-   It stays dormant until you add these repo secrets under
-   **Settings → Secrets and variables → Actions → New repository secret**:
-
-   | Secret | Example |
-   |---|---|
-   | `MAIL_SERVER` | `smtp.gmail.com` |
-   | `MAIL_PORT` | `465` |
-   | `MAIL_USERNAME` | `you@gmail.com` |
-   | `MAIL_PASSWORD` | a Gmail **App Password** (not your login password) |
-   | `MAIL_TO` | `lelan@lelanhu.com` |
-
-   For Gmail/Workspace, create an App Password at
-   [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (requires
-   2-step verification). For another provider, use its SMTP host/port and credentials.
-
-## Address search
-
-The sidebar's **🔎 Find a place** box geocodes towns/addresses via OpenStreetMap Nominatim
-(no key). Pick a result to fly there, then add a private pin or start a suggestion at that
-spot. Business names are hit-or-miss in OSM; towns and addresses work best.
-
-## Data & privacy
-
-- **Community pins** live in `data/pins.json` in this public repo.
-- **Private pins/notes/photos** live only in each visitor's browser and are never uploaded.
-  Use **⬇ Export mine** for a backup; **⬆ Import** to restore.
+Map coordinates are approximate: each bar's printed origin is matched to a farm, region or country (`PLACES` in the script). Bars with no printed origin are only in the table.
 
 ## Run locally
 
-Open `index.html` in any browser. (When opened as a local file it falls back to a small
-built-in pin set, since browsers block reading `data/pins.json` over `file://`. Served over
-http — like GitHub Pages — it loads the full shared set.)
+Serve the folder over http, for example `python3 -m http.server`, and open http://localhost:8000. Opening `index.html` as a file won't load the data.
 
-## Sources for the starter pins
+## Pin sources
 
 - [SOMA farms & origins](https://www.somachocolate.com/pages/farms-and-origins)
 - [Castronovo Chocolate](https://www.castronovochocolate.com/)
 - [BOHO Chocolate](https://bohochocolate.com/about)
 - [Heirloom Cacao Preservation Fund](https://www.hcpcacao.org/)
-
-## My chocolate collection
-
-- **Table:** [`collection.html`](collection.html). A filterable, sortable table of every bar I own. Each column has an Excel-style ▾ filter. You can switch between "every bar" and "one row per bar" with copy counts, click a row to see all its photos, and download the current view as a CSV.
-- **Map:** brown numbered markers show where each bar's cacao comes from. You can toggle them with **My collection** in the sidebar. Clicking a marker opens the table filtered to that origin.
-- **Data:** `data/collection.json` plus web-size photos in `collection/img` and `collection/thumb`. All of it is generated by `scripts/build_collection.py` from the `chocolate_collection.csv` spreadsheet. The script strips all photo metadata, because the original iPhone photos carry GPS coordinates. Never commit original photos.
-- **Coordinates:** these are approximate. Each origin is matched by keyword to a farm, region or country (see `PLACES` in the script). Bars with no stated origin, such as blends and many flavored bars, appear only in the table.
-- **Update:** re-run `python3 scripts/build_collection.py` after the spreadsheet changes, then commit.

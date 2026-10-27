@@ -88,19 +88,19 @@
 </head>
 <body>
   <header>
-    <a class="btn" href="./">← Map</a>
-    <h1>🍫 My chocolate collection</h1>
+    <a class="btn" href="./">Map</a>
+    <h1>Chocolate collection</h1>
     <span class="stats" id="stats">Loading…</span>
   </header>
   <div class="controls">
-    <input id="q" type="search" placeholder="Search everything (maker, origin, notes, ingredients…)" />
+    <input id="q" type="search" placeholder="Search" />
     <div class="seg" id="view">
       <button data-v="copies" class="on">Every bar</button>
       <button data-v="unique">One row per bar</button>
     </div>
     <button class="btn" id="cols-btn">Columns ▾</button>
     <button class="btn" id="clear">Clear filters</button>
-    <button class="btn" id="csv">⬇ CSV</button>
+    <button class="btn" id="csv">Download CSV</button>
   </div>
   <div class="chips" id="chips"></div>
   <div class="wrap"><table id="t"><thead></thead><tbody></tbody></table><div class="empty" id="empty" hidden>No bars match these filters.</div></div>
@@ -115,23 +115,35 @@
     // All text comes from wrapper transcriptions: render with textContent / escapeHtml only.
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const $ = id => document.getElementById(id);
-    const COL_KEY = 'chocolate-collection-cols-v1';
+    const COL_KEY = 'chocolate-collection-cols-v2';
 
     // [field, label, default-visible, kind]
+    // Same columns as chocolatelist_processed, plus photo / copies / map place
     const COLUMNS = [
-      ['_photo', 'Photo', true, 'photo'], ['Brand', 'Maker', true], ['Bar name', 'Bar', true], ['_count', 'Copies', true, 'num'],
-      ['Chocolate type', 'Type', true], ['Cacao %', 'Cacao %', true, 'num'], ['country', 'Country', true],
-      ['place', 'Map place', true], ['Tasting notes (EN)', 'Tasting notes', true, 'clip'], ['Best before (this bar)', 'Best before', true],
-      ['Cacao origin: Country', 'Country (as printed)', false], ['Cacao origin: Region', 'Region', false], ['Cacao origin: Locality / Farm', 'Locality / farm', false, 'clip'],
-      ['Cacao variety', 'Variety', false], ['Harvest', 'Harvest', false], ['Inclusion / infusion', 'Inclusions', false],
-      ['Net wt (g)', 'Net wt (g)', false, 'num'], ['Ingredients (EN)', 'Ingredients', false, 'clip'], ['CONTAINS', 'Contains', false],
-      ['MAY CONTAIN', 'May contain', false, 'clip'], ['Awards', 'Awards', false, 'clip'], ['Certifications', 'Certifications', false, 'clip'],
-      ['Lot / batch (this bar)', 'Lot', false], ['Maker (legal)', 'Maker (legal)', false], ['Maker location', 'Maker location', false, 'clip'],
-      ['Collaboration partner', 'Collaboration', false], ['Barcode', 'Barcode', false], ['Notes / caveats', 'Notes', false, 'clip'],
+      ['_photo', 'Photo', true, 'photo'], ['Brand', 'Brand', true], ['Maker (legal)', 'Maker (legal)', false], ['Maker location', 'Maker location', false, 'clip'],
+      ['Bar name', 'Bar name', true], ['_count', 'Copies', true, 'num'], ['Front-of-pack subtitle (as printed)', 'Front-of-pack subtitle (as printed)', false, 'clip'],
+      ['Chocolate type', 'Chocolate type', true], ['Style', 'Style', true], ['Cacao %', 'Cacao %', true, 'num'],
+      ['Net wt (g)', 'Net wt (g)', false, 'num'], ['Net wt (oz)', 'Net wt (oz)', false],
+      ['country', 'Cacao origin: Country', true], ['Cacao origin: Region / Dept', 'Cacao origin: Region / Dept', true],
+      ['Cacao origin: Province / Area', 'Cacao origin: Province / Area', false], ['Cacao origin: District / Locality / Farm', 'Cacao origin: District / Locality / Farm', false, 'clip'],
+      ['Cacao origin (verbatim)', 'Cacao origin (verbatim)', false, 'clip'], ['Cacao variety / genetics / denomination', 'Cacao variety / genetics / denomination', false, 'clip'],
+      ['Harvest', 'Harvest', false], ['Inclusion / infusion', 'Inclusion / infusion', false, 'clip'], ['Inclusion origin', 'Inclusion origin', false, 'clip'],
+      ['Collaboration partner', 'Collaboration partner', false], ['Tasting notes (EN)', 'Tasting notes (EN)', true, 'clip'],
+      ['Tasting notes (original language)', 'Tasting notes (original language)', false, 'clip'], ['Tasting-notes source', 'Tasting-notes source', false],
+      ['Full description (EN)', 'Full description (EN)', false, 'clip'], ['Full description (original language)', 'Full description (original language)', false, 'clip'],
+      ['Ingredients (EN)', 'Ingredients (EN)', false, 'clip'], ['Ingredients (other language)', 'Ingredients (other language)', false, 'clip'],
+      ['Organic ingredients', 'Organic ingredients', false, 'clip'], ['Milk as ingredient?', 'Milk as ingredient?', false],
+      ['CONTAINS (declared)', 'CONTAINS (declared)', false], ['MAY CONTAIN (declared)', 'MAY CONTAIN (declared)', false, 'clip'],
+      ['Facility statement', 'Facility statement', false, 'clip'], ['Awards', 'Awards', false, 'clip'], ['Certifications', 'Certifications', false, 'clip'],
+      ['Best before', 'Best before', true], ['Lot', 'Lot', false], ['Shelf-life statement', 'Shelf-life statement', false], ['Storage', 'Storage', false, 'clip'],
+      ['Nutrition (as printed)', 'Nutrition (as printed)', false, 'clip'], ['Website (as printed)', 'Website (as printed)', false],
+      ['Other on-pack claims / taglines', 'Other on-pack claims / taglines', false, 'clip'], ['Barcode (UPC/EAN)', 'Barcode (UPC/EAN)', false],
+      ['place', 'Map place', false], ['Notes / inferred / caveats', 'Notes / inferred / caveats', false, 'clip'],
     ];
-    const DETAIL_SKIP = new Set(['id', 'photos', 'lat', 'lng', '#', 'Copy', 'Copies owned']);
+    const DETAIL_SKIP = new Set(['id', 'photos', 'pins', 'lat', 'lng', '#', 'Copy', 'Copies owned']);
 
     let data = [], view = 'copies', sort = { key: null, dir: 1 }, filters = {}, q = '';
+    let pinFilter = null;   // { id, name } from ?pin= (a farm or maker pin on the map)
     let visible = loadCols();
 
     function loadCols() {
@@ -150,8 +162,8 @@
         g.get(k)._copies.push(r);
       }
       return [...g.values()].map(r => {
-        const bbs = [...new Set(r._copies.map(c => c['Best before (this bar)']).filter(Boolean))];
-        return { ...r, 'Best before (this bar)': bbs.join('; '), 'Lot / batch (this bar)': [...new Set(r._copies.map(c => c['Lot / batch (this bar)']).filter(Boolean))].join('; ') };
+        const join = k => [...new Set(r._copies.map(c => c[k]).filter(Boolean))].join('; ');
+        return { ...r, 'Best before': join('Best before'), 'Lot': join('Lot') };
       });
     }
     function val(r, key) {
@@ -165,6 +177,7 @@
       const rows = rowsForView();
       const ql = q.toLowerCase();
       return rows.filter(r => {
+        if (pinFilter && !(r.pins || []).includes(pinFilter.id)) return false;
         for (const [k, set] of Object.entries(filters)) if (!set.has(String(val(r, k)))) return false;
         if (!ql) return true;
         return Object.entries(r).some(([k, v]) => typeof v === 'string' && v.toLowerCase().includes(ql));
@@ -222,11 +235,16 @@
 
     function renderChips() {
       const box = $('chips'); box.innerHTML = '';
+      if (pinFilter) {
+        const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = 'Map pin: ' + pinFilter.name;
+        const x = document.createElement('button'); x.textContent = '×'; x.title = 'Remove filter'; x.onclick = () => { pinFilter = null; render(); };
+        chip.appendChild(x); box.appendChild(chip);
+      }
       for (const [k, set] of Object.entries(filters)) {
         const col = COLUMNS.find(c => c[0] === k);
         const vals = [...set]; const label = (col ? col[1] : k) + ': ' + (vals.length > 2 ? vals.length + ' values' : vals.map(v => v || '(blank)').join(', '));
         const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = label;
-        const x = document.createElement('button'); x.textContent = '✕'; x.title = 'Remove filter'; x.onclick = () => { delete filters[k]; render(); };
+        const x = document.createElement('button'); x.textContent = '×'; x.title = 'Remove filter'; x.onclick = () => { delete filters[k]; render(); };
         chip.appendChild(x); box.appendChild(chip);
       }
     }
@@ -300,12 +318,12 @@
       const copies = data.filter(x => barKey(x) === barKey(r));
       const p = $('panel');
       p.innerHTML =
-        '<button class="btn" id="d-close">✕ Close</button>' +
+        '<button class="btn" id="d-close">Close</button>' +
         '<h2></h2><div class="sub"></div>' +
-        (copies.length > 1 ? '<div class="copies">You have ' + copies.length + ' of this bar: ' +
+        (copies.length > 1 ? '<div class="copies">' + copies.length + ' copies: ' +
           copies.map((c, i) => '<a data-id="' + esc(c.id) + '"' + (c.id === r.id ? ' class="cur"' : '') + '>copy ' + (i + 1) + '</a>').join('') + '</div>' : '') +
         '<div class="photos"></div>' +
-        (r.lat != null ? '<p><a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">📍 Show origin on map</a></p>' : '') +
+        (r.lat != null ? '<p><a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Show origin on map</a></p>' : '') +
         '<dl></dl>';
       p.querySelector('h2').textContent = r['Bar name'];
       p.querySelector('.sub').textContent = [r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r['Chocolate type'], r.place].filter(Boolean).join(' · ');
@@ -336,7 +354,7 @@
     $('view').querySelectorAll('button').forEach(b => b.onclick = () => {
       view = b.dataset.v; $('view').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render();
     });
-    $('clear').onclick = () => { filters = {}; q = ''; $('q').value = ''; render(); };
+    $('clear').onclick = () => { filters = {}; pinFilter = null; q = ''; $('q').value = ''; render(); };
     $('csv').onclick = () => {
       const cols = COLUMNS.filter(c => visible.has(c[0]) && c[3] !== 'photo');
       const cell = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
@@ -349,14 +367,17 @@
     function syncUrl() {
       const u = new URL(location.href);
       const pf = filters.place; if (pf && pf.size === 1) u.searchParams.set('place', [...pf][0]); else u.searchParams.delete('place');
+      if (pinFilter) u.searchParams.set('pin', pinFilter.id); else u.searchParams.delete('pin');
       history.replaceState(null, '', u);
     }
 
-    fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()).then(arr => {
+    Promise.all([fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()), fetch('data/pins.json', { cache: 'no-store' }).then(r => r.json()).catch(() => [])]).then(([arr, mapPins]) => {
       const counts = new Map(); arr.forEach(r => counts.set(barKey(r), (counts.get(barKey(r)) || 0) + 1));
       data = arr.map(r => ({ ...r, _count: counts.get(barKey(r)) }));
       const place = new URL(location.href).searchParams.get('place');
       if (place) filters.place = new Set([place]);
+      const pinId = new URL(location.href).searchParams.get('pin');
+      if (pinId) { const p = mapPins.find(x => x.id === pinId); pinFilter = { id: pinId, name: p ? p.name : pinId }; }
       sort = { key: 'Brand', dir: 1 };
       render();
       const open = new URL(location.href).searchParams.get('bar'); if (open) openDetail(open);
