@@ -7,3 +7,4 @@ html.bw {
 html.bw .btn, html.bw .seg, html.bw #q, html.bw #search { border-color: #000; }
 html.bw .pf-btn { background: #000; }
 html.bw .pf-btn.alt { background: #e6e6e6; }
+html.bw .site-bar .site-btn { border-color: #000; }

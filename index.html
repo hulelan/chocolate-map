@@ -14,8 +14,6 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
     body { display: flex; flex-direction: column; }
-    header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--panel); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-    header h1 { margin: 0; font-size: 18px; }
     a { color: var(--accent); }
     .btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
     .btn:hover { border-color: var(--accent); }
@@ -86,19 +84,19 @@
     .lightbox[hidden] { display: none; }
     .lightbox img { max-width: 94vw; max-height: 94vh; }
     @media (max-width: 640px) {
-      header, .controls { padding-left: 16px; padding-right: 16px; }
+      .controls { padding-left: 16px; padding-right: 16px; }
       .chips { padding: 0 16px; }
       dl { grid-template-columns: 1fr; } dt { margin-top: 6px; }
     }
   </style>
+  <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="bw.css" />
 </head>
 <body>
-  <header>
-    <a class="btn" href="map.html">Map</a>
-    <a class="btn" href="wheel.html">Tasting Wheel</a>
-    <h1>Chocolate Collection</h1>
-    <button class="btn" data-theme-toggle>Black &amp; white</button>
+  <header class="site-bar">
+    <div class="site-name">Cacao Map</div>
+    <button class="site-btn" data-theme-toggle>Black &amp; white</button>
+    <nav class="site-nav"><a class="site-btn on" href="./" aria-current="page">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn" href="wheel.html">Tasting Wheel</a></nav>
   </header>
   <div class="controls">
     <div class="seg" id="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">

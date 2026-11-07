@@ -1,0 +1,12 @@
+/* The same top bar on every page, so nothing moves between pages */
+.site-bar { flex: none; height: 57px; padding: 0 20px; display: flex; align-items: center; gap: 8px; background: var(--panel); border-bottom: 1px solid var(--border); }
+.site-bar .site-name { margin: 0 auto 0 0; font-size: 18px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.site-bar .site-btn { height: 34px; padding: 0 12px; display: inline-flex; align-items: center; background: var(--panel-2); color: var(--text); border: 1px solid var(--border); font: inherit; font-size: 13px; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.site-bar .site-btn:hover { border-color: var(--accent); }
+.site-bar .site-nav { display: flex; gap: 8px; margin-left: 8px; }
+.site-bar .site-nav .on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+@media (max-width: 640px) {
+  .site-bar { height: auto; padding: 10px 16px; flex-wrap: wrap; }
+  .site-bar .site-nav { margin-left: 0; width: 100%; }
+  .site-bar .site-nav .site-btn { flex: 1; justify-content: center; }
+}
