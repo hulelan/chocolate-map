@@ -56,11 +56,15 @@
     .bar .open { display: inline-block; margin-top: 4px; font-size: 12px; color: var(--muted); }
     .foot { color: var(--muted); font-size: 12px; margin-top: 18px; line-height: 1.4; }
     @media (max-width: 900px) {
-      main { grid-template-columns: 1fr; overflow: auto; }
-      svg { max-height: none; }
+      /* One column that scrolls up and down only: the wheel, then the list */
+      main { display: block; min-height: 0; overflow: hidden auto; touch-action: pan-y pinch-zoom; }
+      .wheel-wrap { display: block; overflow: visible; padding: 10px 8px; }
+      #fav { position: static; display: inline-flex; margin: 0 0 8px 8px; }
+      svg { display: block; width: 100%; height: auto; aspect-ratio: 1; max-height: none; }
+      svg text, svg text.cat { font-size: 13px; }
+      svg text.long { font-size: 11.5px; }
       aside { border-left: none; border-top: 1px solid var(--border); overflow: visible; }
-      .wheel-wrap { flex-direction: column; gap: 10px; }
-      #fav { position: static; align-self: flex-start; }
+      .pinned { position: static; }
     }
   </style>
   <link rel="stylesheet" href="site.css" />
@@ -226,7 +230,7 @@
       const deg = a * 180 / Math.PI - 90, left = a > Math.PI;
       const mid = (r0 + r1) / 2;
       const x = mid * Math.sin(a), y = -mid * Math.cos(a);
-      return '<text class="' + cls + '" text-anchor="middle" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + (left ? deg + 180 : deg).toFixed(1) + ')">' + esc(label) + '</text>';
+      return '<text class="' + cls + (label.length > 22 ? ' long' : '') + '" text-anchor="middle" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + (left ? deg + 180 : deg).toFixed(1) + ')">' + esc(label) + '</text>';
     }
 
     function drawWheel() {
@@ -320,6 +324,8 @@
       side.querySelectorAll('.rel').forEach(el => el.onclick = e => {
         if (e.target.closest('a')) return;
         const b = related[+el.dataset.i]; previewBar = previewBar === b ? null : b; render();
+        // On a phone the wheel sits above the list, so bring it back into view to show what changed
+        if (matchMedia('(max-width: 900px)').matches) document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
     function renderSide() {
@@ -333,8 +339,8 @@
         title = selected.ni == null ? cat : notes[selected.ni][0];
         highlight = selected.ni == null ? null : title;
       }
-      side.innerHTML = '<h2>' + esc(title) + '</h2><div class="sub">' + list.length + (list.length === 1 ? ' bar' : ' bars') +
-        (selected ? '' : '. Click a segment to see the bars with that note.') + '</div>' +
+      side.innerHTML = '<h2>' + esc(title) + '</h2>' +
+        (selected ? '<div class="sub">' + list.length + (list.length === 1 ? ' bar' : ' bars') + '</div>' : '<div class="sub"></div>') +
         list.map(b => barCard(b, highlight)).join('') + foot;
     }
 

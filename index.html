@@ -31,7 +31,8 @@
     .chip { margin-top: 8px; font-size: 12px; background: var(--chip-bg); border: 1px solid var(--chip-border); color: var(--chip-text); padding: 3px 8px 3px 10px; display: inline-flex; gap: 6px; align-items: center; }
     .chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 13px; padding: 0; }
 
-    .wrap { flex: 1; overflow: auto; margin-top: 8px; }
+    /* touch-action: swipes are handled by lockScrollAxis below, so they move along one axis only */
+    .wrap { flex: 1; overflow: auto; margin-top: 8px; touch-action: pinch-zoom; overscroll-behavior: none; }
     table { border-collapse: separate; border-spacing: 0; font-size: 12px; line-height: 1.3; min-width: 100%; }
     th, td { padding: 6px 7px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
     th { position: sticky; top: 0; background: var(--panel); z-index: 2; font-weight: 600; user-select: none; }
@@ -68,7 +69,7 @@
     /* Detail drawer */
     .drawer { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.55); display: flex; justify-content: flex-end; }
     .drawer[hidden] { display: none; }
-    .drawer .panel { width: min(720px, 100%); height: 100%; overflow-y: auto; background: var(--bg); border-left: 1px solid var(--border); padding: 18px 22px 40px; }
+    .drawer .panel { width: min(720px, 100%); height: 100%; overflow: hidden auto; touch-action: pan-y pinch-zoom; background: var(--bg); border-left: 1px solid var(--border); padding: 18px 22px 40px; }
     .drawer h2 { margin: 6px 0 2px; font-size: 22px; }
     .drawer .sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
     .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
@@ -392,6 +393,58 @@
       render();
       const open = new URL(location.href).searchParams.get('bar'); if (open) openDetail(open);
     }).catch(() => { $('empty').textContent = 'Could not load the collection.'; $('empty').hidden = false; });
+
+    // Touch screens: each swipe moves the table along one axis, picked from its first few pixels.
+    // Browsers have no setting for this (iPhone Safari drifts diagonally), so the swipe is applied here.
+    (function lockScrollAxis() {
+      const el = document.querySelector('.wrap');
+      const GLIDE_MS = 325;
+      let start = null, axis = null, samples = [], glide = 0, swallowClick = false;
+      const stopGlide = () => { const was = glide !== 0; cancelAnimationFrame(glide); glide = 0; return was; };
+      const setPos = p => { if (axis === 'x') el.scrollLeft = p; else el.scrollTop = p; };
+
+      el.addEventListener('touchstart', e => {
+        // A tap that stops a glide only stops it; it does not also open the row underneath
+        swallowClick = stopGlide();
+        axis = null; samples = [];
+        const t = e.touches[0];
+        start = e.touches.length === 1 ? { x: t.clientX, y: t.clientY, left: el.scrollLeft, top: el.scrollTop } : null;
+      }, { passive: true });
+
+      el.addEventListener('touchmove', e => {
+        if (!start || e.touches.length !== 1) return;
+        if (e.cancelable) e.preventDefault();
+        const t = e.touches[0], dx = t.clientX - start.x, dy = t.clientY - start.y;
+        if (!axis) {
+          if (Math.hypot(dx, dy) < 6) return;
+          axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+          swallowClick = true;
+        }
+        setPos(axis === 'x' ? start.left - dx : start.top - dy);
+        samples.push({ at: e.timeStamp, p: axis === 'x' ? t.clientX : t.clientY });
+        while (samples.length > 2 && e.timeStamp - samples[0].at > 100) samples.shift();
+      }, { passive: false });
+
+      const release = () => {
+        const first = samples[0], last = samples[samples.length - 1];
+        start = null; samples = [];
+        setTimeout(() => { swallowClick = false; }, 350);
+        if (!axis || !first || last.at <= first.at) return;
+        const speed = (last.p - first.p) / (last.at - first.at);   // px per ms
+        if (Math.abs(speed) < 0.1) return;
+        const from = axis === 'x' ? el.scrollLeft : el.scrollTop, dist = -speed * GLIDE_MS, began = performance.now();
+        const step = now => {
+          const left = dist * Math.exp(-(now - began) / GLIDE_MS);
+          if (Math.abs(left) < 0.5) { glide = 0; return; }
+          setPos(from + dist - left);
+          glide = requestAnimationFrame(step);
+        };
+        glide = requestAnimationFrame(step);
+      };
+      el.addEventListener('touchend', e => { if (!e.touches.length) release(); });
+      el.addEventListener('touchcancel', release);
+      el.addEventListener('click', e => { if (swallowClick) { e.preventDefault(); e.stopPropagation(); swallowClick = false; } }, true);
+    })();
   </script>
 </body>
 </html>

@@ -48,7 +48,7 @@
     .dot.facility { background: var(--facility); }
     .dot.coll { background: var(--coll); border-radius: 0; }
 
-    #list { flex: 1; overflow-y: auto; padding: 8px 12px 40px; }
+    #list { flex: 1; overflow: hidden auto; touch-action: pan-y pinch-zoom; padding: 8px 12px 40px; }
     .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 40px 20px; }
     .card { background: var(--panel-2); border: 1px solid var(--border); border-left: 4px solid var(--border); padding: 10px 12px; margin-bottom: 8px; cursor: pointer; }
     .card:hover { border-color: var(--accent); }
