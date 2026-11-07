@@ -25,7 +25,7 @@ Bars placed on a flavour wheel from their printed tasting notes (`Tasting notes 
 
 ## Favorites and black and white
 
-The favorite makers are `FAVORITE_BRANDS` in `index.html` and `wheel.html`. The black-and-white version is `bw.css`, switched by `theme.js` and remembered per browser (`?bw=1` forces it).
+The favorite makers are `FAVORITE_BRANDS` in `index.html` and `wheel.html`. The black-and-white version is `bw.css`, switched by `theme.js` and remembered per browser (`?bw=1` forces it). It changes the page around the map and the wheel, which both stay in colour.
 
 ## Updating the collection
 

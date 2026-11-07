@@ -34,20 +34,22 @@
     .chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 13px; padding: 0; }
 
     .wrap { flex: 1; overflow: auto; margin-top: 8px; }
-    table { border-collapse: separate; border-spacing: 0; font-size: 13px; min-width: 100%; }
-    th, td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
-    th { position: sticky; top: 0; background: var(--panel); z-index: 2; white-space: nowrap; font-weight: 600; user-select: none; }
+    table { border-collapse: separate; border-spacing: 0; font-size: 12px; line-height: 1.3; min-width: 100%; }
+    th, td { padding: 6px 7px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { position: sticky; top: 0; background: var(--panel); z-index: 2; font-weight: 600; user-select: none; }
+    th .thi { display: flex; align-items: flex-start; }
     th .h { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
     th .fbtn { background: none; border: 1px solid transparent; color: var(--muted); cursor: pointer; padding: 0 4px; margin-left: 4px; font-size: 11px; }
     th .fbtn:hover { border-color: var(--border); color: var(--text); }
     th.filtered .fbtn { color: var(--on-accent); background: var(--suggest); }
     th .sort { font-size: 10px; color: var(--accent); }
     td { max-width: 340px; }
+    td.wrap div { display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
     td.clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     td.num { text-align: right; font-variant-numeric: tabular-nums; }
     tbody tr { cursor: pointer; }
     tbody tr:hover td { background: var(--row-hover); }
-    td img.thumb { width: 44px; height: 58px; object-fit: cover; display: block; background: var(--panel-2); }
+    td img.thumb { width: 105px; height: 140px; object-fit: cover; display: block; background: var(--panel-2); }
     .count { display: inline-block; min-width: 22px; text-align: center; background: var(--panel-2); border: 1px solid var(--border); padding: 0 6px; font-weight: 600; }
     .count.multi { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
     .empty { padding: 40px; text-align: center; color: var(--muted); }
@@ -102,7 +104,6 @@
     <div class="seg" id="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">
       <button data-v="all" class="on">All</button>
       <button data-v="fav">&#9733; Favorites</button>
-      <button data-v="other">Others</button>
     </div>
     <input id="q" type="search" placeholder="Search" />
     <button class="btn" id="cols-btn">Columns ▾</button>
@@ -132,11 +133,11 @@
       ['Bar name', 'Bar name', true], ['_count', 'Copies', true, 'num'], ['Front-of-pack subtitle (as printed)', 'Front-of-pack subtitle (as printed)', false, 'clip'],
       ['Chocolate type', 'Chocolate type', true], ['Style', 'Style', false], ['Cacao %', 'Cacao %', true, 'num'],
       ['Net wt (g)', 'Net wt (g)', false, 'num'], ['Net wt (oz)', 'Net wt (oz)', false],
-      ['country', 'Cacao origin: Country', true], ['Cacao origin: Region / Dept', 'Cacao origin: Region / Dept', true],
+      ['country', 'Origin Country', true], ['Cacao origin: Region / Dept', 'Origin Region', true],
       ['Cacao origin: Province / Area', 'Cacao origin: Province / Area', false], ['Cacao origin: District / Locality / Farm', 'Cacao origin: District / Locality / Farm', false, 'clip'],
       ['Cacao origin (verbatim)', 'Cacao origin (verbatim)', false, 'clip'], ['Cacao variety / genetics / denomination', 'Cacao variety / genetics / denomination', false, 'clip'],
       ['Harvest', 'Harvest', false], ['Inclusion / infusion', 'Inclusion / infusion', false, 'clip'], ['Inclusion origin', 'Inclusion origin', false, 'clip'],
-      ['Collaboration partner', 'Collaboration partner', false], ['Tasting notes (EN)', 'Tasting notes (EN)', true, 'clip'],
+      ['Collaboration partner', 'Collaboration partner', false], ['Tasting notes (EN)', 'Tasting notes (EN)', true, 'wrap'],
       ['Tasting notes (original language)', 'Tasting notes (original language)', false, 'clip'], ['Tasting-notes source', 'Tasting-notes source', false],
       ['Full description (EN)', 'Full description (EN)', false, 'clip'], ['Full description (original language)', 'Full description (original language)', false, 'clip'],
       ['Ingredients (EN)', 'Ingredients (EN)', false, 'clip'], ['Ingredients (other language)', 'Ingredients (other language)', false, 'clip'],
@@ -148,6 +149,8 @@
       ['Other on-pack claims / taglines', 'Other on-pack claims / taglines', false, 'clip'], ['Barcode (UPC/EAN)', 'Barcode (UPC/EAN)', false],
       ['place', 'Map place', false], ['Notes / inferred / caveats', 'Notes / inferred / caveats', false, 'clip'],
     ];
+    // Narrow widths for the default columns; Tasting notes has none, so it takes the spare room
+    const COL_WIDTH = { _photo: 119, Brand: 110, 'Bar name': 170, _count: 74, 'Chocolate type': 84, 'Cacao %': 76, country: 90, 'Cacao origin: Region / Dept': 110 };
     const DETAIL_SKIP = new Set(['id', 'photos', 'pins', 'lat', 'lng', '#', 'Copy', 'Copies owned']);
 
     let favMode = 'all';
@@ -188,7 +191,6 @@
       const ql = q.toLowerCase();
       return rows.filter(r => {
         if (favMode === 'fav' && !isFav(r)) return false;
-        if (favMode === 'other' && isFav(r)) return false;
         if (pinFilter && !(r.pins || []).includes(pinFilter.id)) return false;
         for (const [k, set] of Object.entries(filters)) if (!set.has(String(val(r, k)))) return false;
         if (!ql) return true;
@@ -211,9 +213,9 @@
       }
       const thead = $('t').tHead;
       thead.innerHTML = '<tr>' + cols.map(c =>
-        '<th class="' + (filters[c[0]] ? 'filtered' : '') + '" data-k="' + esc(c[0]) + '"><span class="h">' + esc(c[1]) +
+        '<th class="' + (filters[c[0]] ? 'filtered' : '') + '" data-k="' + esc(c[0]) + '"' + (COL_WIDTH[c[0]] ? ' style="width:' + COL_WIDTH[c[0]] + 'px"' : '') + '><div class="thi"><span class="h">' + esc(c[1]) +
         (sort.key === c[0] ? '<span class="sort">' + (sort.dir > 0 ? '▲' : '▼') + '</span>' : '') + '</span>' +
-        (c[3] === 'photo' || c[3] === 'star' ? '' : '<button class="fbtn" title="Filter / sort">▾</button>') + '</th>').join('') + '</tr>';
+        (c[3] === 'photo' || c[3] === 'star' ? '' : '<button class="fbtn" title="Filter / sort">▾</button>') + '</div></th>').join('') + '</tr>';
       thead.querySelectorAll('th').forEach(th => {
         const k = th.dataset.k;
         th.querySelector('.h').onclick = () => { if (k === '_photo' || k === '_fav') return; sort = sort.key === k ? { key: k, dir: -sort.dir } : { key: k, dir: 1 }; render(); };
@@ -232,7 +234,9 @@
           } else if (c[0] === '_count') {
             const s = document.createElement('span'); s.className = 'count' + (r._count > 1 ? ' multi' : ''); s.textContent = r._count; td.appendChild(s); td.className = 'num';
           } else {
-            const v = val(r, c[0]); td.textContent = v; td.title = String(v).length > 40 ? v : '';
+            const v = val(r, c[0]); td.title = String(v).length > 40 ? v : '';
+            if (c[3] === 'wrap') { const d = document.createElement('div'); d.textContent = v; td.appendChild(d); td.className = 'wrap'; }
+            else td.textContent = v;
             if (c[3] === 'clip') td.className = 'clip'; if (c[3] === 'num') td.className = 'num';
           }
           tr.appendChild(td);
