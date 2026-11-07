@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chocolate Collection</title>
+  <script src="theme.js"></script>
   <style>
     :root {
       --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
-      --border: #443a34; --accent: #d98e3b; --suggest: #2e8b9e; --row-hover: #3a302b;
+      --border: #443a34; --accent: #d98e3b; --suggest: #2e8b9e; --row-hover: #3a302b; --on-accent: #241a10;
+      --chip-bg: #23343a; --chip-border: #2e8b9e88; --chip-text: #bfe3ec;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
@@ -17,12 +19,18 @@
     a { color: var(--accent); }
     .btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
     .btn:hover { border-color: var(--accent); }
-    .btn.on { background: var(--accent); border-color: var(--accent); color: #241a10; font-weight: 600; }
+    .btn.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
     .controls { display: flex; gap: 8px; padding: 10px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
     #q { flex: 1; min-width: 180px; padding: 8px 10px; background: var(--panel-2); border: 1px solid var(--border); color: var(--text); font: inherit; font-size: 13px; }
+    .seg { display: inline-flex; border: 1px solid var(--border); }
+    .seg button { background: var(--panel-2); color: var(--text); border: none; border-right: 1px solid var(--border); padding: 7px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+    .seg button:last-child { border-right: none; }
+    .seg button.on { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+    tbody tr.fav td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+    td.star { color: var(--accent); text-align: center; width: 28px; }
     .chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 20px; }
     .chips:empty { display: none; }
-    .chip { margin-top: 8px; font-size: 12px; background: #23343a; border: 1px solid #2e8b9e88; color: #bfe3ec; padding: 3px 8px 3px 10px; display: inline-flex; gap: 6px; align-items: center; }
+    .chip { margin-top: 8px; font-size: 12px; background: var(--chip-bg); border: 1px solid var(--chip-border); color: var(--chip-text); padding: 3px 8px 3px 10px; display: inline-flex; gap: 6px; align-items: center; }
     .chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 13px; padding: 0; }
 
     .wrap { flex: 1; overflow: auto; margin-top: 8px; }
@@ -32,7 +40,7 @@
     th .h { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
     th .fbtn { background: none; border: 1px solid transparent; color: var(--muted); cursor: pointer; padding: 0 4px; margin-left: 4px; font-size: 11px; }
     th .fbtn:hover { border-color: var(--border); color: var(--text); }
-    th.filtered .fbtn { color: #04252b; background: var(--suggest); }
+    th.filtered .fbtn { color: var(--on-accent); background: var(--suggest); }
     th .sort { font-size: 10px; color: var(--accent); }
     td { max-width: 340px; }
     td.clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -41,7 +49,7 @@
     tbody tr:hover td { background: var(--row-hover); }
     td img.thumb { width: 44px; height: 58px; object-fit: cover; display: block; background: var(--panel-2); }
     .count { display: inline-block; min-width: 22px; text-align: center; background: var(--panel-2); border: 1px solid var(--border); padding: 0 6px; font-weight: 600; }
-    .count.multi { background: var(--accent); color: #241a10; border-color: var(--accent); }
+    .count.multi { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
     .empty { padding: 40px; text-align: center; color: var(--muted); }
 
     /* Excel-style filter menu */
@@ -81,13 +89,21 @@
       dl { grid-template-columns: 1fr; } dt { margin-top: 6px; }
     }
   </style>
+  <link rel="stylesheet" href="bw.css" />
 </head>
 <body>
   <header>
     <a class="btn" href="map.html">Map</a>
-    <h1>Chocolate collection</h1>
+    <a class="btn" href="wheel.html">Tasting Wheel</a>
+    <h1>Chocolate Collection</h1>
+    <button class="btn" data-theme-toggle>Black &amp; white</button>
   </header>
   <div class="controls">
+    <div class="seg" id="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">
+      <button data-v="all" class="on">All</button>
+      <button data-v="fav">&#9733; Favorites</button>
+      <button data-v="other">Others</button>
+    </div>
     <input id="q" type="search" placeholder="Search" />
     <button class="btn" id="cols-btn">Columns ▾</button>
     <button class="btn" id="clear">Clear filters</button>
@@ -105,14 +121,16 @@
     // All text comes from wrapper transcriptions: render with textContent / escapeHtml only.
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const $ = id => document.getElementById(id);
-    const COL_KEY = 'chocolate-collection-cols-v2';
+    const COL_KEY = 'chocolate-collection-cols-v4';
+    const FAVORITE_BRANDS = new Set(['Castronovo Chocolate', 'Domori', 'Idilio Origins', 'Qantu', 'Spinnaker Chocolate']);
+    const isFav = r => FAVORITE_BRANDS.has(r['Brand']);
 
     // [field, label, default-visible, kind]
     // Same columns as chocolatelist_processed, plus photo / copies / map place
     const COLUMNS = [
-      ['_photo', 'Photo', true, 'photo'], ['Brand', 'Brand', true], ['Maker (legal)', 'Maker (legal)', false], ['Maker location', 'Maker location', false, 'clip'],
+      ['_fav', '\u2605', false, 'star'], ['_photo', 'Photo', true, 'photo'], ['Brand', 'Brand', true], ['Maker (legal)', 'Maker (legal)', false], ['Maker location', 'Maker location', false, 'clip'],
       ['Bar name', 'Bar name', true], ['_count', 'Copies', true, 'num'], ['Front-of-pack subtitle (as printed)', 'Front-of-pack subtitle (as printed)', false, 'clip'],
-      ['Chocolate type', 'Chocolate type', true], ['Style', 'Style', true], ['Cacao %', 'Cacao %', true, 'num'],
+      ['Chocolate type', 'Chocolate type', true], ['Style', 'Style', false], ['Cacao %', 'Cacao %', true, 'num'],
       ['Net wt (g)', 'Net wt (g)', false, 'num'], ['Net wt (oz)', 'Net wt (oz)', false],
       ['country', 'Cacao origin: Country', true], ['Cacao origin: Region / Dept', 'Cacao origin: Region / Dept', true],
       ['Cacao origin: Province / Area', 'Cacao origin: Province / Area', false], ['Cacao origin: District / Locality / Farm', 'Cacao origin: District / Locality / Farm', false, 'clip'],
@@ -125,13 +143,14 @@
       ['Organic ingredients', 'Organic ingredients', false, 'clip'], ['Milk as ingredient?', 'Milk as ingredient?', false],
       ['CONTAINS (declared)', 'CONTAINS (declared)', false], ['MAY CONTAIN (declared)', 'MAY CONTAIN (declared)', false, 'clip'],
       ['Facility statement', 'Facility statement', false, 'clip'], ['Awards', 'Awards', false, 'clip'], ['Certifications', 'Certifications', false, 'clip'],
-      ['Best before', 'Best before', true], ['Lot', 'Lot', false], ['Shelf-life statement', 'Shelf-life statement', false], ['Storage', 'Storage', false, 'clip'],
+      ['Best before', 'Best before', false], ['Lot', 'Lot', false], ['Shelf-life statement', 'Shelf-life statement', false], ['Storage', 'Storage', false, 'clip'],
       ['Nutrition (as printed)', 'Nutrition (as printed)', false, 'clip'], ['Website (as printed)', 'Website (as printed)', false],
       ['Other on-pack claims / taglines', 'Other on-pack claims / taglines', false, 'clip'], ['Barcode (UPC/EAN)', 'Barcode (UPC/EAN)', false],
       ['place', 'Map place', false], ['Notes / inferred / caveats', 'Notes / inferred / caveats', false, 'clip'],
     ];
     const DETAIL_SKIP = new Set(['id', 'photos', 'pins', 'lat', 'lng', '#', 'Copy', 'Copies owned']);
 
+    let favMode = 'all';
     let data = [], sort = { key: null, dir: 1 }, filters = {}, q = '';
     let pinFilter = null;   // { id, name } from ?pin= (a farm or maker pin on the map)
     let visible = loadCols();
@@ -159,6 +178,7 @@
     function val(r, key) {
       if (key === '_count') return r._count;
       if (key === '_photo') return '';
+      if (key === '_fav') return isFav(r) ? '\u2605' : '';
       return r[key] ?? '';
     }
     function numeric(v) { const m = String(v).match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : NaN; }
@@ -167,6 +187,8 @@
       const rows = rowsForView();
       const ql = q.toLowerCase();
       return rows.filter(r => {
+        if (favMode === 'fav' && !isFav(r)) return false;
+        if (favMode === 'other' && isFav(r)) return false;
         if (pinFilter && !(r.pins || []).includes(pinFilter.id)) return false;
         for (const [k, set] of Object.entries(filters)) if (!set.has(String(val(r, k)))) return false;
         if (!ql) return true;
@@ -182,17 +204,19 @@
         rows = rows.slice().sort((a, b) => {
           const x = val(a, sort.key), y = val(b, sort.key);
           if (col && col[3] === 'num') { const nx = numeric(x), ny = numeric(y); if (isNaN(nx) !== isNaN(ny)) return isNaN(nx) ? 1 : -1; if (nx !== ny) return (nx - ny) * sort.dir; }
-          return String(x).localeCompare(String(y), undefined, { numeric: true, sensitivity: 'base' }) * sort.dir;
+          const c = String(x).localeCompare(String(y), undefined, { numeric: true, sensitivity: 'base' });
+          if (c) return c * sort.dir;
+          return a['Brand'].localeCompare(b['Brand']) || a['Bar name'].localeCompare(b['Bar name']);
         });
       }
       const thead = $('t').tHead;
       thead.innerHTML = '<tr>' + cols.map(c =>
         '<th class="' + (filters[c[0]] ? 'filtered' : '') + '" data-k="' + esc(c[0]) + '"><span class="h">' + esc(c[1]) +
         (sort.key === c[0] ? '<span class="sort">' + (sort.dir > 0 ? '▲' : '▼') + '</span>' : '') + '</span>' +
-        (c[3] === 'photo' ? '' : '<button class="fbtn" title="Filter / sort">▾</button>') + '</th>').join('') + '</tr>';
+        (c[3] === 'photo' || c[3] === 'star' ? '' : '<button class="fbtn" title="Filter / sort">▾</button>') + '</th>').join('') + '</tr>';
       thead.querySelectorAll('th').forEach(th => {
         const k = th.dataset.k;
-        th.querySelector('.h').onclick = () => { if (k === '_photo') return; sort = sort.key === k ? { key: k, dir: -sort.dir } : { key: k, dir: 1 }; render(); };
+        th.querySelector('.h').onclick = () => { if (k === '_photo' || k === '_fav') return; sort = sort.key === k ? { key: k, dir: -sort.dir } : { key: k, dir: 1 }; render(); };
         const fb = th.querySelector('.fbtn'); if (fb) fb.onclick = (e) => { e.stopPropagation(); openMenu(k, fb); };
       });
       const tb = $('t').tBodies[0];
@@ -203,6 +227,8 @@
           const td = document.createElement('td');
           if (c[3] === 'photo') {
             if (r.photos && r.photos[0]) { const img = document.createElement('img'); img.className = 'thumb'; img.loading = 'lazy'; img.alt = ''; img.src = 'collection/thumb/' + r.photos[0]; td.appendChild(img); }
+          } else if (c[3] === 'star') {
+            td.className = 'star'; td.textContent = val(r, '_fav');
           } else if (c[0] === '_count') {
             const s = document.createElement('span'); s.className = 'count' + (r._count > 1 ? ' multi' : ''); s.textContent = r._count; td.appendChild(s); td.className = 'num';
           } else {
@@ -211,6 +237,7 @@
           }
           tr.appendChild(td);
         }
+        if (isFav(r)) tr.className = 'fav';
         tr.onclick = () => openDetail(r.id);
         frag.appendChild(tr);
       }
@@ -310,7 +337,8 @@
         (copies.length > 1 ? '<div class="copies">' + copies.length + ' copies: ' +
           copies.map((c, i) => '<a data-id="' + esc(c.id) + '"' + (c.id === r.id ? ' class="cur"' : '') + '>copy ' + (i + 1) + '</a>').join('') + '</div>' : '') +
         '<div class="photos"></div>' +
-        (r.lat != null ? '<p><a class="btn" href="map.html?bar=' + encodeURIComponent(r.id) + '">Show origin on map</a></p>' : '') +
+        '<p>' + (r.lat != null ? '<a class="btn" href="map.html?bar=' + encodeURIComponent(r.id) + '">Show origin on map</a> ' : '') +
+        (r['Tasting notes (EN)'] ? '<a class="btn" href="wheel.html?bar=' + encodeURIComponent(r.id) + '">Show on Tasting Wheel</a>' : '') + '</p>' +
         '<dl></dl>';
       p.querySelector('h2').textContent = r['Bar name'];
       p.querySelector('.sub').textContent = [r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r['Chocolate type'], r.place].filter(Boolean).join(' · ');
@@ -338,6 +366,9 @@
 
     /* Controls */
     $('q').oninput = () => { q = $('q').value.trim(); render(); };
+    $('fav').querySelectorAll('button').forEach(b => b.onclick = () => {
+      favMode = b.dataset.v; $('fav').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render();
+    });
     $('clear').onclick = () => { filters = {}; pinFilter = null; q = ''; $('q').value = ''; render(); };
 
     /* ?place=… (from the map) pre-filters to one origin */
@@ -355,7 +386,7 @@
       if (place) filters.place = new Set([place]);
       const pinId = new URL(location.href).searchParams.get('pin');
       if (pinId) { const p = mapPins.find(x => x.id === pinId); pinFilter = { id: pinId, name: p ? p.name : pinId }; }
-      sort = { key: 'Brand', dir: 1 };
+      sort = { key: '_count', dir: -1 };   // most copies first
       render();
       const open = new URL(location.href).searchParams.get('bar'); if (open) openDetail(open);
     }).catch(() => { $('empty').textContent = 'Could not load the collection.'; $('empty').hidden = false; });

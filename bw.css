@@ -1,0 +1,13 @@
+/* Black-and-white version (html.bw, set by theme.js) */
+html.bw {
+  --bg: #fff; --panel: #fff; --panel-2: #f2f2f2; --text: #000; --muted: #555;
+  --border: #c8c8c8; --accent: #000; --on-accent: #fff; --suggest: #000; --row-hover: #ececec;
+  --chip-bg: #fff; --chip-border: #000; --chip-text: #000;
+  --farm: #000; --facility: #fff; --coll: #000; --pin-border: #000;
+}
+html.bw .btn, html.bw .seg, html.bw #q, html.bw #search { border-color: #000; }
+html.bw .leaflet-tile-pane, html.bw .d-map .leaflet-pane { filter: grayscale(1); }
+html.bw .coll-pin { border-color: #fff; }
+html.bw .pf-btn { background: #000; }
+html.bw .pf-btn.alt { background: #e6e6e6; }
+html.bw .dot.facility { border: 1px solid #000; }

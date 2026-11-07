@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasting Wheel</title>
+  <script src="theme.js"></script>
+  <style>
+    :root {
+      --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
+      --border: #443a34; --accent: #d98e3b; --on-accent: #241a10;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
+    body { display: flex; flex-direction: column; }
+    header { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--panel); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    header h1 { margin: 0 0 0 4px; font-size: 18px; }
+    .btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; }
+    .btn:hover { border-color: var(--accent); }
+    .seg { display: inline-flex; border: 1px solid var(--border); margin-left: auto; }
+    .seg button { background: var(--panel-2); color: var(--text); border: none; border-right: 1px solid var(--border); padding: 7px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+    .seg button:last-child { border-right: none; }
+    .seg button.on { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+
+    main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 380px; overflow: hidden; }
+    .wheel-wrap { display: flex; align-items: center; justify-content: center; padding: 12px; overflow: hidden; }
+    svg { width: 100%; height: 100%; max-height: calc(100vh - 90px); }
+    svg path { cursor: pointer; stroke: var(--bg); stroke-width: 1; transition: opacity .15s; }
+    svg path:hover { stroke: var(--text); stroke-width: 1.5; }
+    svg path.sel { stroke: var(--text); stroke-width: 2.5; }
+    svg text { pointer-events: none; fill: #fff; font-size: 10px; dominant-baseline: middle; }
+    svg text.cat { font-size: 11px; font-weight: 700; }
+    svg text.dim { fill: #ffffff66; }
+    html.bw svg text { fill: #000; } html.bw svg text.light { fill: #fff; } html.bw svg text.dim { fill: #00000055; }
+    svg .center { fill: var(--panel); stroke: var(--border); cursor: pointer; }
+    svg text.center-t { fill: var(--muted); font-size: 12px; text-anchor: middle; }
+
+    aside { border-left: 1px solid var(--border); background: var(--panel); overflow-y: auto; padding: 16px 18px 40px; }
+    aside h2 { margin: 0 0 4px; font-size: 18px; }
+    aside .sub { color: var(--muted); font-size: 12px; margin-bottom: 14px; line-height: 1.4; }
+    .bar { display: flex; gap: 10px; align-items: flex-start; padding: 8px; margin-bottom: 6px; background: var(--panel-2); border: 1px solid var(--border); border-left: 3px solid var(--border); color: var(--text); text-decoration: none; font-size: 13px; line-height: 1.35; }
+    .bar:hover { border-color: var(--accent); }
+    .bar.fav { border-left-color: var(--accent); }
+    .bar img { width: 40px; height: 52px; object-fit: cover; flex: none; background: var(--panel); }
+    .bar .m { color: var(--muted); font-size: 12px; }
+    .bar .n { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .bar .n b { color: var(--accent); font-weight: 600; }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 12px; }
+    .tags span { font-size: 12px; padding: 2px 7px; background: var(--panel-2); border: 1px solid var(--border); }
+    .foot { color: var(--muted); font-size: 12px; margin-top: 18px; line-height: 1.4; }
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; overflow: auto; }
+      svg { max-height: none; }
+      aside { border-left: none; border-top: 1px solid var(--border); overflow: visible; }
+      header { padding: 12px 16px; }
+    }
+  </style>
+  <link rel="stylesheet" href="bw.css" />
+</head>
+<body>
+  <header>
+    <a class="btn" href="./">Collection</a>
+    <a class="btn" href="map.html">Map</a>
+    <h1>Tasting Wheel</h1>
+    <div class="seg" id="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">
+      <button data-v="all" class="on">All</button>
+      <button data-v="fav">&#9733; Favorites</button>
+      <button data-v="other">Others</button>
+    </div>
+    <button class="btn" data-theme-toggle>Black &amp; white</button>
+  </header>
+  <main>
+    <div class="wheel-wrap"><svg id="wheel" viewBox="-360 -360 720 720"></svg></div>
+    <aside id="side"></aside>
+  </main>
+
+  <script>
+    'use strict';
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const $ = id => document.getElementById(id);
+    const FAVORITE_BRANDS = new Set(['Castronovo Chocolate', 'Domori', 'Idilio Origins', 'Qantu', 'Spinnaker Chocolate']);
+    const isFav = r => FAVORITE_BRANDS.has(r['Brand']);
+
+    // [category, colour, [[note, [words on the wrapper that count as this note]], ...]]
+    // Only the printed "Tasting notes (EN)" are read. Longer phrases are matched first and used up,
+    // so "orange blossom" is floral, not orange, and "banana bread" is bread, not banana.
+    const WHEEL = [
+      ['Citrus', '#e0a02a', [
+        ['Orange', ['orange', 'tangerine', 'mandarin', 'marmalade', 'orange marmalade', 'candied orange', 'orange peel']],
+        ['Lemon & lime', ['lemon', 'lime']],
+        ['Grapefruit', ['grapefruit', 'pomelo']],
+        ['Bergamot', ['bergamot', 'bergamot orange']],
+        ['Citrus', ['citrus', 'citric', 'citrusy', 'zest', 'zesty', 'citrus zest', 'citrus fruit']],
+      ]],
+      ['Berry & red fruit', '#c0394b', [
+        ['Raspberry', ['raspberry']], ['Strawberry', ['strawberry']], ['Blueberry', ['blueberry']],
+        ['Blackberry', ['blackberry']], ['Blackcurrant', ['blackcurrant', 'black currant', 'currant', 'red currant']],
+        ['Cranberry', ['cranberry']], ['Cherry', ['cherry', 'sour cherry', 'dark cherry', 'tart cherry', 'cherry jam']],
+        ['Red fruit', ['red fruit', 'red berry', 'berry', 'berry jam', 'pomegranate', 'strawberry jam']],
+      ]],
+      ['Orchard & stone fruit', '#d4683a', [
+        ['Plum', ['plum', 'mirabelle plum']], ['Apricot', ['apricot']], ['Peach', ['peach']],
+        ['Apple', ['apple', 'green apple', 'baked apple', 'hot buttered apple']], ['Pear', ['pear', 'spiced pear']], ['Grape', ['grape', 'green grape']],
+      ]],
+      ['Tropical fruit', '#e6c13a', [
+        ['Banana', ['banana', 'green banana', 'ripe banana']], ['Mango', ['mango']], ['Pineapple', ['pineapple']],
+        ['Passion fruit', ['passion fruit']], ['Lychee', ['lychee']], ['Guava', ['guava']], ['Coconut', ['coconut']],
+        ['Other tropical', ['tropical', 'tropical fruit', 'exotic fruit', 'papaya', 'soursop', 'starfruit', 'melon', 'lucuma', 'mamey', 'tamarind']],
+      ]],
+      ['Dried fruit', '#8e4a2e', [
+        ['Raisin', ['raisin']], ['Fig', ['fig', 'dried fig', 'mission fig']], ['Date', ['date']],
+        ['Dried fruit', ['dried fruit', 'dried plum', 'dried apricot', 'dried cranberry', 'prune', 'brown dried fruit', 'ripe fruit']],
+        ['Jam', ['jam', 'jammy']],
+      ]],
+      ['Floral', '#b45fa8', [
+        ['Rose', ['rose', 'damask rose']], ['Jasmine', ['jasmine']], ['Orange blossom', ['orange blossom']],
+        ['Lavender & violet', ['lavender', 'violet', 'lilac']], ['Honeysuckle', ['honeysuckle']],
+        ['Floral', ['floral', 'flower', 'blossom', 'orchid', 'camomile', 'chamomile', 'clover']],
+      ]],
+      ['Sweet', '#c98a3c', [
+        ['Honey', ['honey', 'honeyed', 'acacia honey', 'clover honey', 'golden honey']],
+        ['Caramel & toffee', ['caramel', 'caramelized', 'caramelized sugar', 'toffee', 'butterscotch', 'dulce de leche', 'goat milk caramel']],
+        ['Brown sugar & molasses', ['molasses', 'brown sugar', 'muscovado', 'panela']],
+        ['Vanilla', ['vanilla']], ['Fudge', ['fudge', 'truffle', 'chocolate truffle']],
+      ]],
+      ['Nutty', '#a07040', [
+        ['Almond', ['almond', 'amond', 'marzipan', 'roasted almond']], ['Hazelnut', ['hazelnut']], ['Walnut', ['walnut', 'black walnut']],
+        ['Pecan', ['pecan', 'pecan nut', 'honeyed pecan']], ['Cashew', ['cashew']], ['Peanut', ['peanut', 'peanut butter', 'roasted peanut']],
+        ['Nutty', ['nut', 'nutty', 'nuttiness', 'brazil nut']],
+      ]],
+      ['Dairy', '#d9c7a6', [
+        ['Cream', ['cream', 'creamy', 'creaminess', 'fresh cream', 'ice cream', 'strawberry ice cream']],
+        ['Milk', ['milk', 'milky', 'lactic', 'creamy milk', 'fior di latte']],
+        ['Butter', ['butter', 'buttery']], ['Yogurt', ['yogurt', 'greek yogurt', 'turkish yogurt', 'blueberry yogurt']],
+        ['Custard', ['custard', 'custardy', 'gelato']],
+      ]],
+      ['Roasted & baked', '#6b4a35', [
+        ['Coffee & mocha', ['coffee', 'mocha', 'turkish coffee', 'café con leche', 'espresso']], ['Malt', ['malt', 'roasted malt']],
+        ['Bread & pastry', ['bread', 'bread crust', 'banana bread', 'toast', 'pie crust', 'graham cracker', 'cereal']],
+        ['Brownie & cake', ['brownie', 'chocolate cake', 'cake', 'black forest cake']],
+        ['Roasted cocoa', ['roasted cocoa', 'roasted cocoa bean', 'raw cocoa', 'cocoa powder', 'rich cocoa', 'roasted and peppery fine cocoa']],
+      ]],
+      ['Spice', '#b8452a', [
+        ['Cinnamon', ['cinnamon']], ['Cardamom', ['cardamom']], ['Nutmeg', ['nutmeg']],
+        ['Pepper', ['pepper', 'peppery', 'black pepper', 'sweet pepper', 'fruity sweet pepper']], ['Clove', ['clove']],
+        ['Licorice & anise', ['licorice', 'liquorice', 'liquorice stick', 'anise', 'fennel', 'fennel seed']], ['Ginger', ['ginger', 'wild ginger']],
+        ['Chili', ['chili', 'chile', 'arbol chili']], ['Spice', ['spice', 'spicy', 'spiced', 'allspice', 'saffron', 'warm spice']],
+      ]],
+      ['Earthy & woody', '#5e6b3a', [
+        ['Wood', ['wood', 'woody', 'oak', 'cedar', 'ceder', 'sandalwood', 'cade', 'pine', 'pine tree', 'moist wood', 'scented wood', 'tropical wood']],
+        ['Tobacco', ['tobacco']], ['Smoke', ['smoke', 'smoky', 'palo santo', 'palo santo smoke']],
+        ['Earthy', ['earthy', 'undergrowth', 'mushroom', 'umami', 'miso']],
+      ]],
+      ['Herbal & green', '#4f8a5b', [
+        ['Tea', ['tea', 'green tea', 'black tea', 'darjeeling tea', 'strawberry tea']],
+        ['Herbal', ['herbal', 'herb', 'bay leaf', 'bayleaf', 'lemongrass', 'grass', 'olive', 'green olive']],
+        ['Mint', ['mint', 'minty']],
+      ]],
+      ['Wine & tangy', '#7a3050', [
+        ['Wine', ['wine', 'white wine', 'chardonnay', 'cabernet', 'cabernet grape', 'porto wine']],
+        ['Spirits & beer', ['rum', 'whisky', 'whiskey', 'sake', 'beer']],
+        ['Balsamic', ['balsamic', 'balsamic vinegar', 'vinegar']],
+        ['Bright & tangy', ['tangy', 'tart', 'sweet-tart', 'acidity', 'acidic', 'fruit acid', 'bright', 'sparkling']],
+      ]],
+    ];
+    // Phrases that are about the base chocolate, not a flavour note
+    const IGNORE = ['milk chocolate', 'dark chocolate', 'rich chocolate', 'chocolate flavor', 'chocolate flavour', 'chocolatey base', 'cocoa base', 'base chocolate', 'low bitterness', 'minimal acidity', 'low acidity'];
+
+    const PHRASES = [];   // [phrase, catIndex, noteIndex], longest first
+    WHEEL.forEach(([, , notes], ci) => notes.forEach(([, words], ni) => words.forEach(w => PHRASES.push([w, ci, ni]))));
+    IGNORE.forEach(w => PHRASES.push([w, -1, -1]));
+    PHRASES.sort((a, b) => b[0].length - a[0].length);
+    const reFor = w => {
+      const body = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '[\\s-]+');
+      const word = /[^aeiou]y$/.test(w) ? body.slice(0, -1) + '(y|ies)' : body + '(e?s)?';   // cherry / cherries
+      return new RegExp('(^|[^a-zà-ÿ])' + word + '(?=$|[^a-zà-ÿ])', 'g');
+    };
+    PHRASES.forEach(p => p.push(reFor(p[0])));
+
+    function notesOf(text) {
+      let t = ' ' + String(text).toLowerCase().replace(/\(from description\)|\(inferred translation\)/g, ' ') + ' ';
+      const hits = new Set();
+      for (const [, ci, ni, re] of PHRASES) {
+        re.lastIndex = 0;
+        if (!re.test(t)) continue;
+        if (ci >= 0) hits.add(ci + ':' + ni);
+        re.lastIndex = 0;
+        t = t.replace(re, m => ' '.repeat(m.length));
+      }
+      return hits;
+    }
+
+    let bars = [], favMode = 'all', selected = null, focusBar = null;
+
+    function shown() { return bars.filter(b => favMode === 'all' || (favMode === 'fav') === isFav(b.r)); }
+    function barsFor(sel) {
+      const list = shown();
+      if (!sel) return list.filter(b => b.notes.size);
+      return list.filter(b => sel.ni == null ? [...b.notes].some(k => k.startsWith(sel.ci + ':')) : b.notes.has(sel.ci + ':' + sel.ni));
+    }
+
+    /* ---------- Wheel ---------- */
+    const BW = document.documentElement.classList.contains('bw');
+    const R0 = 78, R1 = 190, R2 = 340;
+    function arc(r0, r1, a0, a1) {
+      const p = (r, a) => (r * Math.sin(a)).toFixed(2) + ' ' + (-r * Math.cos(a)).toFixed(2);
+      const large = a1 - a0 > Math.PI ? 1 : 0;
+      return 'M' + p(r1, a0) + 'A' + r1 + ' ' + r1 + ' 0 ' + large + ' 1 ' + p(r1, a1) + 'L' + p(r0, a1) + 'A' + r0 + ' ' + r0 + ' 0 ' + large + ' 0 ' + p(r0, a0) + 'Z';
+    }
+    function radialText(r0, r1, a, label, cls) {
+      // text runs outward along the radius; flipped on the left half so it is never upside down
+      const deg = a * 180 / Math.PI - 90, left = a > Math.PI;
+      const mid = (r0 + r1) / 2;
+      const x = mid * Math.sin(a), y = -mid * Math.cos(a);
+      return '<text class="' + cls + '" text-anchor="middle" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + (left ? deg + 180 : deg).toFixed(1) + ')">' + esc(label) + '</text>';
+    }
+
+    function drawWheel() {
+      const list = shown();
+      const count = new Map();
+      for (const b of list) for (const k of b.notes) count.set(k, (count.get(k) || 0) + 1);
+      const catCount = WHEEL.map((_, ci) => list.filter(b => [...b.notes].some(k => k.startsWith(ci + ':'))).length);
+      const max = Math.max(1, ...count.values()), maxCat = Math.max(1, ...catCount);
+      const focusNotes = focusBar ? focusBar.notes : null;
+      const total = WHEEL.reduce((n, c) => n + c[2].length, 0), step = 2 * Math.PI / total;
+      let svg = '', a = 0;
+      WHEEL.forEach(([cat, catColor, notes], ci) => {
+        const color = BW ? '#000' : catColor;
+        const a0 = a, a1 = a + notes.length * step;
+        const catHit = focusNotes ? [...focusNotes].some(k => k.startsWith(ci + ':')) : catCount[ci] > 0;
+        const op = focusNotes ? (catHit ? 1 : 0.15) : 0.35 + 0.65 * Math.sqrt(catCount[ci] / maxCat);
+        const isSel = selected && selected.ci === ci && selected.ni == null;
+        svg += '<path d="' + arc(R0, R1, a0, a1) + '" fill="' + color + '" opacity="' + op.toFixed(2) + '" data-ci="' + ci + '" class="' + (isSel ? 'sel' : '') + '"><title>' + esc(cat) + ': ' + catCount[ci] + ' bars</title></path>';
+        notes.forEach(([note], ni) => {
+          const b0 = a + ni * step, b1 = b0 + step, n = count.get(ci + ':' + ni) || 0;
+          const hit = focusNotes ? focusNotes.has(ci + ':' + ni) : n > 0;
+          const o = focusNotes ? (hit ? 1 : 0.12) : (n ? 0.3 + 0.7 * Math.sqrt(n / max) : 0.1);
+          const s = selected && selected.ci === ci && selected.ni === ni;
+          svg += '<path d="' + arc(R1, R2, b0, b1) + '" fill="' + color + '" opacity="' + o.toFixed(2) + '" data-ci="' + ci + '" data-ni="' + ni + '" class="' + (s ? 'sel' : '') + '"><title>' + esc(note) + ': ' + n + ' bars</title></path>';
+          svg += radialText(R1 + 4, R2, (b0 + b1) / 2, note + (n ? '  ' + n : ''), !hit ? 'dim' : BW && o > 0.5 ? 'light' : '');
+        });
+        // category label: curved text is fiddly, so a short radial label in the inner ring
+        svg += radialText(R0, R1, (a0 + a1) / 2, cat, 'cat' + (!catHit ? ' dim' : BW && op > 0.5 ? ' light' : ''));
+        a = a1;
+      });
+      svg += '<circle class="center" r="' + (R0 - 2) + '" data-center="1"></circle><text class="center-t" y="0">' + (selected || focusBar ? 'Show all' : 'Flavours') + '</text>';
+      const el = $('wheel');
+      el.innerHTML = svg;
+      el.querySelectorAll('path').forEach(p => p.onclick = () => {
+        const ci = +p.dataset.ci, ni = p.dataset.ni == null ? null : +p.dataset.ni;
+        selected = selected && selected.ci === ci && selected.ni === ni ? null : { ci, ni };
+        focusBar = null; syncUrl(); render();
+      });
+      el.querySelector('[data-center]').onclick = () => { selected = null; focusBar = null; syncUrl(); render(); };
+    }
+
+    /* ---------- Side panel ---------- */
+    function noteNames(b) {
+      return [...b.notes].map(k => { const [ci, ni] = k.split(':').map(Number); return WHEEL[ci][2][ni][0]; });
+    }
+    function barCard(b, highlight) {
+      const r = b.r;
+      return '<a class="bar' + (isFav(r) ? ' fav' : '') + '" href="./?bar=' + encodeURIComponent(r.id) + '">' +
+        (r.photos && r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
+        '<span><b>' + esc(r['Bar name']) + '</b><div class="m">' + esc([r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', b.copies > 1 ? b.copies + ' copies' : ''].filter(Boolean).join(' · ')) + '</div>' +
+        '<div class="n">' + noteNames(b).map(n => n === highlight ? '<b>' + esc(n) + '</b>' : esc(n)).join(', ') + '</div></span></a>';
+    }
+    function renderSide() {
+      const side = $('side');
+      const missing = shown().filter(b => !b.notes.size).length;
+      const foot = '<div class="foot">Placed from the tasting notes printed on each wrapper. ' + missing + ' bars have no printed notes and are not on the wheel.</div>';
+      if (focusBar) {
+        const r = focusBar.r;
+        side.innerHTML = '<h2>' + esc(r['Bar name']) + '</h2><div class="sub">' + esc(r['Brand']) + '<br>' + esc(r['Tasting notes (EN)'] || '') + '</div>' +
+          '<div class="tags">' + noteNames(focusBar).map(n => '<span>' + esc(n) + '</span>').join('') + '</div>' +
+          '<a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Open in collection</a>' + foot;
+        return;
+      }
+      const list = barsFor(selected).sort((x, y) => y.copies - x.copies || x.r['Brand'].localeCompare(y.r['Brand']));
+      let title = 'All flavours', highlight = null;
+      if (selected) {
+        const [cat, , notes] = WHEEL[selected.ci];
+        title = selected.ni == null ? cat : notes[selected.ni][0];
+        highlight = selected.ni == null ? null : title;
+      }
+      side.innerHTML = '<h2>' + esc(title) + '</h2><div class="sub">' + list.length + (list.length === 1 ? ' bar' : ' bars') +
+        (selected ? '' : '. Click a segment to see the bars with that note.') + '</div>' +
+        list.map(b => barCard(b, highlight)).join('') + foot;
+    }
+
+    function render() { drawWheel(); renderSide(); }
+    function syncUrl() {
+      const u = new URL(location.href);
+      if (focusBar) u.searchParams.set('bar', focusBar.r.id); else u.searchParams.delete('bar');
+      history.replaceState(null, '', u);
+    }
+    $('fav').querySelectorAll('button').forEach(b => b.onclick = () => {
+      favMode = b.dataset.v; $('fav').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render();
+    });
+
+    fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()).then(arr => {
+      const g = new Map();
+      for (const r of arr) {
+        const k = r['Brand'] + '|' + r['Bar name'];
+        if (!g.has(k)) g.set(k, { r, copies: 0, ids: [] });
+        g.get(k).copies++; g.get(k).ids.push(r.id);
+      }
+      bars = [...g.values()].map(b => ({ ...b, notes: notesOf(b.r['Tasting notes (EN)'] || '') }));
+      const id = new URL(location.href).searchParams.get('bar');
+      if (id) focusBar = bars.find(b => b.ids.includes(id)) || null;
+      render();
+    }).catch(() => { $('side').textContent = 'Could not load the collection.'; });
+  </script>
+</body>
+</html>

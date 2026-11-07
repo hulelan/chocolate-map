@@ -13,11 +13,19 @@ Live at https://cacaomap.com
 
 ## Collection table (`index.html`, the home page)
 
-One row per bar, with the same columns as `chocolatelist_processed.xlsx`; the Copies column counts copies owned. Each column header has a filter menu. Click a row for photos and all fields.
+One row per bar, most copies first, with the same columns as `chocolatelist_processed.xlsx`; the Copies column counts copies owned. Each column header has a filter menu. Click a row for photos and all fields.
 
 URL parameters: `?bar=<id>` opens a bar (on the map, it puts that bar and its farm and maker pins at the top of the sidebar), `?place=<map place>` filters to a collection origin, `?pin=<pin id>` filters to the bars linked to a map pin.
 
 `collection.html` redirects to the home page so old links keep working.
+
+## Tasting wheel (`wheel.html`)
+
+Bars placed on a flavour wheel from their printed tasting notes (`Tasting notes (EN)`). The word lists for each note are `WHEEL` in the page. Click a segment to list the bars; `?bar=<id>` shows one bar's notes.
+
+## Favorites and black and white
+
+The favorite makers are `FAVORITE_BRANDS` in `index.html` and `wheel.html`. The black-and-white version is `bw.css`, switched by `theme.js` and remembered per browser (`?bw=1` forces it).
 
 ## Updating the collection
 
