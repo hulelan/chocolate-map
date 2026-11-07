@@ -47,6 +47,14 @@
     .bar .n b { color: var(--accent); font-weight: 600; }
     .tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 12px; }
     .tags span { font-size: 12px; padding: 2px 7px; background: var(--panel-2); border: 1px solid var(--border); }
+    .pinned { position: sticky; top: -16px; z-index: 1; background: var(--panel); margin: -16px -18px 12px; padding: 16px 18px 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .pinned .top { display: flex; gap: 12px; align-items: flex-start; }
+    .pinned img { width: 66px; height: 88px; object-fit: cover; flex: none; background: var(--panel-2); }
+    .pinned .sub { margin-bottom: 0; }
+    aside h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+    .bar.rel { cursor: pointer; }
+    .bar.on { border-color: var(--accent); outline: 1px solid var(--accent); }
+    .bar .open { display: inline-block; margin-top: 4px; font-size: 12px; color: var(--muted); }
     .foot { color: var(--muted); font-size: 12px; margin-top: 18px; line-height: 1.4; }
     @media (max-width: 900px) {
       main { grid-template-columns: 1fr; overflow: auto; }
@@ -190,6 +198,7 @@
     }
 
     let bars = [], favMode = 'all', selected = null, focusBar = null;
+    let previewBar = null;   // related bar whose notes the wheel is showing; focusBar stays pinned in the panel
 
     function shown() { return bars.filter(b => favMode === 'all' || (favMode === 'fav') === isFav(b.r)); }
     function barsFor(sel) {
@@ -225,25 +234,29 @@
       for (const b of list) for (const k of b.notes) count.set(k, (count.get(k) || 0) + 1);
       const catCount = WHEEL.map((_, ci) => list.filter(b => [...b.notes].some(k => k.startsWith(ci + ':'))).length);
       const max = Math.max(1, ...count.values()), maxCat = Math.max(1, ...catCount);
-      const focusNotes = focusBar ? focusBar.notes : null;
+      const focusNotes = focusBar ? (previewBar || focusBar).notes : null;
+      const pinnedNotes = previewBar ? focusBar.notes : null;   // kept faintly lit, to show the overlap
+      const hasCat = (notes, ci) => !!notes && [...notes].some(k => k.startsWith(ci + ':'));
       const total = WHEEL.reduce((n, c) => n + c[2].length, 0), step = 2 * Math.PI / total;
       let svg = '', a = 0;
       WHEEL.forEach(([cat, color, notes], ci) => {
         const a0 = a, a1 = a + notes.length * step;
         const catHit = focusNotes ? [...focusNotes].some(k => k.startsWith(ci + ':')) : catCount[ci] > 0;
-        const op = focusNotes ? (catHit ? 1 : 0.15) : 0.35 + 0.65 * Math.sqrt(catCount[ci] / maxCat);
+        const catSoft = !catHit && hasCat(pinnedNotes, ci);
+        const op = focusNotes ? (catHit ? 1 : catSoft ? 0.45 : 0.15) : 0.35 + 0.65 * Math.sqrt(catCount[ci] / maxCat);
         const isSel = selected && selected.ci === ci && selected.ni == null;
         svg += '<path d="' + arc(R0, R1, a0, a1) + '" fill="' + color + '" opacity="' + op.toFixed(2) + '" data-ci="' + ci + '" class="' + (isSel ? 'sel' : '') + '"><title>' + esc(cat) + ': ' + catCount[ci] + ' bars</title></path>';
         notes.forEach(([note], ni) => {
           const b0 = a + ni * step, b1 = b0 + step, n = count.get(ci + ':' + ni) || 0;
           const hit = focusNotes ? focusNotes.has(ci + ':' + ni) : n > 0;
-          const o = focusNotes ? (hit ? 1 : 0.12) : (n ? 0.3 + 0.7 * Math.sqrt(n / max) : 0.1);
+          const soft = !hit && !!pinnedNotes && pinnedNotes.has(ci + ':' + ni);
+          const o = focusNotes ? (hit ? 1 : soft ? 0.45 : 0.12) : (n ? 0.3 + 0.7 * Math.sqrt(n / max) : 0.1);
           const s = selected && selected.ci === ci && selected.ni === ni;
           svg += '<path d="' + arc(R1, R2, b0, b1) + '" fill="' + color + '" opacity="' + o.toFixed(2) + '" data-ci="' + ci + '" data-ni="' + ni + '" class="' + (s ? 'sel' : '') + '"><title>' + esc(note) + ': ' + n + ' bars</title></path>';
-          svg += radialText(R1 + 4, R2, (b0 + b1) / 2, note + (n ? '  ' + n : ''), !hit ? 'dim' : BW && darkOnWhite(color, o) ? 'light' : '');
+          svg += radialText(R1 + 4, R2, (b0 + b1) / 2, note + (n ? '  ' + n : ''), !hit && !soft ? 'dim' : BW && darkOnWhite(color, o) ? 'light' : '');
         });
         // category label: curved text is fiddly, so a short radial label in the inner ring
-        svg += radialText(R0, R1, (a0 + a1) / 2, cat, 'cat' + (!catHit ? ' dim' : BW && darkOnWhite(color, op) ? ' light' : ''));
+        svg += radialText(R0, R1, (a0 + a1) / 2, cat, 'cat' + (!catHit && !catSoft ? ' dim' : BW && darkOnWhite(color, op) ? ' light' : ''));
         a = a1;
       });
       svg += '<circle class="center" r="' + (R0 - 2) + '" data-center="1"></circle><text class="center-t" y="0">' + (selected || focusBar ? 'Show all' : 'Flavours') + '</text>';
@@ -252,9 +265,9 @@
       el.querySelectorAll('path').forEach(p => p.onclick = () => {
         const ci = +p.dataset.ci, ni = p.dataset.ni == null ? null : +p.dataset.ni;
         selected = selected && selected.ci === ci && selected.ni === ni ? null : { ci, ni };
-        focusBar = null; syncUrl(); render();
+        previewBar = null; render();
       });
-      el.querySelector('[data-center]').onclick = () => { selected = null; focusBar = null; syncUrl(); render(); };
+      el.querySelector('[data-center]').onclick = () => { selected = null; focusBar = null; previewBar = null; syncUrl(); render(); };
     }
 
     /* ---------- Side panel ---------- */
@@ -268,17 +281,50 @@
         '<span><b>' + esc(r['Bar name']) + '</b><div class="m">' + esc([r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', b.copies > 1 ? b.copies + ' copies' : ''].filter(Boolean).join(' · ')) + '</div>' +
         '<div class="n">' + noteNames(b).map(n => n === highlight ? '<b>' + esc(n) + '</b>' : esc(n)).join(', ') + '</div></span></a>';
     }
+    // Shared notes count for more when they are rare; sharing only a flavour family counts a little
+    function relatedTo(anchor) {
+      const df = new Map();
+      for (const b of bars) for (const k of b.notes) df.set(k, (df.get(k) || 0) + 1);
+      const catsOf = b => new Set([...b.notes].map(k => k.split(':')[0]));
+      const anchorCats = catsOf(anchor);
+      return barsFor(selected).filter(b => b !== anchor).map(b => {
+        let score = 0;
+        for (const k of b.notes) if (anchor.notes.has(k)) score += Math.log(bars.length / df.get(k));
+        for (const c of catsOf(b)) if (anchorCats.has(c)) score += 0.5;
+        return { b, score: score / Math.pow(b.notes.size, 0.25) };
+      }).filter(x => x.score > 0).sort((x, y) => y.score - x.score || y.b.copies - x.b.copies).slice(0, 30).map(x => x.b);
+    }
+    function renderRelated(side, foot) {
+      const r = focusBar.r, related = relatedTo(focusBar);
+      const filter = selected ? (selected.ni == null ? WHEEL[selected.ci][0] : WHEEL[selected.ci][2][selected.ni][0]) : '';
+      const nameOf = k => { const [ci, ni] = k.split(':').map(Number); return WHEEL[ci][2][ni][0]; };
+      side.innerHTML =
+        '<div class="pinned' + (previewBar ? '' : ' on') + '" id="pinned">' +
+          '<div class="top">' + (r.photos && r.photos[0] ? '<img alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
+          '<div><h2>' + esc(r['Bar name']) + '</h2><div class="sub">' + esc(r['Brand']) + '<br>' + esc(r['Tasting notes (EN)'] || 'No printed tasting notes.') + '</div></div></div>' +
+          '<div class="tags">' + noteNames(focusBar).map(n => '<span>' + esc(n) + '</span>').join('') + '</div>' +
+          '<a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Open in Collection</a>' +
+        '</div>' +
+        '<h3>Related' + (filter ? ': ' + esc(filter) : '') + '</h3>' +
+        (related.length ? '' : '<div class="sub">No related bars' + (filter ? ' with this note' : '') + '.</div>') +
+        related.map((b, i) => {
+          const shared = [...b.notes].filter(k => focusBar.notes.has(k)).map(nameOf), others = [...b.notes].filter(k => !focusBar.notes.has(k)).map(nameOf);
+          return '<div class="bar rel' + (isFav(b.r) ? ' fav' : '') + (b === previewBar ? ' on' : '') + '" data-i="' + i + '">' +
+            (b.r.photos && b.r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(b.r.photos[0]) + '"/>' : '') +
+            '<span><b>' + esc(b.r['Bar name']) + '</b><div class="m">' + esc([b.r['Brand'], b.r['Cacao %'] ? b.r['Cacao %'] + '%' : ''].filter(Boolean).join(' · ')) + '</div>' +
+            '<div class="n">' + shared.map(n => '<b>' + esc(n) + '</b>').concat(others.map(esc)).join(', ') + '</div>' +
+            '<a class="open" href="./?bar=' + encodeURIComponent(b.r.id) + '">Open in Collection</a></span></div>';
+        }).join('') + foot;
+      $('pinned').onclick = e => { if (e.target.closest('a')) return; previewBar = null; render(); };
+      side.querySelectorAll('.rel').forEach(el => el.onclick = e => {
+        if (e.target.closest('a')) return;
+        const b = related[+el.dataset.i]; previewBar = previewBar === b ? null : b; render();
+      });
+    }
     function renderSide() {
       const side = $('side');
-      const missing = shown().filter(b => !b.notes.size).length;
-      const foot = '<div class="foot">Placed from the tasting notes printed on each wrapper. ' + missing + ' bars have no printed notes and are not on the wheel.</div>';
-      if (focusBar) {
-        const r = focusBar.r;
-        side.innerHTML = '<h2>' + esc(r['Bar name']) + '</h2><div class="sub">' + esc(r['Brand']) + '<br>' + esc(r['Tasting notes (EN)'] || '') + '</div>' +
-          '<div class="tags">' + noteNames(focusBar).map(n => '<span>' + esc(n) + '</span>').join('') + '</div>' +
-          '<a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Open in collection</a>' + foot;
-        return;
-      }
+      const foot = '<div class="foot">Only includes bars that have tasting notes printed on the wrapper! I may return to backfill from my own taste buds in some time.</div>';
+      if (focusBar) { renderRelated(side, foot); return; }
       const list = barsFor(selected).sort((x, y) => y.copies - x.copies || x.r['Brand'].localeCompare(y.r['Brand']));
       let title = 'All flavours', highlight = null;
       if (selected) {
