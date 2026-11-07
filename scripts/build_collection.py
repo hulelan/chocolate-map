@@ -162,10 +162,17 @@ def clean_country(c):
         if c.lower().startswith(k): return v
     return "Blend" if c.lower() == "blend" else c
 
+# Photos the camera saved at the wrong angle: degrees to turn clockwise
+ROTATE = {
+    "IMG_7249.jpg": 180, "IMG_7276.jpg": 90, "IMG_7467.jpg": 270, "IMG_7487.jpg": 270, "IMG_7489.jpg": 270,
+    "IMG_7493.jpg": 270, "IMG_7495.jpg": 270, "IMG_7523.jpg": 90, "IMG_7626.jpg": 270, "IMG_7652.jpg": 270,
+}
+
 def web_copy(src, name):
     out, th = os.path.join(IMG_DIR, name), os.path.join(THUMB_DIR, name)
     if os.path.exists(out) and os.path.exists(th): return
     im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")   # re-encoding without exif drops GPS & all metadata
+    if name in ROTATE: im = im.rotate(-ROTATE[name], expand=True)
     big = im.copy(); big.thumbnail((1400, 1400)); big.save(out, "JPEG", quality=78, optimize=True, progressive=True)
     sm = im.copy(); sm.thumbnail((360, 360)); sm.save(th, "JPEG", quality=75, optimize=True)
 
