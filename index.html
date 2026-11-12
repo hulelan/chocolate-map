@@ -98,7 +98,7 @@
   <header class="site-bar">
     <div class="site-name">Cacao Map</div>
     <button class="site-btn" data-theme-toggle>Black &amp; white</button>
-    <nav class="site-nav"><a class="site-btn on" href="./" aria-current="page">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn" href="flavour-map.html">Flavour Map</a></nav>
+    <nav class="site-nav"><a class="site-btn on" href="./" aria-current="page">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn" href="flavour-map.html">Flavour Map</a><a class="site-btn" href="makers.html">Makers</a></nav>
   </header>
   <div class="controls">
     <div class="seg" id="fav">
@@ -396,6 +396,8 @@
       data = arr.map(r => ({ ...r, _count: isTried(r) ? 0 : counts.get(barKey(r)) }));
       const place = new URL(location.href).searchParams.get('place');
       if (place) filters.place = new Set([place]);
+      const brand = new URL(location.href).searchParams.get('brand');   // from the Makers page
+      if (brand) filters.Brand = new Set(brand.split('|'));
       const pinId = new URL(location.href).searchParams.get('pin');
       if (pinId) { const p = mapPins.find(x => x.id === pinId); pinFilter = { id: pinId, name: p ? p.name : pinId }; }
       sort = { key: '_count', dir: -1 };   // most copies first

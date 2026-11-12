@@ -1,0 +1,3669 @@
+[
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"couverture",
+"marketing"
+],
+"fact": "Valrhona specialises in couvertures for chefs.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "00:59:54",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"marketing",
+"flavour style"
+],
+"fact": "Valrhona's flavour wheel was created as a sales tool to sell couvertures for different recipes, rating intensity, roasted nuts, fruity, acidulous and bitterness from one to four pods.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "00:59:54",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"flavour style",
+"marketing"
+],
+"fact": "Valrhona rates Manjari Madagascar 64% zero bitter, four fruity, four acidity, two nuts, one intensity, which gives chefs only basic information rather than actual flavours.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "01:01:23",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"scale",
+"craft"
+],
+"fact": "Mark describes Valrhona as a large-scale craft chocolate maker, and its Manjari 64% as a very popular chocolate.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "00:41:27",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"flavour style",
+"defects"
+],
+"fact": "Valrhona's Manjari 64% is acidic and chocolatey with lemon, raspberry and sour cherry; the group profile scored 86.03 from 678 tasters, though some batches can be woody.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "00:43:16",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Barry Callebaut"
+],
+"concepts": [
+"industrial",
+"scale"
+],
+"fact": "Callebaut is one of the biggest industrial chocolate makers and processes roughly 39% of the world's cacao.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "01:02:28",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Barry Callebaut"
+],
+"concepts": [
+"marketing",
+"flavour style"
+],
+"fact": "Callebaut's 'sensory language and tasting ritual' wheel tried to make commercial chocolate seem sophisticated, prioritising design over content, with odd neighbours like cashew beside caramel.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "01:02:28",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Barry Callebaut"
+],
+"concepts": [
+"mouthfeel",
+"industrial"
+],
+"fact": "A quarter of Callebaut's wheel is about mouthfeel, reflecting that the industry cares more about texture than flavour.",
+"comparison": false,
+"source": "Webinar #1 - Introduction",
+"time": "01:03:38",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cacaosuyo"
+],
+"concepts": [
+"single origin",
+"flavour style"
+],
+"fact": "Cacaosuyo La Cuna 70% from Peru was sample one; the two-person group profile scored 91.9 (gold-level) with honey, raisin and dark sugar notes.",
+"comparison": false,
+"source": "Webinar #2 - Introducing the IICCT profiling system and tasting practice",
+"time": "01:02:38",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Kuyay"
+],
+"concepts": [
+"single origin",
+"flavour style"
+],
+"fact": "Kuyay's Cuillay Yahuanga 70% from Peru (sample two) tasted fruitier and more tropical, with a quality score around 81 and slightly grainy melt.",
+"comparison": false,
+"source": "Webinar #2 - Introducing the IICCT profiling system and tasting practice",
+"time": "01:26:08",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cacaosuyo",
+"Kuyay"
+],
+"concepts": [
+"single origin",
+"flavour style"
+],
+"fact": "Two 70% Peruvian bars from different makers were chosen on purpose to show that cacao from different places and makers in one country can differ greatly.",
+"comparison": true,
+"source": "Webinar #2 - Introducing the IICCT profiling system and tasting practice",
+"time": "01:24:15",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Kuyay"
+],
+"concepts": [
+"refining",
+"mouthfeel"
+],
+"fact": "Kuyay's sample was mildly grainy, which a student linked to makers not over-refining to keep flavour; it was grainier than the Cacaosuyo bar.",
+"comparison": false,
+"source": "Webinar #2 - Introducing the IICCT profiling system and tasting practice",
+"time": "01:23:29",
+"speaker": "student",
+"confidence": "low"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"industrial",
+"flavour style"
+],
+"fact": "Lindt Excellence Origin Blend 70% (sample three) scored about 70 with high deviation and notes of coconut, baked chocolate and vanilla, below the 80-point fine-chocolate line.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "00:34:46",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"roasting",
+"defects"
+],
+"fact": "Lindt's Excellence 70% tasted over-roasted, with ashy and burnt notes and an overall dirty, indistinct defect impression.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "00:42:20",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"sourcing",
+"amelonado"
+],
+"fact": "Lindt's cacao origin is not disclosed, but its coconut flavour suggests some West African (Ghana) commodity cacao.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:17:12",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"vanilla",
+"recipe"
+],
+"fact": "Lindt's 70% bar has added vanilla (not from the cacao) that appears at the end and helps cover defects.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "00:40:18",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"refining",
+"defects"
+],
+"fact": "Lindt's sample showed a biscuit note, which Mark links to over-refining or over-conching friction; feedback to the maker would be to refine less.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "00:46:15",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"blends",
+"fermentation"
+],
+"fact": "Lindt's blended cacao appears to mix beans of different fermentation and roast, with rotting fruit, peaty and leather notes suggesting over-fermented lots and some mould.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "00:43:32",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Lindt",
+"Ritter Sport"
+],
+"concepts": [
+"defects",
+"industrial"
+],
+"fact": "Even the biggest firms like Lindt and Ritter Sport try hard to hide or cover defects with vanilla, sugar, heavy refining and smooth mouthfeel.",
+"comparison": true,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:14:40",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ritter Sport"
+],
+"concepts": [
+"roasting",
+"defects"
+],
+"fact": "Ritter Sport Ghana 81% (sample four) scored about 60 with huge ashy and nut-skin defects, meaning over-roasting and high astringency.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:18:05",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ritter Sport"
+],
+"concepts": [
+"cacao percentage",
+"vanilla"
+],
+"fact": "Ritter Sport's 81% scored worse than Lindt's 70% partly because of the higher cacao percentage and the lack of vanilla to cover defects.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:15:22",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ritter Sport"
+],
+"concepts": [
+"sourcing",
+"amelonado"
+],
+"fact": "Ritter Sport's Ghana bar shows the coconut flavour typical of supermarket dark bars made from poor-genetics West African cacao.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:17:12",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ritter Sport",
+"Lindt"
+],
+"concepts": [
+"cacao percentage",
+"defects",
+"flavour style"
+],
+"fact": "Ritter Sport's 81% was rated clearly worse than Lindt's 70%, with fewer positive notes, more defects and a higher deviation.",
+"comparison": true,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:15:22",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"craft",
+"scale"
+],
+"fact": "Friis-Holm is a medium-scale craft chocolate maker from Denmark; its Nicaragua 68% (sample five) was a complex, defect-free bar with citrus, floral and a long aftertaste.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:49:04",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"cocoa butter",
+"recipe",
+"mouthfeel"
+],
+"fact": "Friis-Holm adds a lot of extra cocoa butter, giving a mouthfeel close to industrial chocolate with a more complex flavour journey.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:51:53",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"flavour style",
+"origin-country makers"
+],
+"fact": "Friis-Holm's Nicaragua bar showed the creamy central chocolate note typical of Nicaraguan chocolates, plus citrus, tropical fruit, honey, rum and an olive-like positive umami.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "01:50:00",
+"speaker": "Mark (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"scale",
+"craft",
+"sourcing"
+],
+"fact": "Marou is a medium-scale craft maker producing big batches, offering traceability of its cacao and making an effort to source good-quality beans.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:11:19",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"flavour style",
+"origin-country makers"
+],
+"fact": "Marou's Vietnam 76% (sample six) was distinctive and polarising, with spices (allspice, black pepper), woody notes, dark fruit and dark sugars, scoring 81.68.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:03:21",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"roasting",
+"defects"
+],
+"fact": "Mark does not think Marou's bar is over-roasted; its dark notes come from the nature of Vietnamese cacao, though it did show some real defects such as fermentation notes.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:06:16",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"flavour style",
+"marketing"
+],
+"fact": "A student sees Marou as a good entry point to craft chocolate because its dark, spicy flavours feel familiar compared with industrial bars like Lindt.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:13:06",
+"speaker": "student",
+"confidence": "medium"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"defects",
+"flavour style"
+],
+"fact": "Mark says Marou did not make its defects on purpose; the dark character is mainly the Vietnamese cacao, and there is room for improvement.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:14:40",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Marou",
+"Friis-Holm"
+],
+"concepts": [
+"flavour style",
+"scale"
+],
+"fact": "Marou and Friis-Holm are both medium-scale craft makers, yet Friis-Holm gave a clean, bright, defect-free bar while Marou's was darker, spicier and polarising.",
+"comparison": true,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:11:19",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"flavour style"
+],
+"fact": "A student who had liked Marou before found this sample raisiny, woody, earthy and astringent, unlike the bright citrus of the Friis-Holm bar.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:02:16",
+"speaker": "student",
+"confidence": "medium"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"cocoa butter",
+"flavour style"
+],
+"fact": "Mark calls the large amount of added cocoa butter a Friis-Holm recipe style that listeners can like or dislike but is not necessarily a defect.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:18:28",
+"speaker": "Mark (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Marou"
+],
+"concepts": [
+"origin-country makers",
+"flavour style"
+],
+"fact": "A student who has tried many Vietnamese bars finds Marou's flavour profile polarising and says defects overwhelmed the positives.",
+"comparison": false,
+"source": "Webinar #3 - Chocolate production scales",
+"time": "02:00:26",
+"speaker": "student",
+"confidence": "medium"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"cocoa butter",
+"flavour style"
+],
+"fact": "Ara Chocolat adds cocoa butter, partly to suit its French market and partly because its machines struggle with some cacao; it is also a deliberate stylistic choice.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:36:30",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"cacao percentage",
+"single estate"
+],
+"fact": "Ara Chocolat's Las Violetas bar from El Salvador is 86% yet low in bitterness, showing that high-percentage chocolate can be pleasant.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:43:45",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Chocolate Tree"
+],
+"concepts": [
+"cocoa butter",
+"defects"
+],
+"fact": "Chocolate Tree's Arhuaco bar has added cocoa butter that Martin found slightly rancid, like old peanut butter, which dominated the top note.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:58:26",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Chocolate Tree"
+],
+"concepts": [
+"cocoa butter",
+"history"
+],
+"fact": "Chocolate Tree is an Edinburgh, Scotland craft maker whose Colombian Arhuaco bar seemed to carry a fairly high level of cocoa butter.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:55:37",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Urá Chocolates"
+],
+"concepts": [
+"origin-country makers",
+"single variety"
+],
+"fact": "Urá is a Peruvian maker in Lima whose Chuncho Señorita bar highlights the fruit of the cacao; Martin has known them five or six years and they have improved a lot.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "01:16:09",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Urá Chocolates"
+],
+"concepts": [
+"cocoa butter",
+"recipe"
+],
+"fact": "Urá's Chuncho bar is two ingredients with no added cocoa butter, since these high-fat Peruvian cacaos do not need any.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "01:12:38",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Urá Chocolates",
+"Paytiti"
+],
+"concepts": [
+"flavour style",
+"single variety"
+],
+"fact": "Ura's Chuncho Señorita brings out much more fruit than Paititi's own Señorita, which tends to be woodier; Martin finds tasting them side by side instructive.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "01:16:09",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Urá Chocolates",
+"A. Morin"
+],
+"concepts": [
+"flavour style",
+"roasting"
+],
+"fact": "Martin contrasts Urá's fruity, lightly roasted bar with Morin's ashy over-roasted Chuao, calling it night and day.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:56:06",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Paytiti"
+],
+"concepts": [
+"flavour style",
+"single variety"
+],
+"fact": "Paititi's Señorita chocolate has a woody note and expresses less fruit than Urá's version of the same cacao.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:58:35",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"couverture",
+"scale"
+],
+"fact": "Valrhona is a big couverture supplier by fine-chocolate standards but small by industry standards, with a few hundred employees and tens of thousands of tons a year; chefs treat it as a quality mark.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:02:55",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"marketing"
+],
+"fact": "Valrhona dates from 1922 and took its name in about 1954; Robert Linxe persuaded the Bongrain dairy group to invest in it so it could make better chocolate for La Maison du Chocolat.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:01:48",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"La Maison du Chocolat"
+],
+"concepts": [
+"history"
+],
+"fact": "Robert Linxe founded La Maison du Chocolat in Paris after selling an earlier chocolatier chain, and it later spread to New York, Tokyo and airports.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:01:48",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"flavour style"
+],
+"fact": "Valrhona was a pioneer of acidity and fruitier flavour in French chocolate, a reaction against flat, low-acid, high-roast industrial chocolate, much like specialty coffee.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:03:12",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"single origin"
+],
+"fact": "Valrhona launched its own couverture range in 1986 with Guanaja, Caraïbe and Manjari; Manjari was the first widely marketed country-origin chocolate since the 1920s.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:03:56",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"single estate",
+"marketing"
+],
+"fact": "Valrhona issued vintage bars with wine-style harvest years and specific places, publicised Chuao widely, and offered a Trinidad plantation bar and a Madagascar Criollo.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:06:50",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"industrial",
+"cocoa butter",
+"sourcing",
+"flavour style"
+],
+"fact": "In the last ~15 years Valrhona grew, lost the link between marketing and cacao, uses West African cacao under the same names, and adds much more cocoa butter, making it very soft.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:07:29",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"roasting",
+"flavour style"
+],
+"fact": "Valrhona roasts in a medium-high French style but Martin has never had an over-roasted Valrhona, and nearly all its chocolates carry some acidity as a trademark.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:07:29",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona",
+"Barry Callebaut"
+],
+"concepts": [
+"industrial",
+"couverture"
+],
+"fact": "Valrhona tried to compete more with Callebaut in recent years and moved away from its Criollo and origin story.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:07:29",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"cocoa butter",
+"lecithin",
+"sourcing",
+"defects"
+],
+"fact": "Valrhona Manjari gets its cacao from the Sambirano region of Madagascar, where Valrhona has invested; its problem is mediocre added cocoa butter and noticeable soy lecithin leaving an oily finish.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:18:53",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"cacao percentage",
+"cocoa butter"
+],
+"fact": "Valrhona also makes an 80% Madagascar 'confectioners' chocolate' with no added cocoa butter, which Martin finds quite good.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:18:53",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"awards",
+"defects"
+],
+"fact": "Martin uses Valrhona Manjari as a calibration chocolate when judging, but says its quality and consistency are not great; the current batch uses better cocoa butter than at any time in 10 years.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:21:09",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"lecithin"
+],
+"fact": "The Valrhona Manjari sampled uses soy lecithin, which Martin tastes as a slimy, oily finish that makes the fat stick in the mouth.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:21:51",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona",
+"Barry Callebaut"
+],
+"concepts": [
+"flavour style",
+"history"
+],
+"fact": "Valrhona brought a range of flavours (fruity, citric, nutty, creamy) where Callebaut has no acidity or fruit; Martin says Callebaut is like an ashtray with bad cocoa butter masked by vanilla, and Valrhona is less bad.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:23:22",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Barry Callebaut"
+],
+"concepts": [
+"flavour style",
+"vanilla",
+"cocoa butter"
+],
+"fact": "Martin finds Callebaut chocolate completely lacking in acidity, with what little fruit there is coming from vanilla, and poor cocoa butter.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:23:22",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"history",
+"craft"
+],
+"fact": "Bonnat dates from about 1880-1884 and, like Morin, survived without being bought out or merged; other European houses now belong to Mondelez, Nestlé or Mars.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:26:42",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"single estate",
+"history",
+"marketing"
+],
+"fact": "Bonnat began its origin line in 1983 with Chuao, Ecuador and specific plantations, and was often first with a trend (Mexico, Piura, Chuncho).",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:26:42",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"genetics",
+"sourcing"
+],
+"fact": "Stéphane Bonnat, the current generation, is planting Criollo clones in Mexico with his Mexican wife and local partners.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:26:42",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"scale",
+"craft"
+],
+"fact": "Bonnat makes about 600 tons a year of good-quality cacao, probably more than all European craft makers combined, yet is still family-owned and borderline craft.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:33:58",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"roasting",
+"defects"
+],
+"fact": "Bonnat's roast has risen and become too high since the pandemic; Martin calls this its biggest problem.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:35:03",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"cocoa butter",
+"recipe"
+],
+"fact": "Bonnat's 75% recipe is three ingredients (cacao, cocoa butter, sugar), implying 25% or more added cocoa butter, which tastes strongly coconutty and leaves a coating and plasticky feel.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:39:55",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"cocoa butter",
+"sourcing"
+],
+"fact": "Bonnat makes its own cocoa butter using Ivory Coast cacao, and said one of the year's two harvests is very coconutty.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:39:55",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"lecithin",
+"couverture"
+],
+"fact": "Bonnat has never used lecithin and adds cocoa butter for flow and tradition; a big part of its business is couverture and traditional French pralines.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:41:33",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"flavour style",
+"history"
+],
+"fact": "Martin is a long-time Bonnat fan, calling it his second good chocolate; its Nicaragua, Brazil and Mexican bars used to work well with the recipe.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:35:03",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Felchlin"
+],
+"concepts": [
+"scale",
+"couverture"
+],
+"fact": "Felchlin of Switzerland makes couverture and some good chocolate (Original Beans, Chobba Chobba), about 1,700 tons a year, though not all of its cacao is great.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:42:10",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Felchlin",
+"Bonnat",
+"Valrhona"
+],
+"concepts": [
+"scale"
+],
+"fact": "After Valrhona, Felchlin (about 1,700 tons) is the next biggest producer with some fine chocolate, followed by Bonnat at about 600 tons.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:42:10",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Michel Cluizel"
+],
+"concepts": [
+"history",
+"cacao percentage"
+],
+"fact": "Cluizel was probably the first to make high-percentage bars, with a 99% Noir Infini before Lindt launched its 100%.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:44:54",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Michel Cluizel"
+],
+"concepts": [
+"single estate",
+"sourcing"
+],
+"fact": "From around 2000 Cluizel launched origin chocolates such as Concepción (Venezuela, later lost to land seizures) and Los Ancones from Rizek in the Dominican Republic.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:44:54",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Michel Cluizel"
+],
+"concepts": [
+"vanilla",
+"recipe"
+],
+"fact": "Cluizel long used vanilla subtly and well, but about three years ago removed it and raised the percentage of every bar, making the chocolate now poor according to Martin.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:46:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Michel Cluizel",
+"Bonnat"
+],
+"concepts": [
+"flavour style"
+],
+"fact": "Martin says Bonnat still has good cacao with recipe problems that seem a choice, whereas Cluizel's chocolate has declined.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:46:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Pralus"
+],
+"concepts": [
+"history",
+"marketing"
+],
+"fact": "Pralus began in 1948 when the father's bakeries invented the praluline, a pink praline brioche; François Pralus later moved into chocolate.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:47:10",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Pralus"
+],
+"concepts": [
+"sourcing",
+"origin-country makers"
+],
+"fact": "François Pralus owns a small farm in Nosy Be, Madagascar, and was early to explore odd origins such as Vanuatu, whose first chocolate tasted of bacon.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:47:10",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Pralus"
+],
+"concepts": [
+"scale",
+"roasting"
+],
+"fact": "Pralus has about 60 stores in France and a few hundred tons of production, probably next after Bonnat, and is traditionally a high roaster, sometimes burnt.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:48:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Pralus"
+],
+"concepts": [
+"roasting",
+"defects",
+"machinery"
+],
+"fact": "Pralus's chocolate, even milk, was super burnt for 18 months about eight years ago because a roaster sensor gave the wrong temperature and nobody tasted it.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "03:05:36",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Akesson's",
+"Pralus"
+],
+"concepts": [
+"history",
+"roasting",
+"private label"
+],
+"fact": "Bertil Akesson's London shop chocolate was mostly made by Pralus, with some by Bonnat and Morin, and was burnt too because of the same faulty roaster sensor.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "03:05:36",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"A. Morin"
+],
+"concepts": [
+"history",
+"couverture"
+],
+"fact": "Morin dates to about the 1880s, is four generations old, and made only couverture until about 20 years ago, when Franck Morin began making bars.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:49:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"A. Morin"
+],
+"concepts": [
+"sourcing",
+"craft"
+],
+"fact": "Franck Morin is open to exploring origins; some Peruvian bars like Chanchamayo are good, and he makes his own cocoa butter and cocoa powder.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:49:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"A. Morin"
+],
+"concepts": [
+"roasting",
+"defects"
+],
+"fact": "Morin has raised its roast in the last year, perhaps to cover quality concerns; its Chuao tasted ashy and burnt.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:49:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"A. Morin"
+],
+"concepts": [
+"flavour style"
+],
+"fact": "Morin's Chanchamayo 63% was surprisingly its best bar a few years ago: very fruity, higher roast but not overwhelming.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "03:00:23",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Bonnat",
+"Pralus",
+"A. Morin"
+],
+"concepts": [
+"roasting",
+"flavour style"
+],
+"fact": "French roast style aims at chocolate, almond and lemon; Pralus was always prone to over-roast and now Bonnat and Morin are doing the same.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:53:31",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat",
+"A. Morin"
+],
+"concepts": [
+"price",
+"defects",
+"roasting"
+],
+"fact": "Martin links higher roasts at Bonnat and Morin to the cacao price bubble, with producers neglecting fermentation quality and makers roasting higher to hide defects.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:35:55",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona",
+"Pralus"
+],
+"concepts": [
+"roasting"
+],
+"fact": "Unlike Pralus, Valrhona, a much larger company, sits at the upper end of roast without ever being burnt.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "03:06:47",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Lindt"
+],
+"concepts": [
+"history",
+"cacao percentage"
+],
+"fact": "Lindt launched the first 100% bar, after Cluizel's 99%.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "02:44:54",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cocoa Town"
+],
+"concepts": [
+"machinery",
+"history"
+],
+"fact": "Cocoa Town introduced the South Indian rice wet grinder, adapted for chocolate, into the US; these became the larger micro-batch refiners.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:14:45",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"scale",
+"recipe"
+],
+"fact": "Friis-Holm is cited as a medium-scale maker working with half a ton to a ton of cacao, where a recipe error is a big correction.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "00:04:26",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Hershey",
+"Mars"
+],
+"concepts": [
+"sourcing",
+"history"
+],
+"fact": "Mars and Hershey began planting new cacao in Central America such as Soconusco in the early 20th century, reviving a region that had declined since the Spanish conquest.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "01:23:49",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Fry's"
+],
+"concepts": [
+"history",
+"industrial",
+"marketing"
+],
+"fact": "Joseph Fry bought an English apothecary chain around 1750, an early example of chain stores and retail brands.",
+"comparison": false,
+"source": "Webinar #4",
+"time": "01:45:42",
+"speaker": "Martin Christie (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Mondelez",
+"Nestlé",
+"Mars"
+],
+"concepts": [
+"history",
+"industrial"
+],
+"fact": "Most older European chocolate houses were absorbed into Mondelez, Nestlé or Mars, unlike Bonnat and Morin.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:26:42",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Pralus",
+"Bonnat"
+],
+"concepts": [
+"scale",
+"history"
+],
+"fact": "Pralus is a big French producer, probably next after Bonnat, not owned by a big commercial company.",
+"comparison": true,
+"source": "Webinar #4",
+"time": "02:48:28",
+"speaker": "Martin Christie (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Duffy's"
+],
+"concepts": [
+"roasting",
+"craft"
+],
+"fact": "Duffy runs roasting tests (24, 26, 28, 30, 32 minutes), tastes each and picks his favourite, showing a two-minute change alters the profile.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "00:11:41",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Duffy's"
+],
+"concepts": [
+"history",
+"machinery",
+"roasting"
+],
+"fact": "Duffy's was the first UK bean-to-bar maker; he uses an old patisserie oven with a broken thermometer and roasts by feel rather than precise numbers.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:45:35",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Cacaosuyo"
+],
+"concepts": [
+"heat damage",
+"storage"
+],
+"fact": "Cacaosuyo supplied a Peruvian bar and a heat-damaged version for the defect tasting; the damaged one scored 72 against 86, losing bright red-fruit notes and tempering.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:17:23",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Domori"
+],
+"concepts": [
+"defects",
+"heat damage",
+"roasting"
+],
+"fact": "A Domori Venezuelan 70% sample was found heat damaged and over-roasted, so it was flat, dry and crumbly; this may reflect shipping and storage.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:30:28",
+"speaker": "Joy (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cadbury"
+],
+"concepts": [
+"industrial",
+"sourcing",
+"milk"
+],
+"fact": "Joy saw Cadbury's cacao in an Indian plantation left as a mouldy pile, because it is bought only to count as chocolate, not for flavour.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:40:13",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Cadbury",
+"Hershey"
+],
+"concepts": [
+"milk",
+"industrial",
+"cacao percentage"
+],
+"fact": "Cadbury's and Hershey's use so little cacao that its quality barely matters, thanks to milk powder.",
+"comparison": true,
+"source": "Webinar #5",
+"time": "01:39:07",
+"speaker": "Joy (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cadbury"
+],
+"concepts": [
+"history",
+"packaging",
+"marketing"
+],
+"fact": "Cadbury created the first box of chocolates in 1868, and its chocolate was known for being very sweet.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:40:42",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Fry's"
+],
+"concepts": [
+"history"
+],
+"fact": "Fry's made what is thought to be the first commercial eating bar in 1847 in Bristol, the bitter, rough 'Chocolate Stick', followed by the mint fondant Chocolate Cream.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:38:01",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Fry's",
+"Cadbury"
+],
+"concepts": [
+"history",
+"cacao percentage"
+],
+"fact": "Fry's and Cadbury are the Quaker families of the UK; Cadbury's was very sweet while Fry's was bitter and called dark chocolate.",
+"comparison": true,
+"source": "Webinar #5",
+"time": "01:37:24",
+"speaker": "Joy (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Van Houten"
+],
+"concepts": [
+"history",
+"alkalisation",
+"machinery"
+],
+"fact": "Casparus van Houten's cocoa press removed the fat to make cocoa powder, and his son alkalised the powder to reduce acidity and dissolve it better.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:36:59",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Nestlé"
+],
+"concepts": [
+"history",
+"milk"
+],
+"fact": "Henri Nestlé invented milk flour in 1867, and Daniel Peter then added it to chocolate to create milk chocolate.",
+"comparison": false,
+"source": "Webinar #5",
+"time": "01:39:07",
+"speaker": "Joy (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Caffarel",
+"Menier",
+"Suchard"
+],
+"concepts": [
+"history",
+"industrial"
+],
+"fact": "Caffarel, Menier and Suchard in France, with Cadbury, Fry's and Van Houten, were 19th-century household-name chocolate companies.",
+"comparison": true,
+"source": "Webinar #5",
+"time": "01:37:24",
+"speaker": "Joy (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Mars"
+],
+"concepts": [
+"history",
+"sugar"
+],
+"fact": "Between the world wars Mars made heat-resistant ration bars for soldiers in North Africa, using lots of sugar and oat powder, deliberately without good flavour.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "00:06:16",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Godiva"
+],
+"concepts": [
+"industrial",
+"shelf life",
+"inclusions"
+],
+"fact": "Godiva is a luxury brand that cuts cacao with cream, nuts and preservatives in pralines and fillings so the boxes last a year or more.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "00:17:28",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Godiva",
+"Barry Callebaut"
+],
+"concepts": [
+"marketing",
+"history"
+],
+"fact": "Godiva entered France in the 1970s backed by Callebaut, and this fuelled the 'finest Belgian chocolate' marketing campaign that persists today.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "00:18:24",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cargill"
+],
+"concepts": [
+"sourcing",
+"genetics",
+"scale"
+],
+"fact": "Cargill began planting cacao in Asia, mainly ICS-95, to reduce disease and war risk in Africa; this is why Vietnam, Papua New Guinea and Indonesia have good cacao.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:02:01",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Hershey",
+"Mars"
+],
+"concepts": [
+"sourcing",
+"history",
+"genetics"
+],
+"fact": "When the US candy industry took off, Hershey and Mars invested in growing cacao in Central America, mixing local criollos with imported trinitarios or amelonados, which displaced the old criollos.",
+"comparison": true,
+"source": "Webinar #6",
+"time": "01:13:49",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"single variety",
+"genetics",
+"sourcing"
+],
+"fact": "Friis-Holm uses Ingemann's named Nicaraguan single varietals such as Chuno and Rugoso, which are planted, harvested, fermented and dried separately, and labels bars single variety.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "00:47:52",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"single variety",
+"flavour style"
+],
+"fact": "A set of Friis-Holm bars from different Nicaraguan varietals is ideal for tasting genetics side by side, since soil, climate, maker, process and recipe are identical.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:21:24",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"single variety",
+"sourcing"
+],
+"fact": "Ingemann's single varieties are used mainly by Friis-Holm but now also by many other craft makers.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:17:08",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Xoco Gourmet"
+],
+"concepts": [
+"single variety",
+"genetics",
+"sourcing"
+],
+"fact": "Xoco Gourmet in Honduras grows the Mayan Red variety, used by a few craft makers.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:17:51",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Betulia"
+],
+"concepts": [
+"single variety",
+"genetics",
+"sourcing"
+],
+"fact": "Betulia, a farm in Colombia, grows three separate white-bean cacaos (B9, B6, B8) selected for flavour and kept apart from other cacao.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "00:47:52",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Rizek"
+],
+"concepts": [
+"single variety",
+"genetics",
+"nacional"
+],
+"fact": "Rizek in the Dominican Republic plants and harvests local clonal varieties separately and grows neo-Nacionales descended from Ecuadorian Nacional.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:17:51",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Kokoa Kamili"
+],
+"concepts": [
+"genetics",
+"nacional",
+"origin-country makers"
+],
+"fact": "Kokoa Kamili in Tanzania has had its cacao genetically tested and it is considered a neo-Nacional.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:17:51",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Domori"
+],
+"concepts": [
+"roasting",
+"single variety",
+"sourcing"
+],
+"fact": "Domori uses Franceschi (Venezuela) cacao, but the teacher says its high roast partly destroys the cacao's character.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:17:51",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Paradai"
+],
+"concepts": [
+"single estate",
+"genetics",
+"flavour style"
+],
+"fact": "Paradai in Thailand makes a Chanthaburi bar from selected white beans only, giving a very light brown colour.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "00:58:31",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Franco Cacao"
+],
+"concepts": [
+"genetics",
+"craft",
+"fermentation"
+],
+"fact": "Franco Cacao in Bahia, Brazil is a cacao genetics specialist as well as a maker, known for the cloned PS 1319 from Porto Seguro farm, a finalist in a local quality competition.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:34:13",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Franco Cacao"
+],
+"concepts": [
+"fermentation",
+"drying",
+"roasting",
+"ccn-51"
+],
+"fact": "Franco Cacao uses careful fermentation protocols, drying and roasting to mitigate off-flavours in high-yield, resistant but weaker-flavoured varieties such as CCN-51, with limited success.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:05:21",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Franco Cacao"
+],
+"concepts": [
+"ccn-51",
+"flavour style",
+"genetics"
+],
+"fact": "In class tasting, Franco Cacao's CCN-51 scored far lower (66.8) than its PS 1319 clone (83.1), showing flat flavour, astringency, metallic notes and acetic fizz.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:10:31",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Franco Cacao"
+],
+"concepts": [
+"genetics",
+"ccn-51",
+"flavour style"
+],
+"fact": "Tasting two Franco Cacao bars side by side contrasted the modern Trinitario hybrid PS 1319 with CCN-51, to teach recognising CCN-51 despite Ecuador or Nacional claims.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "01:50:03",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Likkle More"
+],
+"concepts": [
+"cocoa butter",
+"defects",
+"single estate"
+],
+"fact": "The Jamaican 72% Bachelor's Hall Estate bar was rancid, which the teacher attributed to poor or old added decorative cocoa butter rather than the beans.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:22:51",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Likkle More"
+],
+"concepts": [
+"marketing",
+"packaging"
+],
+"fact": "The Jamaican maker uses very colourful packaging and splashes colour on plain bars, which looks like an inclusion bar.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:14:57",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Likkle More",
+"Pump Street"
+],
+"concepts": [
+"single estate",
+"sourcing"
+],
+"fact": "Both the Jamaican maker and UK maker Pump Street make bars from Bachelor's Hall Estate; Pump Street's take is probably closer to European taste.",
+"comparison": true,
+"source": "Webinar #6",
+"time": "02:24:05",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Paytiti"
+],
+"concepts": [
+"fermentation",
+"drying",
+"roasting",
+"single origin"
+],
+"fact": "Paititi, a family-owned farm in Cusco, makes a Chuncho mix bar using five-day fermentation, seven to eight days of drying and a gentle light roast.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:34:54",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Paytiti"
+],
+"concepts": [
+"blends",
+"genetics"
+],
+"fact": "Paititi sometimes makes single-Chuncho-type bars but this one is a mix of different Chuncho subtypes grown in its area.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:26:16",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"El Rey"
+],
+"concepts": [
+"origin-country makers",
+"single variety",
+"craft"
+],
+"fact": "El Rey is a very big name for craft chocolate in Venezuela and has used Ocumare 61, which has dairy, earthy, peach and floral notes.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:44:46",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"origin-country makers",
+"sourcing"
+],
+"fact": "Ara Chocolat in Paris is one of the Venezuelan-run makers working with Venezuelan cacao despite export difficulties.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:42:08",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"single variety",
+"criollo"
+],
+"fact": "Ara has made a limited bar with the rare Guasare white-bean Criollo, with a strong pistachio note.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:53:48",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"criollo",
+"sourcing",
+"cocoa butter"
+],
+"fact": "Ara's 70% Porcelana Criollo comes from the Caño de Tigre plantation in Sur del Lago (under a ton a year) and has no added cocoa butter.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "03:16:29",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"flavour style",
+"cocoa butter"
+],
+"fact": "Ara's Venezuelan bar tasted creamy, smooth and European in style, scoring 91.55 in class, without any added cocoa butter.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "03:19:04",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Soma"
+],
+"concepts": [
+"criollo",
+"sourcing",
+"single variety"
+],
+"fact": "Soma in Canada buys real Porcelana from a local genome garden rather than a farm, making its bar a good example of Porcelana.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:53:10",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Delirio"
+],
+"concepts": [
+"origin-country makers",
+"craft",
+"sourcing"
+],
+"fact": "Delirio is a women-owned Venezuelan maker based on Margarita Island that makes a 70% Choroni bar from Hacienda La Sabaneta cacao.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "02:58:58",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Hacienda La Sabaneta"
+],
+"concepts": [
+"history",
+"single estate",
+"genetics"
+],
+"fact": "Hacienda La Sabaneta in Choroni, centuries old and once expropriated and abandoned, was revived in 2020 by the Gonzales family and grows old Criollo, Porcelana and local Trinitario inside a national park.",
+"comparison": false,
+"source": "Webinar #6",
+"time": "03:09:21",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"marketing",
+"couverture",
+"history"
+],
+"fact": "Valrhona pioneered origin couvertures and wine-style vocabulary such as Grand Cru in the 1980s, helping reintroduce origin to fine chocolate.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:03:38",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"single origin"
+],
+"fact": "Valrhona's Guanaja, from Honduras, was its first origin bar and first Grand Cru, though it is probably no longer made.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:05:13",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"smoke",
+"flavour style",
+"milk"
+],
+"fact": "Valrhona's early milk chocolate Jivara Lactée used smoky Papua New Guinea cacao and was popular, as smoke works in milk chocolate but is overpowering in dark.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:33:21",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"scale",
+"couverture",
+"price"
+],
+"fact": "Larger couverture manufacturers like Valrhona count as the regular fine-chocolate tier, above supermarket premium brands and compound chocolate.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:21:29",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"La Maison du Chocolat"
+],
+"concepts": [
+"history",
+"marketing"
+],
+"fact": "Maison du Chocolat, with Valrhona, was an early bigger name that introduced origin couvertures to the market.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:03:38",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona",
+"Michel Cluizel",
+"Bonnat",
+"A. Morin",
+"Pralus"
+],
+"concepts": [
+"history",
+"marketing",
+"bean-to-bar"
+],
+"fact": "Valrhona, Cluizel, Bonnat, Morin and Pralus all adopted the wine vocabulary of origin and were true chocolatiers, making chocolate from the bean, selling to pastry chefs and retail.",
+"comparison": true,
+"source": "Webinar #7",
+"time": "00:06:27",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Scharffen Berger"
+],
+"concepts": [
+"bean-to-bar",
+"machinery",
+"history"
+],
+"fact": "Scharffen Berger started US garage-to-bar making and built its own machines for every chocolate-making step from scratch.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:07:52",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Scharffen Berger",
+"Valrhona"
+],
+"concepts": [
+"machinery",
+"bean-to-bar"
+],
+"fact": "Unlike the big French makers, who kept old traditional grinders and big conches, early bean-to-bar makers such as Scharffen Berger built their own machines.",
+"comparison": true,
+"source": "Webinar #7",
+"time": "00:07:52",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Amedei",
+"Domori"
+],
+"concepts": [
+"bean-to-bar",
+"history",
+"scale"
+],
+"fact": "Amedei and Domori were the first in Italy to make chocolate from the bean on a smaller scale.",
+"comparison": true,
+"source": "Webinar #7",
+"time": "00:08:42",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"El Rey"
+],
+"concepts": [
+"bean-to-bar",
+"history",
+"origin-country makers"
+],
+"fact": "El Rey in Venezuela was an important early participant in the bean-to-bar movement.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:08:42",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Grenada Chocolate Company"
+],
+"concepts": [
+"tree-to-bar",
+"history"
+],
+"fact": "The Grenada Chocolate Company, founded by Mott Green, was the first tree-to-bar maker; the term did not exist before it.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:08:42",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Pacari"
+],
+"concepts": [
+"craft",
+"inclusions",
+"awards"
+],
+"fact": "Pacari of Ecuador pioneered raw (unroasted) chocolate, is known for regional-ingredient inclusions and flavours, and still wins awards each year.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:09:31",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Amano",
+"Askinosie",
+"Patric",
+"Rogue",
+"Theo",
+"Taza"
+],
+"concepts": [
+"bean-to-bar",
+"direct trade",
+"history"
+],
+"fact": "These first US bean-to-bar makers shortened supply chains, bought nearly direct from farmers, and were transparent about cacao origin.",
+"comparison": true,
+"source": "Webinar #7",
+"time": "00:10:16",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Amano",
+"Askinosie",
+"Patric",
+"Rogue",
+"Theo",
+"Taza"
+],
+"concepts": [
+"recipe",
+"cacao percentage",
+"cocoa butter"
+],
+"fact": "Early bean-to-bar purists made only two-ingredient 70% dark bars with no added cocoa butter to differentiate themselves from big industrial chocolate.",
+"comparison": true,
+"source": "Webinar #7",
+"time": "00:11:08",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cocoa Town"
+],
+"concepts": [
+"machinery"
+],
+"fact": "CocoaTown, a US manufacturer, first imported Indian wet rice grinders for chocolate and recalibrated them for multi-day running; it now makes batches from 2-3 up to about 60 kg.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:12:45",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Duffy's"
+],
+"concepts": [
+"bean-to-bar",
+"history",
+"scale"
+],
+"fact": "Duffy's in the UK was presumably the first micro-batch chocolate maker in Europe and still produces.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:13:57",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Fu Wan"
+],
+"concepts": [
+"tree-to-bar",
+"fermentation"
+],
+"fact": "Fu Wan in Taiwan is a tree-to-bar maker doing high-end, nerdy fermentation experiments and nano lots.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:28:16",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"fermentation",
+"single variety",
+"sourcing"
+],
+"fact": "The Friis-Holm Chuno double-turned versus triple-turned bars were an experiment with Ingemann showing how one extra fermentation turn changes flavour, all else equal.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:41:44",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"cocoa butter",
+"recipe",
+"history"
+],
+"fact": "Friis-Holm follows the early French makers in adding a lot of cocoa butter to his chocolate.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:47:03",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"cocoa butter",
+"sourcing",
+"defects"
+],
+"fact": "Friis-Holm's main difficulty is finding stable-quality cocoa butter, which Lila thinks explains dustiness or off notes even though the beans and fermentation are fine.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:47:03",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"cocoa butter",
+"sourcing",
+"defects"
+],
+"fact": "The cocoa butter in Friis-Holm's bars is probably not from Ingemann or the same variety, so any defect probably comes from it.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:56:26",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"awards",
+"flavour style"
+],
+"fact": "Friis-Holm wins awards most years with different products, showing persistent quality, though a given bar may not match the batch that won.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:01:15",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"craft",
+"defects"
+],
+"fact": "Students called Friis-Holm one of the greatest makers; the teacher noted he is not infallible and his bars can have defects.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:44:05",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"direct trade",
+"sourcing",
+"single variety"
+],
+"fact": "Friis-Holm buys from Ingemann, a post-harvest processor and farmer, but not all cacao fermented and dried there is grown by Ingemann.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:17:43",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Friis-Holm"
+],
+"concepts": [
+"fermentation",
+"craft"
+],
+"fact": "The class describes Friis-Holm's approach with Ingemann as nerdy and tightly controlled, making mould in the fermentation unlikely.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:56:26",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Zorzal"
+],
+"concepts": [
+"cooperatives",
+"fermentation",
+"sourcing"
+],
+"fact": "Zorzal Reserve in the Dominican Republic grows cacao in its nature reserve and buys wet cacao from nearby farms, then ferments and dries it in its own facilities.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:16:02",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Kokoa Kamili"
+],
+"concepts": [
+"cooperatives",
+"fermentation",
+"sourcing"
+],
+"fact": "Kokoa Kamili in Tanzania is cited as a foreign-run central-fermentation model, not strictly a co-op, buying farmers' wet cacao.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:16:02",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Latitude Trade"
+],
+"concepts": [
+"cooperatives",
+"sourcing"
+],
+"fact": "Latitude Trade in Uganda is given as an example of a foreign company operating with cooperatives.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:16:02",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Zorzal",
+"Kokoa Kamili"
+],
+"concepts": [
+"cooperatives",
+"sourcing"
+],
+"fact": "Zorzal and Kokoa Kamili are both similar to co-ops, central processors buying wet cacao, rather than classic farmer-owned co-ops.",
+"comparison": true,
+"source": "Webinar #7",
+"time": "01:16:02",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Paradai"
+],
+"concepts": [
+"direct trade",
+"awards",
+"sourcing"
+],
+"fact": "Paradai buys from two to three family farms in Chanthaburi and has won awards for direct trade; the International Chocolate Awards value traceability.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:49:09",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Paradai"
+],
+"concepts": [
+"single variety",
+"roasting",
+"genetics"
+],
+"fact": "Paradai's 70% Chanthaburi uses selected white-bean Chumpon 1 and 2 hybrids and a very low roast, giving an unusually light colour; other makers' Chanthaburi is darker.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:43:48",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Paradai"
+],
+"concepts": [
+"cocoa butter",
+"recipe"
+],
+"fact": "Paradai's Chanthaburi 70% has no added cocoa butter, only beans and sugar.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:41:02",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Paradai"
+],
+"concepts": [
+"fermentation",
+"terroir"
+],
+"fact": "Paradai's Chanthaburi cacao is intercropped with tropical fruits like durian and mangosteen, whose local yeasts probably add fruitiness to its fermentation.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:47:55",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Paradai"
+],
+"concepts": [
+"origin-country makers",
+"flavour style"
+],
+"fact": "Paradai is presented as a Thai tree-to-bar-style success showing Asian makers rising, and is the teacher's long-time favourite bar.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:30:04",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Vigdis Rosenkilde"
+],
+"concepts": [
+"sourcing",
+"craft"
+],
+"fact": "Norwegian maker Vigdis Rosenkilde makes her own batches of Peruvian-origin chocolate in the Cacaosuyo factory, selecting the cacao herself.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "02:01:29",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cacaosuyo"
+],
+"concepts": [
+"machinery",
+"origin-country makers"
+],
+"fact": "Cacaosuyo's factory in Peru hosts a guest maker, Vigdis Rosenkilde, who produces her own batches there.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "02:01:29",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Goodnow Farms"
+],
+"concepts": [
+"single variety",
+"price",
+"genetics"
+],
+"fact": "Goodnow Farms made a 35-euro bar from the new white-bean cacao of a Matagalpa, Nicaragua farm (not Ingemann), with licorice and spicy notes.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "02:02:12",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cocobod"
+],
+"concepts": [
+"sourcing",
+"price",
+"industrial"
+],
+"fact": "In Ghana all cacao is bought by the government body Cocobod, which regulates prices, so makers cannot pay direct premiums to farmers.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:18:55",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Cocobod"
+],
+"concepts": [
+"sourcing",
+"scale"
+],
+"fact": "Unlike Ghana's Cocobod, Ivory Coast has no central government control of cacao purchasing.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:18:55",
+"speaker": "Lila (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Cacao Bisesto"
+],
+"concepts": [
+"genetics",
+"single variety",
+"fermentation"
+],
+"fact": "Cacao Bisesto, a Matagalpa farm owned by Gif Laube, planted white cacao six or seven years ago and does fermentation and pre-drying experiments.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "02:03:30",
+"speaker": "Lila (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Ingemann"
+],
+"concepts": [
+"fermentation",
+"machinery",
+"craft"
+],
+"fact": "Ingemann controls every fermentation step, including box temperature inside and outside and airflow, filling boxes with roughly 500 kg of beans.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "01:05:18",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Ingemann"
+],
+"concepts": [
+"single variety",
+"sourcing"
+],
+"fact": "Ingemann plants, harvests and processes each cacao variety separately on its Nicaraguan farms.",
+"comparison": false,
+"source": "Webinar #7",
+"time": "00:41:44",
+"speaker": "Lila (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Baianí"
+],
+"concepts": [
+"history",
+"origin-country makers"
+],
+"fact": "Baianí is a Brazilian brand founded in 2018 by a couple (Tuta and Juliana) with family roots in Bahia, often seen at international chocolate fairs.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:06:47",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Baianí"
+],
+"concepts": [
+"genetics",
+"single variety"
+],
+"fact": "Baianí runs many microlots to learn what genetics it has; its website describes a disease-resistant, productive hybrid of a Forest Area type and Trinitario, which Therese calls very generic.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:12:08",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Baianí"
+],
+"concepts": [
+"roasting"
+],
+"fact": "Baianí makes the same bean in two roast profiles, called mild and bold, so tasters can compare how roast changes flavour.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:12:08",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Baianí"
+],
+"concepts": [
+"roasting",
+"flavour style"
+],
+"fact": "In Baianí's two roasts, the mild was sweeter with floral, honey and banana notes, while the bold gave more defined fruit (plum, raisin, prune) but lost sweetness and floral; Therese felt the bold was slightly ashy.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:19:33",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Duffy's"
+],
+"concepts": [
+"roasting",
+"craft",
+"machinery"
+],
+"fact": "Duffy, a former Formula One mechanic, has 20-plus years in craft chocolate and works with an oven with stuck settings; he roast-tests by pulling a few beans every minute from about 15-20 minutes.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:22:14",
+"speaker": "Therese (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Fresco"
+],
+"concepts": [
+"roasting",
+"craft"
+],
+"fact": "Fresco, near San Francisco, has long made a light, medium and high roast series and has stable settings, so batch-to-batch variance is low.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:28:44",
+"speaker": "Therese (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Fresco"
+],
+"concepts": [
+"conching",
+"marketing"
+],
+"fact": "Fresco also offers a comparison range across conching time, giving a useful context, unlike makers who just say 'conched 96 hours'.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:30:09",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Fresco"
+],
+"concepts": [
+"awards"
+],
+"fact": "Fresco has won awards from the Academy of Chocolate, according to a student.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:31:57",
+"speaker": "student",
+"confidence": "medium"
+},
+{
+"makers": [
+"Elemento"
+],
+"concepts": [
+"roasting",
+"origin-country makers"
+],
+"fact": "Elemento, a Peruvian brand, has made a light, medium and dark roast series for five-six years or more; the roasts used to be more extreme and have grown closer.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:37:03",
+"speaker": "Therese (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Elemento"
+],
+"concepts": [
+"roasting",
+"flavour style"
+],
+"fact": "In Elemento's series, the light roast shows floral, honey and tight green-banana notes; higher roasts lose floral, gain sugar and bitterness, and give clearer fruit definition.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:37:48",
+"speaker": "Therese (teacher)",
+"confidence": "high"
+},
+{
+"makers": [
+"Solkiki"
+],
+"concepts": [
+"sourcing",
+"single origin",
+"craft"
+],
+"fact": "Solkiki is a very small, creative, vegan UK company using Peruvian Marañón beans (Fortunato No. 4).",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:39:44",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Solkiki"
+],
+"concepts": [
+"roasting",
+"craft"
+],
+"fact": "Solkiki normally roasts medium-plus but out of curiosity made an unroasted (raw) bar from the same beans.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:41:15",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Solkiki"
+],
+"concepts": [
+"roasting",
+"flavour style"
+],
+"fact": "Solkiki's unroasted bar is tight with grassy notes, green banana and honey, while the roasted version has more developed flavours but lost some lighter notes.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:44:30",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Fresco",
+"Elemento",
+"Solkiki",
+"Baianí"
+],
+"concepts": [
+"roasting"
+],
+"fact": "Therese uses Baianí, Fresco, Elemento and Solkiki as examples of makers whose roast comparisons show that lower roasts give floral/honey/tight fruit and higher roasts give defined fruit, darker sugars and bitterness.",
+"comparison": true,
+"source": "SENSORY REVIEW #2",
+"time": "00:37:48",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Silva"
+],
+"concepts": [
+"sourcing",
+"direct trade",
+"sustainability",
+"marketing"
+],
+"fact": "Silva, a Belgium-based bean source, is praised for ethical sourcing and for publishing detailed write-ups of its trips to individual producers worldwide.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:57:25",
+"speaker": "Therese (teacher)",
+"confidence": "low"
+},
+{
+"makers": [
+"Manoa",
+"Dandelion"
+],
+"concepts": [
+"marketing"
+],
+"fact": "Manoa (American maker) and Dandelion made a series of interviews around cacao for Chocolate TV.",
+"comparison": true,
+"source": "SENSORY REVIEW #2",
+"time": "00:11:38",
+"speaker": "Therese (teacher)",
+"confidence": "medium"
+},
+{
+"makers": [
+"Goodnow Farms"
+],
+"concepts": [
+"origin-country makers"
+],
+"fact": "Goodnow Farms is named by a student alongside Fresco as an American craft maker.",
+"comparison": false,
+"source": "SENSORY REVIEW #2",
+"time": "00:31:57",
+"speaker": "student",
+"confidence": "low"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"history",
+"single origin",
+"craft"
+],
+"fact": "Bonnat was founded in 1861, remains family owned, and never sold out to an industrial producer; Stéphane Bonnat is the current master chocolatier making from the bean.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Bonnat",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"history",
+"single origin"
+],
+"fact": "Bonnat tried origin chocolate in 1900 without success, revived it in 1983 with a full range (Ivory Coast, Madagascar, Chuao, Ecuador, Maragnan, Ceylon, Trinidad), and is still a leading origin maker.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Bonnat",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"awards",
+"sourcing"
+],
+"fact": "Stéphane Bonnat makes award-winning chocolate and keeps exploring new origins and varieties, including a Soconusco bar named after Royal Cacao from Soconusco.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Bonnat",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"couverture",
+"single origin"
+],
+"fact": "Valrhona, founded 1922 and renamed in 1947, launched its first origin 'Grand Cru', Guanaja, in 1986 with Robert Linxe; this helped start the fine chocolate revolution.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Valrhona",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"blends",
+"criollo",
+"couverture"
+],
+"fact": "Valrhona's early Grand Crus: Guanaja (blend of 10 South American criollos), Carraibe (Caribbean blend) and Manjari (early Madagascan origin); first sold only as couverture to chefs.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Valrhona",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"scale",
+"sourcing",
+"recipe"
+],
+"fact": "Valrhona now processes around 10,000 tonnes of cacao a year, includes Ivory Coast and Ghana cacao, and Guanaja no longer mentions criollo or South America on its packs.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Valrhona",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"marketing"
+],
+"fact": "Valrhona introduced vintage bars with harvest year in the early 2000s, such as Gran Couva (Trinidad), Chuao (Venezuela) and Ampamakia (Madagascar criollo).",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Valrhona",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"roasting",
+"vanilla",
+"lecithin",
+"flavour style",
+"mouthfeel"
+],
+"fact": "Valrhona's style is a medium-high French roast, good vanilla, soy lecithin, fine soft easily melting texture, and acidity as its signature note.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — Valrhona",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Valrhona"
+],
+"concepts": [
+"history",
+"origin-country makers"
+],
+"fact": "Valrhona was reinvigorated in the late 20th century by Robert Linxe, founder of La Maison du Chocolat, whose 1975 partnership led to the 1986 Guanaja launch.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #9",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Michel Cluizel"
+],
+"concepts": [
+"history",
+"origin-country makers"
+],
+"fact": "Michel Cluizel was founded in 1947 in Normandy, offers origin bars and couvertures plus commercial lines like chocolate mushrooms and sardines, and is now run by Marc Cluizel.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Michel Cluizel"
+],
+"concepts": [
+"cacao percentage",
+"spice",
+"single origin",
+"history"
+],
+"fact": "Cluizel made high-percentage bars from 1990 (30g 'Noir Infini', only cacao and spices) and its first declared-origin bar, Concepcion (Venezuela), in 2000.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Michel Cluizel",
+"Rizek"
+],
+"concepts": [
+"fermentation",
+"single estate",
+"sourcing"
+],
+"fact": "Cluizel's 'Los Ancones' single-estate bar uses cacao from Rizek's farms in the Dominican Republic; Rizek has one of the most advanced fermentation centres in the world.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Pralus"
+],
+"concepts": [
+"history",
+"single origin",
+"packaging"
+],
+"fact": "Pralus is a family business that began with the Praluline brioche in 1948; François Pralus began chocolate making and owns a plantation in Nosy-be, Madagascar (2000), and works with 18+ origins.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Pralus"
+],
+"concepts": [
+"packaging",
+"single origin",
+"marketing"
+],
+"fact": "Pralus's 'Pyramide' pack of 50g bars from different origins was an early way to sample origins and is still available.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"A. Morin"
+],
+"concepts": [
+"history",
+"inclusions",
+"direct trade",
+"sourcing"
+],
+"fact": "A. Morin (Donzères, since 1884, fourth generation Franck Morin) grows almonds, hazelnuts and sour cherries on the family farm and sources direct from plantations across about thirty origins.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"A. Morin",
+"Erithaj"
+],
+"concepts": [
+"craft",
+"origin-country makers"
+],
+"fact": "Erithaj, Arnaud Stengel's brand showcasing Vietnamese cacao, is produced by Franck Morin combining A. Morin's expertise with Stengel's vision.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Ara Chocolat"
+],
+"concepts": [
+"bean-to-bar",
+"craft",
+"flavour style"
+],
+"fact": "Ara in Paris is a new-style small French bean-to-bar maker that deviates from the highly refined, subtle palate of traditional French makers.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Hasnaâ Chocolats"
+],
+"concepts": [
+"bean-to-bar",
+"couverture"
+],
+"fact": "Hasnaâ Chocolats in Bordeaux used to buy couverture from large fine chocolate brands and now makes its own chocolate from scratch.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Ara Chocolat",
+"Valrhona",
+"Michel Cluizel",
+"Pralus",
+"Bonnat",
+"A. Morin"
+],
+"concepts": [
+"flavour style",
+"craft"
+],
+"fact": "Traditional French makers share a highly refined, subtle flavour palette; Ara (Paris) deviates from it with small-batch bean-to-bar work.",
+"comparison": true,
+"source": "Course booklet",
+"time": "Producer styles — French fine chocolate makers",
+"speaker": "",
+"confidence": "medium"
+},
+{
+"makers": [
+"Valrhona",
+"Michel Cluizel",
+"Bonnat",
+"A. Morin",
+"Pralus"
+],
+"concepts": [
+"history",
+"single origin",
+"marketing"
+],
+"fact": "After Valrhona's 1986 Guanaja, other established French makers (Cluizel, Bonnat, A. Morin, Pralus) took up origin chocolate and wine-style terms like Grand Cru, terroir and vintage.",
+"comparison": true,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #9",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Duffy's"
+],
+"concepts": [
+"craft",
+"machinery",
+"history"
+],
+"fact": "Duffy's Chocolate (UK, Duffy Sheardown, Red Star Chocolate) pioneered use of Indian tabletop wet rice grinders for micro-batch chocolate, later adopted across Eastern Europe, Asia and Latin America.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Cocoa Town"
+],
+"concepts": [
+"machinery",
+"history",
+"scale"
+],
+"fact": "Atlanta-based Cocoa Town imported Indian tabletop grinders that fuelled micro-batch chocolate growth in the USA and worldwide.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Macintyre",
+"Lloveras"
+],
+"concepts": [
+"machinery",
+"scale"
+],
+"fact": "Scottish Macintyre and Barcelona's Lloveras are common machinery suppliers for smaller fine chocolate companies, often selling to upscaling micro-batch makers.",
+"comparison": true,
+"source": "Course booklet",
+"time": "Producer styles — Medium sized/fine chocolate producers",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"CPS"
+],
+"concepts": [
+"machinery",
+"winnowing",
+"scale"
+],
+"fact": "CPS Ltd (UK) supplies laboratory-sized bean breakers used by most small-scale makers and a winnower handling about 3-4 kg per hour.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Chocolate production — Micro-batch",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Crankenstein"
+],
+"concepts": [
+"machinery",
+"scale"
+],
+"fact": "The 'Crankenstein' is a hand-cranked bean breaker with a small hopper and toothed rollers used by small home batch makers.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Chocolate production — Micro-batch",
+"speaker": "",
+"confidence": "medium"
+},
+{
+"makers": [
+"Amedei",
+"Domori",
+"El Rey",
+"Scharffen Berger"
+],
+"concepts": [
+"history",
+"craft",
+"bean-to-bar"
+],
+"fact": "Amedei and Domori (Italy), El Rey (Venezuela) and Scharffen Berger (USA) were inspired by the French new wave; Scharffen Berger founded the US bean-to-bar movement.",
+"comparison": true,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Grenada Chocolate Company"
+],
+"concepts": [
+"tree-to-bar",
+"history",
+"origin-country makers"
+],
+"fact": "The Grenada Chocolate Company was the first 'tree to bar' producing company.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Pacari"
+],
+"concepts": [
+"origin-country makers",
+"flavour style",
+"history"
+],
+"fact": "Pacari in Ecuador, producing in the country of origin, led the way in 'raw', minimally processed chocolate.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Amano",
+"Askinosie",
+"Patric",
+"Rogue",
+"Theo",
+"Taza"
+],
+"concepts": [
+"craft",
+"bean-to-bar",
+"history"
+],
+"fact": "New US makers Amano, Askinosie, Patric, Rogue, Theo and Taza crafted chocolate 'true to bean', driving the US craft movement.",
+"comparison": true,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Godiva"
+],
+"concepts": [
+"history",
+"mouthfeel",
+"marketing"
+],
+"fact": "In the 1970s Belgian Godiva invaded France, creating a culture where 'Belgian is best' and texture was king.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #8",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Cadbury",
+"Fry's",
+"Caffarel",
+"Menier",
+"Suchard",
+"Van Houten"
+],
+"concepts": [
+"history",
+"industrial"
+],
+"fact": "Early chocolate companies Cadbury, Fry's, Caffarel, Menier, Suchard and Van Houten became household names and raced to make the first commercial eating bar.",
+"comparison": true,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #5",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Fry's"
+],
+"concepts": [
+"history"
+],
+"fact": "Fry's of Bristol probably made the first chocolate bar, the 1847 'Fry's Chocolate Stick', bitter and rough with a fondant centre.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #5",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Van Houten"
+],
+"concepts": [
+"alkalisation",
+"cocoa butter",
+"history"
+],
+"fact": "Casparus van Houten invented the cocoa press for extracting cocoa butter, and son Coenraad developed alkalising, making cocoa solids less bitter and more water-soluble.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #5",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Nestlé"
+],
+"concepts": [
+"milk",
+"history"
+],
+"fact": "Henri Nestlé invented milk flour in 1867, the first powdered milk, which Daniel Peter used to make milk chocolate.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #6",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Cadbury"
+],
+"concepts": [
+"history",
+"packaging"
+],
+"fact": "Cadbury's introduced the first chocolate box of candies in 1868.",
+"comparison": false,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #6",
+"speaker": "",
+"confidence": "high"
+},
+{
+"makers": [
+"Hershey"
+],
+"concepts": [
+"history",
+"sourcing"
+],
+"fact": "W. Jeffrey Hurst of the Hershey Foods Technical Center analysed Rio Azul Maya vessel scrapings and found theobromine, proving chocolate drinks about 500 AD.",
+"comparison": false,
+"source": "LECTURE #2",
+"time": "00:18:52",
+"speaker": "Maricel Presilla (lecturer)",
+"confidence": "high"
+},
+{
+"makers": [
+"Bonnat"
+],
+"concepts": [
+"history",
+"marketing",
+"sourcing"
+],
+"fact": "Stéphane Bonnat used the name 'Royal Cacao from Soconusco' for his remarkable Soconusco bar, referring to the cacao the Spanish court kept with the royal jewels.",
+"comparison": false,
+"source": "LECTURE #2",
+"time": "00:27:16",
+"speaker": "Maricel Presilla (lecturer)",
+"confidence": "high"
+},
+{
+"makers": [
+"Chocolate Alchemy",
+"Seventy%",
+"TheChocolateLife"
+],
+"concepts": [
+"craft",
+"marketing"
+],
+"fact": "Review and support sites Chocolate Alchemy, Seventy% and TheChocolateLife helped develop the early US craft chocolate community.",
+"comparison": true,
+"source": "Course booklet",
+"time": "History of chocolate flavour — #10",
+"speaker": "",
+"confidence": "medium"
+},
+{
+"makers": [
+"Seventy%"
+],
+"concepts": [
+"marketing"
+],
+"fact": "Alex Rast, a Seventy% founding reviewer, helped IICCT evolve its flavour projection and profile system.",
+"comparison": false,
+"source": "Course booklet",
+"time": "Chocolate flavour profiling — Flavour projection",
+"speaker": "",
+"confidence": "medium"
+}
+]

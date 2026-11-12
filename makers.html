@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Makers</title>
+  <script src="theme.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <style>
+    :root {
+      --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
+      --border: #443a34; --accent: #d98e3b; --on-accent: #241a10;
+      --maker: #d98e3b; --concept: #4f9a8a; --line: #8a7a6e; --compare: #e0c25a;
+    }
+    html.bw { --maker: #000; --concept: #8a8a8a; --line: #999; --compare: #000; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
+    body { display: flex; flex-direction: column; }
+    .btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; }
+    .btn:hover { border-color: var(--accent); }
+    .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); }
+    .seg button { background: var(--panel-2); color: var(--text); border: none; border-right: 1px solid var(--border); padding: 7px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+    .seg button:last-child { border-right: none; }
+    .seg button.on { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+
+    main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 400px; overflow: hidden; }
+    .graph-wrap { position: relative; display: flex; flex-direction: column; min-height: 0; }
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 20px 0; }
+    .tools input { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); padding: 7px 10px; font: inherit; font-size: 13px; width: 200px; }
+    .legend { color: var(--muted); font-size: 12px; display: flex; gap: 14px; align-items: center; }
+    .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+    .legend i.line { width: 18px; height: 0; border-radius: 0; border-top: 2px dashed var(--compare); }
+    svg { flex: 1; width: 100%; min-height: 0; cursor: grab; touch-action: none; }
+    svg:active { cursor: grabbing; }
+    .link { stroke: var(--line); stroke-opacity: .35; }
+    .link.cmp { stroke: var(--compare); stroke-opacity: .8; stroke-dasharray: 6 4; }
+    .link.hi { stroke-opacity: .95; }
+    .link.dim { stroke-opacity: .05; }
+    .node circle { stroke: var(--bg); stroke-width: 1.5; cursor: pointer; }
+    .node.maker circle { fill: var(--maker); }
+    .node.concept circle { fill: var(--concept); }
+    .node.sel circle { stroke: var(--text); stroke-width: 3; }
+    .node.dim { opacity: .15; }
+    .node text { fill: var(--text); font-size: 11px; pointer-events: none; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
+    .node.concept text { font-style: italic; }
+    .hint { position: absolute; left: 20px; bottom: 10px; color: var(--muted); font-size: 11px; pointer-events: none; }
+
+    aside { border-left: 1px solid var(--border); background: var(--panel); overflow-y: auto; padding: 16px 18px 40px; }
+    aside h2 { margin: 0 0 4px; font-size: 18px; }
+    aside h3 { margin: 18px 0 6px; font-size: 13px; color: var(--muted); font-weight: 600; text-transform: capitalize; }
+    aside h3 a { color: var(--text); cursor: pointer; text-decoration: none; border-bottom: 1px dotted var(--muted); }
+    aside .sub { color: var(--muted); font-size: 12px; margin-bottom: 10px; line-height: 1.45; }
+    .fact { font-size: 13px; line-height: 1.45; padding: 7px 9px; margin-bottom: 5px; background: var(--panel-2); border: 1px solid var(--border); border-left: 3px solid var(--border); }
+    .fact.cmp { border-left-color: var(--compare); }
+    .fact .src { color: var(--muted); font-size: 11px; margin-top: 3px; }
+    .fact .tag { display: inline-block; font-size: 11px; padding: 0 6px; margin: 4px 4px 0 0; border: 1px solid var(--border); color: var(--muted); cursor: pointer; }
+    .fact .tag.m { color: var(--maker); border-color: var(--maker); }
+    .fact .tag:hover { color: var(--text); }
+    .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 6px; }
+    .chips a { font-size: 12px; padding: 2px 8px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); cursor: pointer; text-decoration: none; }
+    .chips a.m { border-color: var(--maker); }
+    .chips a b { color: var(--muted); font-weight: 400; margin-left: 4px; }
+    .foot { color: var(--muted); font-size: 12px; margin-top: 18px; line-height: 1.4; }
+    @media (max-width: 900px) {
+      main { display: block; overflow: hidden auto; }
+      .graph-wrap { height: 72vh; }
+      aside { border-left: none; border-top: 1px solid var(--border); overflow: visible; }
+      .tools input { width: 150px; }
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="bw.css" />
+</head>
+<body>
+  <header class="site-bar">
+    <div class="site-name">Cacao Map</div>
+    <button class="site-btn" data-theme-toggle>Black &amp; white</button>
+    <nav class="site-nav"><a class="site-btn" href="./">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn" href="flavour-map.html">Flavour Map</a><a class="site-btn on" href="makers.html" aria-current="page">Makers</a></nav>
+  </header>
+  <main>
+    <div class="graph-wrap">
+      <div class="tools">
+        <input id="find" type="search" placeholder="Find a maker or topic" list="names" />
+        <datalist id="names"></datalist>
+        <div class="seg" id="show">
+          <button data-v="all" class="on">All</button>
+          <button data-v="cmp">Comparisons</button>
+        </div>
+        <div class="legend"><span><i style="background:var(--maker)"></i>Maker</span><span><i style="background:var(--concept)"></i>Topic</span><span><i class="line"></i>Compared in class</span></div>
+      </div>
+      <svg id="graph"></svg>
+      <div class="hint">Drag to move, scroll or pinch to zoom, click a bubble or a line.</div>
+    </div>
+    <aside id="side"></aside>
+  </main>
+
+  <script>
+    'use strict';
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const $ = id => document.getElementById(id);
+    let facts = [], nodes = [], links = [], byId = new Map(), collBrands = new Map();
+    let selected = null, mode = 'all', sim, gLinks, gNodes, zoom;
+    const mId = m => 'm:' + m, cId = c => 'c:' + c;
+
+    function build() {
+      const deg = new Map();
+      const node = (id, kind, name) => { if (!byId.has(id)) { const n = { id, kind, name, facts: [] }; byId.set(id, n); nodes.push(n); } return byId.get(id); };
+      const pair = new Map();
+      const link = (a, b, f, cmp) => {
+        const k = [a.id, b.id].sort().join('|') + (cmp ? '|cmp' : '');
+        if (!pair.has(k)) { const l = { source: a.id, target: b.id, cmp, facts: [] }; pair.set(k, l); links.push(l); }
+        pair.get(k).facts.push(f);
+      };
+      facts.forEach((f, i) => {
+        f.i = i;
+        const ms = f.makers.map(m => node(mId(m), 'maker', m)), cs = f.concepts.map(c => node(cId(c), 'concept', c));
+        for (const n of [...ms, ...cs]) n.facts.push(f);
+        for (const m of ms) for (const c of cs) link(m, c, f, false);
+        if (f.comparison) for (let a = 0; a < ms.length; a++) for (let b = a + 1; b < ms.length; b++) link(ms[a], ms[b], f, true);
+      });
+      for (const n of nodes) n.r = (n.kind === 'maker' ? 5 : 6) + 2.6 * Math.sqrt(n.facts.length);
+      $('names').innerHTML = nodes.map(n => '<option value="' + esc(n.name) + '">').join('');
+    }
+
+    function draw() {
+      const svg = d3.select('#graph');
+      const { width, height } = $('graph').getBoundingClientRect();
+      svg.attr('viewBox', [-width / 2, -height / 2, width, height]);
+      const root = svg.append('g');
+      zoom = d3.zoom().scaleExtent([0.2, 5]).on('zoom', e => root.attr('transform', e.transform));
+      svg.call(zoom).on('dblclick.zoom', null);
+      svg.call(zoom.transform, d3.zoomIdentity.scale(Math.min(1, width / 1100)));
+      svg.on('click', e => { if (e.target === $('graph')) select(null); });
+      gLinks = root.append('g').selectAll('line').data(links).join('line')
+        .attr('class', d => 'link' + (d.cmp ? ' cmp' : ''))
+        .attr('stroke-width', d => d.cmp ? 2 : 0.8 + Math.sqrt(d.facts.length))
+        .style('cursor', 'pointer')
+        .on('click', (e, d) => { e.stopPropagation(); select({ link: d }); });
+      gLinks.append('title').text(d => d.source + ' — ' + d.target);
+      gNodes = root.append('g').selectAll('g').data(nodes).join('g')
+        .attr('class', d => 'node ' + d.kind)
+        .on('click', (e, d) => { e.stopPropagation(); select({ node: d }); })
+        .call(d3.drag()
+          .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.2).restart(); d.fx = d.x; d.fy = d.y; })
+          .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y; })
+          .on('end', (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+      gNodes.append('circle').attr('r', d => d.r);
+      gNodes.append('text').attr('x', d => d.r + 3).attr('y', 4).text(d => d.name);
+      gLinks.selectAll('title').remove();
+      sim = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(links).id(d => d.id).distance(d => d.cmp ? 120 : 85).strength(d => d.cmp ? 0.1 : 0.25))
+        .force('charge', d3.forceManyBody().strength(d => -110 - 20 * d.r))
+        .force('collide', d3.forceCollide(d => d.r + 3))
+        .force('x', d3.forceX().strength(0.03)).force('y', d3.forceY().strength(0.05))
+        .on('tick', () => {
+          gLinks.attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+          gNodes.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+        });
+      // show only the bigger labels until zoomed in
+      const big = d3.quantile(nodes.map(n => n.r).sort(d3.ascending), 0.55);
+      gNodes.select('text').style('display', d => d.r >= big ? null : 'none');
+      zoom.on('zoom.labels', e => gNodes.select('text').style('display', d => d.r >= big || e.transform.k > 1.6 || isLit(d) ? null : 'none'));
+    }
+    let lit = null;
+    const isLit = d => !!lit && lit.has(d.id);
+
+    function highlight() {
+      const k = d3.zoomTransform($('graph')).k;
+      const big = d3.quantile(nodes.map(n => n.r).sort(d3.ascending), 0.55);
+      lit = null;
+      let litLinks = null;
+      if (selected && selected.node) {
+        lit = new Set([selected.node.id]); litLinks = new Set();
+        for (const l of links) if (l.source.id === selected.node.id || l.target.id === selected.node.id) { lit.add(l.source.id); lit.add(l.target.id); litLinks.add(l); }
+      } else if (selected && selected.link) {
+        lit = new Set([selected.link.source.id, selected.link.target.id]); litLinks = new Set([selected.link]);
+      } else if (mode === 'cmp') {
+        lit = new Set(); litLinks = new Set(links.filter(l => l.cmp));
+        for (const l of litLinks) { lit.add(l.source.id); lit.add(l.target.id); }
+      }
+      gNodes.classed('dim', d => !!lit && !lit.has(d.id)).classed('sel', d => !!selected && selected.node === d);
+      gNodes.select('text').style('display', d => d.r >= big || k > 1.6 || isLit(d) ? null : 'none');
+      gLinks.classed('dim', d => !!litLinks && !litLinks.has(d)).classed('hi', d => !!litLinks && litLinks.has(d));
+    }
+
+    /* ---------- Side panel ---------- */
+    const factHtml = (f, skip) => '<div class="fact' + (f.comparison ? ' cmp' : '') + '">' + esc(f.fact) +
+      '<div>' + f.makers.filter(m => m !== skip).map(m => '<span class="tag m" data-id="' + esc(mId(m)) + '">' + esc(m) + '</span>').join('') +
+      f.concepts.filter(c => c !== skip).map(c => '<span class="tag" data-id="' + esc(cId(c)) + '">' + esc(c) + '</span>').join('') + '</div>' +
+      '<div class="src">' + esc([f.source, f.time, f.speaker].filter(Boolean).join(' · ')) + (f.confidence === 'low' ? ' · name or detail uncertain' : '') + '</div></div>';
+    const chip = n => '<a class="' + (n.kind === 'maker' ? 'm' : '') + '" data-id="' + esc(n.id) + '">' + esc(n.name) + '<b>' + n.facts.length + '</b></a>';
+    const foot = '<div class="foot">What the IICCT Level 2 course (2026) said about chocolate makers, in my own words, with where in the class it came up. Teachers\' and students\' views, not checked facts.</div>';
+
+    function sideOverview() {
+      const makers = nodes.filter(n => n.kind === 'maker').sort((a, b) => b.facts.length - a.facts.length);
+      const topics = nodes.filter(n => n.kind === 'concept').sort((a, b) => b.facts.length - a.facts.length);
+      const cmps = facts.filter(f => f.comparison);
+      return '<h2>Makers and what we learned</h2><div class="sub">' + facts.length + ' notes on ' + makers.length + ' makers, linked by ' + topics.length + ' topics. Click a bubble to see everything said about it; click a topic to compare makers on it.</div>' +
+        '<h3>Makers</h3><div class="chips">' + makers.map(chip).join('') + '</div>' +
+        '<h3>Topics</h3><div class="chips">' + topics.map(chip).join('') + '</div>' +
+        (mode === 'cmp' ? '<h3>Compared in class</h3>' + cmps.map(f => factHtml(f)).join('') : '') + foot;
+    }
+    function sideMaker(n) {
+      const byC = new Map();
+      for (const f of n.facts) for (const c of f.concepts) { if (!byC.has(c)) byC.set(c, []); byC.get(c).push(f); }
+      const cmps = n.facts.filter(f => f.comparison);
+      const brands = collBrands.get(n.name.toLowerCase());
+      return '<h2>' + esc(n.name) + '</h2><div class="sub">' + n.facts.length + (n.facts.length === 1 ? ' note' : ' notes') + '</div>' +
+        (brands ? '<a class="btn" href="./?brand=' + encodeURIComponent(brands.name) + '">' + brands.count + (brands.count === 1 ? ' bar' : ' bars') + ' in the collection</a>' : '') +
+        (cmps.length ? '<h3>Compared with other makers</h3>' + cmps.map(f => factHtml(f, n.name)).join('') : '') +
+        [...byC.entries()].sort((a, b) => b[1].length - a[1].length).map(([c, fs]) =>
+          '<h3><a data-id="' + esc(cId(c)) + '">' + esc(c) + '</a></h3>' + fs.filter(f => !f.comparison).map(f => factHtml(f, n.name)).join('')).join('') + foot;
+    }
+    function sideConcept(n) {
+      const byM = new Map();
+      for (const f of n.facts) for (const m of f.makers) { if (!byM.has(m)) byM.set(m, []); byM.get(m).push(f); }
+      return '<h2 style="text-transform:capitalize">' + esc(n.name) + '</h2><div class="sub">' + byM.size + ' makers, ' + n.facts.length + ' notes. Side by side:</div>' +
+        [...byM.entries()].sort((a, b) => b[1].length - a[1].length).map(([m, fs]) =>
+          '<h3><a data-id="' + esc(mId(m)) + '">' + esc(m) + '</a></h3>' + fs.map(f => factHtml(f, n.name)).join('')).join('') + foot;
+    }
+    function sideLink(l) {
+      return '<h2>' + esc(l.source.name) + ' — ' + esc(l.target.name) + '</h2><div class="sub">' + (l.cmp ? 'Compared in class' : l.facts.length + (l.facts.length === 1 ? ' note' : ' notes')) + '</div>' +
+        l.facts.map(f => factHtml(f)).join('') + foot;
+    }
+    function renderSide() {
+      const s = $('side');
+      s.innerHTML = !selected ? sideOverview() : selected.link ? sideLink(selected.link) : selected.node.kind === 'maker' ? sideMaker(selected.node) : sideConcept(selected.node);
+      s.scrollTop = 0;
+      s.querySelectorAll('[data-id]').forEach(a => a.onclick = () => { const n = byId.get(a.dataset.id); if (n) { select({ node: n }); centre(n); } });
+    }
+    function centre(n) {
+      const svg = d3.select('#graph'), k = Math.max(1.3, d3.zoomTransform($('graph')).k);
+      svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.scale(k).translate(-n.x, -n.y));
+    }
+    function select(s) {
+      if (s && selected && ((s.node && s.node === selected.node) || (s.link && s.link === selected.link))) s = null;
+      selected = s; highlight(); renderSide();
+      const u = new URL(location.href);
+      if (s && s.node) u.searchParams.set('n', s.node.id); else u.searchParams.delete('n');
+      history.replaceState(null, '', u);
+    }
+    $('find').onchange = () => {
+      const v = $('find').value.trim().toLowerCase();
+      const n = nodes.find(x => x.name.toLowerCase() === v) || nodes.find(x => x.name.toLowerCase().includes(v));
+      if (n) { select({ node: n }); centre(n); }
+    };
+    $('show').querySelectorAll('button').forEach(b => b.onclick = () => {
+      mode = b.dataset.v; $('show').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+      selected = null; highlight(); renderSide();
+    });
+
+    Promise.all([fetch('data/maker_facts.json', { cache: 'no-store' }).then(r => r.json()),
+                 fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()).catch(() => [])]).then(([fs, coll]) => {
+      facts = fs;
+      // maker names on this page -> brand names in the collection (first word match is enough for most)
+      const brands = new Map();
+      for (const r of coll) brands.set(r['Brand'], (brands.get(r['Brand']) || 0) + 1);
+      build();
+      for (const n of nodes.filter(n => n.kind === 'maker')) {
+        const key = n.name.toLowerCase().replace(/[^a-zà-ÿ ]/g, ' ').trim();
+        const b = [...brands.keys()].find(b => { const bl = b.toLowerCase().replace(/[^a-zà-ÿ ]/g, ' '); return bl === key || bl.startsWith(key + ' ') || key.startsWith(bl + ' '); });
+        if (b) collBrands.set(n.name.toLowerCase(), { name: b, count: brands.get(b) });
+      }
+      draw(); renderSide();
+      const want = new URL(location.href).searchParams.get('n');
+      if (want && byId.has(want)) setTimeout(() => { select({ node: byId.get(want) }); centre(byId.get(want)); }, 800);
+    }).catch(() => { $('side').textContent = 'Could not load the maker notes.'; });
+  </script>
+</body>
+</html>

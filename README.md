@@ -23,6 +23,10 @@ URL parameters: `?bar=<id>` opens a bar (on the map, it puts that bar and its fa
 
 Bars placed on a flavour map laid out after the IICCT Flavour Projection map (four quadrants around Chocolatey), from their printed or published tasting notes (`Tasting notes (EN)`). The words that count as each point are `NODES` in the page. Click a point or a quadrant name to list the bars; `?bar=<id>` shows one bar's notes. `wheel.html`, the old tasting wheel, now redirects here.
 
+## Makers (`makers.html`)
+
+A bubble-and-line graph of what the IICCT Level 2 course said about chocolate makers. Orange bubbles are makers, teal ones are topics (cocoa butter, roasting, sourcing…); each line holds the notes linking them, and dashed yellow lines are makers the class compared directly. Click a maker for everything said about it, a topic to compare makers on it, or a line for the notes behind it; `?n=m:<maker>` or `?n=c:<topic>` opens one. The notes are `data/maker_facts.json` (paraphrased from the class transcripts, with recording, timestamp and speaker). A maker with bars in the collection links to them with `./?brand=<Brand>`.
+
 ## Favorites and black and white
 
 The favorite makers are `FAVORITE_BRANDS` in `index.html` and `flavour-map.html`. The black-and-white version is `bw.css`, switched by `theme.js` and remembered per browser (`?bw=1` forces it). It changes the page around the map and the wheel, which both stay in colour.
