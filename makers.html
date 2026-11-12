@@ -82,8 +82,12 @@
       <div class="tools">
         <input id="find" type="search" placeholder="Find a maker or topic" list="names" />
         <datalist id="names"></datalist>
+        <div class="seg" id="scope" title="Which topics to show">
+          <button data-v="process">Process &amp; flavour</button>
+          <button data-v="all">All topics</button>
+        </div>
         <div class="seg" id="show">
-          <button data-v="all" class="on">All</button>
+          <button data-v="all" class="on">All links</button>
           <button data-v="cmp">Comparisons</button>
         </div>
         <div class="legend"><span><i style="background:var(--maker)"></i>Maker</span><span><i style="background:var(--concept)"></i>Topic</span><span><i class="line"></i>Compared in class</span></div>
@@ -101,9 +105,17 @@
     let facts = [], nodes = [], links = [], byId = new Map(), collBrands = new Map();
     let selected = null, mode = 'all', sim, gLinks, gNodes, zoom;
     const mId = m => 'm:' + m, cId = c => 'c:' + c;
+    // Steps of making chocolate, and what goes into it, that change how it tastes.
+    // The default view shows only these topics (and the makers with notes on them).
+    const PROCESS = new Set(['fermentation', 'drying', 'roasting', 'refining', 'conching', 'alkalisation', 'smoke',
+      'cocoa butter', 'sugar', 'lecithin', 'vanilla', 'milk', 'spice', 'inclusions', 'recipe', 'cacao percentage',
+      'defects', 'heat damage', 'storage']);
+    let scope = new URL(location.href).searchParams.get('scope') === 'all' ? 'all' : 'process';
+    let shownFacts = [];
+    const gcOf = f => scope === 'all' ? f.concepts : f.concepts.filter(c => PROCESS.has(c));   // topics drawn for a note
 
     function build() {
-      const deg = new Map();
+      nodes = []; links = []; byId = new Map(); shownFacts = [];
       const node = (id, kind, name) => { if (!byId.has(id)) { const n = { id, kind, name, facts: [] }; byId.set(id, n); nodes.push(n); } return byId.get(id); };
       const pair = new Map();
       const link = (a, b, f, cmp) => {
@@ -113,7 +125,10 @@
       };
       facts.forEach((f, i) => {
         f.i = i;
-        const ms = f.makers.map(m => node(mId(m), 'maker', m)), cs = f.concepts.map(c => node(cId(c), 'concept', c));
+        const gc = gcOf(f);
+        if (!gc.length) return;
+        shownFacts.push(f);
+        const ms = f.makers.map(m => node(mId(m), 'maker', m)), cs = gc.map(c => node(cId(c), 'concept', c));
         for (const n of [...ms, ...cs]) n.facts.push(f);
         for (const m of ms) for (const c of cs) link(m, c, f, false);
         if (f.comparison) for (let a = 0; a < ms.length; a++) for (let b = a + 1; b < ms.length; b++) link(ms[a], ms[b], f, true);
@@ -123,7 +138,9 @@
     }
 
     function draw() {
+      if (sim) sim.stop();
       const svg = d3.select('#graph');
+      svg.selectAll('*').remove();
       const { width, height } = $('graph').getBoundingClientRect();
       svg.attr('viewBox', [-width / 2, -height / 2, width, height]);
       const root = svg.append('g');
@@ -194,15 +211,16 @@
     function sideOverview() {
       const makers = nodes.filter(n => n.kind === 'maker').sort((a, b) => b.facts.length - a.facts.length);
       const topics = nodes.filter(n => n.kind === 'concept').sort((a, b) => b.facts.length - a.facts.length);
-      const cmps = facts.filter(f => f.comparison);
-      return '<h2>Makers and what we learned</h2><div class="sub">' + facts.length + ' notes on ' + makers.length + ' makers, linked by ' + topics.length + ' topics. Click a bubble to see everything said about it; click a topic to compare makers on it.</div>' +
+      const cmps = shownFacts.filter(f => f.comparison);
+      return '<h2>Makers and what we learned</h2><div class="sub">' + (scope === 'all' ? '' : 'Showing only how makers handle the steps and ingredients that change flavour: fermentation, drying, roasting, refining, conching, cocoa butter, sugar, lecithin, vanilla, recipe, defects and storage. ') +
+        shownFacts.length + ' notes on ' + makers.length + ' makers, linked by ' + topics.length + ' topics. Click a bubble to see everything said about it; click a topic to compare makers on it.</div>' +
         '<h3>Makers</h3><div class="chips">' + makers.map(chip).join('') + '</div>' +
         '<h3>Topics</h3><div class="chips">' + topics.map(chip).join('') + '</div>' +
         (mode === 'cmp' ? '<h3>Compared in class</h3>' + cmps.map(f => factHtml(f)).join('') : '') + foot;
     }
     function sideMaker(n) {
       const byC = new Map();
-      for (const f of n.facts) for (const c of f.concepts) { if (!byC.has(c)) byC.set(c, []); byC.get(c).push(f); }
+      for (const f of n.facts) { const c = gcOf(f)[0]; if (!byC.has(c)) byC.set(c, []); byC.get(c).push(f); }   // each note once, under its first topic
       const cmps = n.facts.filter(f => f.comparison);
       const brands = collBrands.get(n.name.toLowerCase());
       return '<h2>' + esc(n.name) + '</h2><div class="sub">' + n.facts.length + (n.facts.length === 1 ? ' note' : ' notes') + '</div>' +
@@ -244,6 +262,15 @@
       const n = nodes.find(x => x.name.toLowerCase() === v) || nodes.find(x => x.name.toLowerCase().includes(v));
       if (n) { select({ node: n }); centre(n); }
     };
+    function setScope(v) {
+      scope = v;
+      $('scope').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.v === v));
+      const u = new URL(location.href);
+      if (v === 'all') u.searchParams.set('scope', 'all'); else u.searchParams.delete('scope');
+      history.replaceState(null, '', u);
+      selected = null; build(); draw(); highlight(); renderSide();
+    }
+    $('scope').querySelectorAll('button').forEach(b => b.onclick = () => { if (b.dataset.v !== scope) setScope(b.dataset.v); });
     $('show').querySelectorAll('button').forEach(b => b.onclick = () => {
       mode = b.dataset.v; $('show').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
       selected = null; highlight(); renderSide();
@@ -256,12 +283,12 @@
       const brands = new Map();
       for (const r of coll) brands.set(r['Brand'], (brands.get(r['Brand']) || 0) + 1);
       build();
-      for (const n of nodes.filter(n => n.kind === 'maker')) {
-        const key = n.name.toLowerCase().replace(/[^a-zà-ÿ ]/g, ' ').trim();
+      for (const name of new Set(facts.flatMap(f => f.makers))) {
+        const key = name.toLowerCase().replace(/[^a-zà-ÿ ]/g, ' ').trim();
         const b = [...brands.keys()].find(b => { const bl = b.toLowerCase().replace(/[^a-zà-ÿ ]/g, ' '); return bl === key || bl.startsWith(key + ' ') || key.startsWith(bl + ' '); });
-        if (b) collBrands.set(n.name.toLowerCase(), { name: b, count: brands.get(b) });
+        if (b) collBrands.set(name.toLowerCase(), { name: b, count: brands.get(b) });
       }
-      draw(); renderSide();
+      setScope(scope);
       const want = new URL(location.href).searchParams.get('n');
       if (want && byId.has(want)) setTimeout(() => { select({ node: byId.get(want) }); centre(byId.get(want)); }, 800);
     }).catch(() => { $('side').textContent = 'Could not load the maker notes.'; });
