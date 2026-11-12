@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chocolate Collection</title>
   <script src="theme.js"></script>
+  <script src="profile.js"></script>
   <style>
     :root {
       --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
@@ -78,6 +79,12 @@
     dl { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 6px 14px; font-size: 13px; margin: 0; }
     dt { color: var(--muted); }
     dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .profile { margin: 0 0 16px; }
+    .profile .scores { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 8px; font-size: 13px; }
+    .profile .scores span { border: 1px solid var(--border); padding: 3px 8px; }
+    .profile .scores b { font-size: 16px; }
+    .profile-svg { width: 100%; max-width: 460px; height: auto; display: block; border: 1px solid var(--border); }
+    .profile .note { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
     .tried { display: inline-block; font-size: 11px; padding: 1px 5px; border: 1px solid var(--muted); color: var(--muted); white-space: nowrap; }
     .copies { font-size: 13px; margin: 0 0 14px; }
     .copies a { cursor: pointer; margin-right: 10px; }
@@ -154,7 +161,7 @@
     ];
     // Narrow widths for the default columns; Tasting notes has none, so it takes the spare room
     const COL_WIDTH = { _photo: 119, Brand: 110, 'Bar name': 170, _count: 74, 'Chocolate type': 84, 'Cacao %': 76, country: 90, 'Cacao origin: Region / Dept': 110 };
-    const DETAIL_SKIP = new Set(['id', 'photos', 'pins', 'lat', 'lng', '#', 'Copy', 'Copies owned']);
+    const DETAIL_SKIP = new Set(['id', 'photos', 'pins', 'lat', 'lng', '#', 'Copy', 'Copies owned', 'My profile', 'My off-flavours', 'My score', 'Group score']);
 
     let favMode = 'all';
     let data = [], sort = { key: null, dir: 1 }, filters = {}, q = '';
@@ -338,6 +345,18 @@
       placeMenu(m, $('cols-btn'));
     };
 
+    /* My IICCT profile (bars tasted in the course): scores + chart drawn like the Seventy% profile */
+    function profileBlock(r) {
+      if (!r['My profile'] && !r['My off-flavours']) return '';
+      const sc = (r['My score'] != null ? '<span>My score <b>' + r['My score'] + '</b></span>' : '') +
+        (r['Group score'] != null ? '<span>Class average <b>' + r['Group score'] + '</b></span>' : '');
+      const flav = profileText(r['My profile']), off = profileText(r['My off-flavours']);
+      return '<div class="profile"><h3>My tasting profile</h3>' + (sc ? '<div class="scores">' + sc + '</div>' : '') +
+        profileSVG(r['My profile'], r['My off-flavours']) +
+        '<p class="note">' + esc(flav ? 'Flavours: ' + flav + '.' : 'No positive flavours marked.') + ' ' + esc(off ? 'Off-flavours: ' + off + '.' : 'No off-flavours marked.') +
+        ' Intensity 1–5; each step doubles the blob area. Profiled in the IICCT system on Seventy%.</p></div>';
+    }
+
     /* Detail drawer */
     function openDetail(id) {
       const r = data.find(x => x.id === id); if (!r) return;
@@ -348,9 +367,9 @@
         '<h2></h2><div class="sub"></div>' +
         (copies.length > 1 ? '<div class="copies">' + copies.length + ' copies: ' +
           copies.map((c, i) => '<a data-id="' + esc(c.id) + '"' + (c.id === r.id ? ' class="cur"' : '') + '>copy ' + (i + 1) + '</a>').join('') + '</div>' : '') +
-        '<div class="photos"></div>' +
+        '<div class="photos"></div>' + profileBlock(r) +
         '<p>' + (r.lat != null ? '<a class="btn" href="map.html?bar=' + encodeURIComponent(r.id) + '">Show origin on map</a> ' : '') +
-        (r['Tasting notes (EN)'] ? '<a class="btn" href="flavour-map.html?bar=' + encodeURIComponent(r.id) + '">Show on Flavour Map</a>' : '') + '</p>' +
+        (r['Tasting notes (EN)'] || (r['My profile'] || []).length ? '<a class="btn" href="flavour-map.html?bar=' + encodeURIComponent(r.id) + '">Show on Flavour Map</a>' : '') + '</p>' +
         '<dl></dl>';
       p.querySelector('h2').textContent = r['Bar name'];
       p.querySelector('.sub').textContent = [isTried(r) ? 'Tried once' + (r['Course sample'] ? ' (' + r['Course sample'] + ')' : '') : '', r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r['Chocolate type'], r.place].filter(Boolean).join(' · ');

@@ -108,6 +108,8 @@ PLACES = [
     (["ilhéus", "ilheus", "riachuelo"], -14.79, -39.05, "Ilhéus, Bahia, Brazil", "region"),
     (["bahia"], -14.80, -39.40, "Southern Bahia, Brazil", "region"),
     (["rondônia", "rondonia", "ouro preto do oeste"], -10.72, -62.25, "Ouro Preto do Oeste, Rondônia, Brazil", "region"),
+    (["badou"], 7.58, 0.60, "Badou, Togo", "region"),
+    (["terreiro velho", "príncipe", "principe"], 1.61, 7.40, "Príncipe, São Tomé and Príncipe", "region"),
 ]
 COUNTRIES = {  # fallback: country centroid
     "venezuela": (7.5, -66.0), "colombia": (4.5, -74.0), "peru": (-9.5, -75.0), "ecuador": (-1.5, -78.5),
@@ -118,7 +120,7 @@ COUNTRIES = {  # fallback: country centroid
     "sri lanka": (7.6, 80.7), "trinidad": (10.45, -61.3), "grenada": (12.1, -61.7), "jamaica": (18.1, -77.3),
     "haiti": (19.0, -72.3), "costa rica": (9.9, -84.1), "taiwan": (23.7, 121.0), "malaysia": (4.2, 102.0),
     "vanuatu": (-15.4, 166.9), "honduras": (14.9, -87.98),
-    "el salvador": (13.7, -89.2),
+    "el salvador": (13.7, -89.2), "togo": (8.6, 0.9), "papua new guinea": (-6.3, 145.0), "são tomé": (0.3, 6.6), "sao tome": (0.3, 6.6),
 }
 
 # Map pins in data/pins.json -> the bars they apply to.

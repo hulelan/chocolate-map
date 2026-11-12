@@ -41,6 +41,8 @@ The favorite makers are `FAVORITE_BRANDS` in `index.html` and `flavour-map.html`
 
 Bars I tasted once but don't own (the IICCT Level 2 course kit) are in `~/Desktop/chocolate_tasting/tried_once.json`, with the same fields as the spreadsheet plus `Course sample` and `Course notes`; their photos (maker or shop product photos, see `Photo source`) are in `~/Desktop/chocolate_tasting/tried_once_photos/<slug>/`. The build adds them with `"Status": "Tried once"`; the pages label them and have a "Tried once" filter.
 
+My own IICCT profiles of these bars (exported from Seventy%) live in `~/Desktop/chocolate_tasting/seventy_profiles/`: `profiles.json` holds, per kit number, the name, batch, my score, the class average, and the flavour and off-flavour points with intensity 1–5 (read off the profile charts). `apply.py` merges them into `tried_once.json` as `My profile`, `My off-flavours`, `My score`, `Group score`, `IICCT kit no.` and `Batch / best before`. `profile.js` draws them the way Seventy% does (flavour map above the defect map, blob area doubling per intensity step); the Collection detail panel and the Flavour Map show the chart, and the Flavour Map places these bars by my profile instead of the maker's notes.
+
 The script re-encodes every photo, which drops all metadata. The original iPhone photos contain GPS coordinates, so never commit them.
 
 Map coordinates are approximate: each bar's printed origin is matched to a farm, region or country (`PLACES` in the script). Bars with no printed origin are only in the table.

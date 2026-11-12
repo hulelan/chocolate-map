@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flavour Map</title>
   <script src="theme.js"></script>
+  <script src="profile.js"></script>
   <style>
     :root {
       --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
@@ -68,6 +69,7 @@
       aside { border-left: none; border-top: 1px solid var(--border); overflow: visible; }
       .pinned { position: static; }
     }
+      .prof { margin: 8px 0; } .prof .profile-svg { width: 100%; height: auto; display: block; border: 1px solid var(--border); }
   </style>
   <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="bw.css" />
@@ -87,7 +89,7 @@
         <button data-v="tried">Tried once</button>
       </div>
       <svg id="map" viewBox="0 0 1460 1040"></svg>
-      <div class="credit">Layout after the IICCT Flavour Projection map. Bars are placed from the tasting notes their makers print or publish.</div>
+      <div class="credit">Layout after the IICCT Flavour Projection map. Bars are placed from the tasting notes their makers print or publish; bars I tried in the course, from my own IICCT profile.</div>
     </div>
     <aside id="side"></aside>
   </main>
@@ -274,8 +276,9 @@
       side.innerHTML =
         '<div class="pinned' + (previewBar ? '' : ' on') + '" id="pinned">' +
           '<div class="top">' + (r.photos && r.photos[0] ? '<img alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
-          '<div><h2>' + esc(r['Bar name']) + triedTag(r) + '</h2><div class="sub">' + esc(r['Brand']) + '<br>' + esc(r['Tasting notes (EN)'] || 'No published tasting notes.') + '</div></div></div>' +
+          '<div><h2>' + esc(r['Bar name']) + triedTag(r) + '</h2><div class="sub">' + esc(r['Brand']) + '<br>' + (r['My profile'] ? 'My profile: ' + esc(profileText(r['My profile']) || 'no positive flavours') + (r['My score'] != null ? ' · score ' + r['My score'] : '') : esc(r['Tasting notes (EN)'] || 'No published tasting notes.')) + '</div></div></div>' +
           '<div class="tags">' + mine.map(n => '<span>' + esc(n) + '</span>').join('') + '</div>' +
+          (r['My profile'] ? '<div class="prof">' + profileSVG(r['My profile'], r['My off-flavours']) + '</div>' : '') +
           '<a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Open in Collection</a>' +
         '</div>' +
         '<h3>Related' + (filter ? ': ' + esc(filter) : '') + '</h3>' +
@@ -298,7 +301,7 @@
     }
     function renderSide() {
       const side = $('side');
-      const foot = '<div class="foot">Only includes bars with tasting notes printed on the wrapper, or, for bars I tried once, published by the maker. Notes with no point on the map are left out.</div>';
+      const foot = '<div class="foot">Only includes bars with tasting notes printed on the wrapper; for bars I tried once in the course, my own IICCT profile (blob size = intensity 1–5). Notes with no point on the map are left out.</div>';
       if (focusBar) { renderRelated(side, foot); return; }
       const list = barsFor(selected).sort((x, y) => y.copies - x.copies || x.r['Brand'].localeCompare(y.r['Brand']));
       const title = selName() || 'All flavours';
@@ -326,7 +329,10 @@
         if (!g.has(k)) g.set(k, { r, copies: 0, ids: [] });
         g.get(k).copies++; g.get(k).ids.push(r.id);
       }
-      bars = [...g.values()].map(b => ({ ...b, notes: notesOf(b.r['Tasting notes (EN)'] || '') }));
+      // Bars I tried in the course use my own IICCT profile; the rest use the notes on the wrapper
+      const IDX = new Map(NODES.map((n, i) => [n[0], i]));
+      const fromProfile = r => new Set((r['My profile'] || []).map(([n]) => IDX.get(n)).filter(i => i != null));
+      bars = [...g.values()].map(b => ({ ...b, notes: b.r['My profile'] ? fromProfile(b.r) : notesOf(b.r['Tasting notes (EN)'] || '') }));
       const id = new URL(location.href).searchParams.get('bar');
       if (id) focusBar = bars.find(b => b.ids.includes(id)) || null;
       render();
