@@ -130,7 +130,7 @@
   <header class="site-bar">
     <div class="site-name">Cacao Map</div>
     <button class="site-btn" data-theme-toggle>Black &amp; white</button>
-    <nav class="site-nav"><a class="site-btn" href="./">Collection</a><a class="site-btn on" href="map.html" aria-current="page">Map</a><a class="site-btn" href="wheel.html">Tasting Wheel</a></nav>
+    <nav class="site-nav"><a class="site-btn" href="./">Collection</a><a class="site-btn on" href="map.html" aria-current="page">Map</a><a class="site-btn" href="flavour-map.html">Flavour Map</a></nav>
   </header>
   <div id="app">
     <aside id="sidebar">
@@ -257,7 +257,7 @@
       box.innerHTML =
         '<div class="lab">Selected bar</div>' +
         '<div class="bar">' + (r.photos && r.photos[0] ? '<img alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
-        '<div><b>' + escapeHtml(r['Bar name']) + '</b><div class="m">' + escapeHtml([r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r.place].filter(Boolean).join(' · ')) + '</div></div></div>' +
+        '<div><b>' + escapeHtml(r['Bar name']) + '</b><div class="m">' + escapeHtml([r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r.place, r['Status'] === 'Tried once' ? 'tried once' : ''].filter(Boolean).join(' · ')) + '</div></div></div>' +
         '<div class="acts"><a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Open in table</a><button class="btn" id="sel-clear">Show all pins</button></div>';
       box.querySelector('.bar').onclick = focusOnBar;
       box.querySelector('#sel-clear').onclick = clearFocus;
@@ -338,7 +338,7 @@
           return '<a class="d-bar" href="./?bar=' + encodeURIComponent(r.id) + '">' +
             (r.photos && r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
             '<span><b>' + escapeHtml(r['Bar name']) + '</b><br><span class="m">' + escapeHtml(r['Brand']) +
-            (copies.length > 1 ? ' · ' + copies.length + ' copies' : '') + '</span></span></a>';
+            (copies.length > 1 ? ' · ' + copies.length + ' copies' : '') + (r['Status'] === 'Tried once' ? ' · tried once' : '') + '</span></span></a>';
         }).join('');
       }
 
@@ -384,7 +384,7 @@
           const r = copies[0];
           return '<a class="coll-item" href="./?bar=' + encodeURIComponent(r.id) + '">' +
             (r.photos && r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
-            '<span><b>' + escapeHtml(r['Bar name']) + '</b><br><span class="m">' + escapeHtml(r['Brand']) + (r['Cacao %'] ? ' · ' + escapeHtml(r['Cacao %']) + '%' : '') + '</span></span>' +
+            '<span><b>' + escapeHtml(r['Bar name']) + '</b><br><span class="m">' + escapeHtml(r['Brand']) + (r['Cacao %'] ? ' · ' + escapeHtml(r['Cacao %']) + '%' : '') + (r['Status'] === 'Tried once' ? ' · tried once' : '') + '</span></span>' +
             (copies.length > 1 ? '<span class="x">' + copies.length + '</span>' : '') + '</a>';
         }).join('') + '</div>' +
         '<div class="pop-actions"><a class="pf-btn" href="./?place=' + encodeURIComponent(pt.place) + '">Open in table</a></div>';

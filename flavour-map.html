@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flavour Map</title>
+  <script src="theme.js"></script>
+  <style>
+    :root {
+      --bg: #1f1a17; --panel: #2a2320; --panel-2: #352c27; --text: #f3ece7; --muted: #b7a99f;
+      --border: #443a34; --accent: #d98e3b; --on-accent: #241a10;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); }
+    body { display: flex; flex-direction: column; }
+    .btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); padding: 7px 11px; cursor: pointer; font: inherit; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; }
+    .btn:hover { border-color: var(--accent); }
+    .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); }
+    .seg button { background: var(--panel-2); color: var(--text); border: none; border-right: 1px solid var(--border); padding: 7px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+    .seg button:last-child { border-right: none; }
+    .seg button.on { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+
+    main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 380px; overflow: hidden; }
+    .map-wrap { display: flex; flex-direction: column; gap: 10px; padding: 12px 20px; overflow: hidden; min-height: 0; }
+    .map-wrap .seg { align-self: flex-start; }
+    svg { flex: 1; width: 100%; min-height: 0; }
+    svg .node { cursor: pointer; transition: opacity .15s; }
+    svg .node circle { stroke: #00000040; stroke-width: 2; }
+    svg .node:hover circle { stroke: #fff; stroke-width: 4; }
+    svg .node.sel circle { stroke: #fff; stroke-width: 7; }
+    svg .node text { pointer-events: none; text-anchor: middle; dominant-baseline: middle; font-size: 25px; fill: #fff; }
+    svg .node text.dark { fill: #7a3f0e; }
+    svg .node text.choc { fill: #f2dc2c; font-size: 30px; font-weight: 700; }
+    svg .node text.n { font-size: 20px; font-weight: 700; }
+    svg .quad { font-size: 46px; font-weight: 500; cursor: pointer; letter-spacing: .5px; }
+    svg .quad.sel { text-decoration: underline; }
+    .credit { color: var(--muted); font-size: 11px; }
+
+    aside { border-left: 1px solid var(--border); background: var(--panel); overflow-y: auto; padding: 16px 18px 40px; }
+    aside h2 { margin: 0 0 4px; font-size: 18px; }
+    aside .sub { color: var(--muted); font-size: 12px; margin-bottom: 14px; line-height: 1.4; }
+    .bar { display: flex; gap: 10px; align-items: flex-start; padding: 8px; margin-bottom: 6px; background: var(--panel-2); border: 1px solid var(--border); border-left: 3px solid var(--border); color: var(--text); text-decoration: none; font-size: 13px; line-height: 1.35; }
+    .bar:hover { border-color: var(--accent); }
+    .bar.fav { border-left-color: var(--accent); }
+    .bar img { width: 40px; height: 52px; object-fit: cover; flex: none; background: var(--panel); }
+    .bar .m { color: var(--muted); font-size: 12px; }
+    .bar .n { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .bar .n b { color: var(--accent); font-weight: 600; }
+    .tried { display: inline-block; font-size: 11px; font-weight: 400; padding: 0 5px; margin-left: 6px; border: 1px solid var(--muted); color: var(--muted); vertical-align: 1px; white-space: nowrap; }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 12px; }
+    .tags span { font-size: 12px; padding: 2px 7px; background: var(--panel-2); border: 1px solid var(--border); }
+    .pinned { position: sticky; top: -16px; z-index: 1; background: var(--panel); margin: -16px -18px 12px; padding: 16px 18px 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .pinned .top { display: flex; gap: 12px; align-items: flex-start; }
+    .pinned img { width: 66px; height: 88px; object-fit: cover; flex: none; background: var(--panel-2); }
+    .pinned .sub { margin-bottom: 0; }
+    aside h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+    .bar.rel { cursor: pointer; }
+    .bar.on { border-color: var(--accent); outline: 1px solid var(--accent); }
+    .bar .open { display: inline-block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+    .foot { color: var(--muted); font-size: 12px; margin-top: 18px; line-height: 1.4; }
+    @media (max-width: 900px) {
+      /* One column that scrolls up and down only: the map, then the list */
+      main { display: block; min-height: 0; overflow: hidden auto; touch-action: pan-y pinch-zoom; }
+      .map-wrap { overflow: visible; padding: 10px 8px; }
+      svg { flex: none; height: auto; }
+      svg .node text { font-size: 31px; }
+      svg .node text.long { font-size: 26px; }
+      aside { border-left: none; border-top: 1px solid var(--border); overflow: visible; }
+      .pinned { position: static; }
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="bw.css" />
+</head>
+<body>
+  <header class="site-bar">
+    <div class="site-name">Cacao Map</div>
+    <button class="site-btn" data-theme-toggle>Black &amp; white</button>
+    <nav class="site-nav"><a class="site-btn" href="./">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn on" href="flavour-map.html" aria-current="page">Flavour Map</a></nav>
+  </header>
+  <main>
+    <div class="map-wrap">
+      <div class="seg" id="show">
+        <button data-v="all" class="on">All</button>
+        <button data-v="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">&#9733; Favorites</button>
+        <button data-v="owned">In my collection</button>
+        <button data-v="tried">Tried once</button>
+      </div>
+      <svg id="map" viewBox="0 0 1460 1040"></svg>
+      <div class="credit">Layout after the IICCT Flavour Projection map. Bars are placed from the tasting notes their makers print or publish.</div>
+    </div>
+    <aside id="side"></aside>
+  </main>
+
+  <script>
+    'use strict';
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const $ = id => document.getElementById(id);
+    const FAVORITE_BRANDS = new Set(['Castronovo Chocolate', 'Domori', 'Idilio Origins', 'Qantu', 'Spinnaker Chocolate']);
+    const isFav = r => FAVORITE_BRANDS.has(r['Brand']);
+    const isTried = r => r['Status'] === 'Tried once';
+
+    // [name, background, label colour, label x, label y, anchor]; index 4 is the centre
+    const QUADS = [
+      ['Herbal / Spicy', '#f3e27c', '#a5501a', 40, 75, 'start'],
+      ['Fruity', '#e9b0d2', '#8e1a4c', 1420, 75, 'end'],
+      ['Vegetal', '#b9ddd0', '#2f5a3a', 40, 995, 'start'],
+      ['Dark Sweet', '#a3cfe2', '#1f4a75', 1420, 995, 'end'],
+      ['Chocolatey'],
+    ];
+    const Y = '#eed31f', OL = '#8c7613', PK = '#d63384', MR = '#8e1a4c', GR = '#3f8a3a', DG = '#2a5a2a', BL = '#3a8fc0', TL = '#1f4a55';
+    // [name, quadrant, x, y, colour (or [from, to] for a point between two quadrants), [words on wrappers that count as this point]]
+    // Longer phrases are matched first and used up, so "orange blossom" is jasmin, not citrus.
+    const NODES = [
+      ['Cinnamon', 0, 563, 128, Y, ['cinnamon', 'clove', 'nutmeg', 'allspice', 'cardamom', 'ginger', 'wild ginger', 'saffron', 'anise', 'star anise', 'spice', 'spicy', 'spiced', 'warm spice', 'baking spice', 'gingerbread']],
+      ['Capsicum (dried)', 0, 387, 183, Y, ['capsicum', 'pepper', 'peppery', 'black pepper', 'pink pepper', 'sweet pepper', 'fruity sweet pepper', 'chili', 'chile', 'chilli', 'arbol chili', 'paprika']],
+      ['Dried leaves', 0, 208, 307, Y, ['dried leaves', 'tea', 'green tea', 'black tea', 'darjeeling tea', 'strawberry tea', 'tobacco', 'hay', 'herbal', 'herb', 'bay leaf', 'bayleaf', 'mint', 'minty', 'lemongrass', 'eucalyptus', 'sage', 'thyme']],
+      ['Sour cherry', 0, 726, 112, [Y, PK], ['sour cherry', 'cherry', 'tart cherry', 'morello']],
+      ['Geranium', 0, 578, 263, OL, ['geranium', 'rose', 'damask rose', 'violet', 'lavender', 'lilac', 'bergamot', 'bergamot orange', 'perfume', 'perfumed']],
+      ['Jasmin', 0, 414, 340, OL, ['jasmine', 'jasmin', 'orange blossom', 'honeysuckle', 'blossom', 'floral', 'flower', 'flowery', 'orchid', 'camomile', 'chamomile', 'elderflower']],
+      ['Citrus', 0, 725, 243, [OL, MR], ['citrus', 'citric', 'citrusy', 'citrus zest', 'citrus fruit', 'zest', 'zesty', 'orange', 'tangerine', 'mandarin', 'marmalade', 'orange marmalade', 'candied orange', 'orange peel', 'lemon', 'lime', 'grapefruit', 'pomelo', 'yuzu']],
+      ['Cranberry', 1, 890, 125, PK, ['cranberry', 'dried cranberry', 'redcurrant', 'red currant', 'currant', 'pomegranate']],
+      ['Raspberry', 1, 1068, 177, PK, ['raspberry', 'red fruit', 'red berry', 'berry', 'berry jam']],
+      ['Physalis', 1, 1252, 298, PK, ['physalis', 'gooseberry', 'passion fruit', 'passionfruit', 'pineapple', 'tamarind', 'kiwi']],
+      ['Melon', 1, 873, 262, MR, ['melon', 'mango', 'papaya', 'apricot', 'dried apricot', 'peach', 'nectarine', 'cucumber']],
+      ['Guanabana', 1, 1038, 335, MR, ['guanabana', 'soursop', 'cherimoya', 'lucuma', 'mamey', 'guava', 'tropical', 'tropical fruit', 'exotic fruit', 'starfruit']],
+      ['Strawberry', 1, 1140, 513, ['#6b2a55', '#24384f'], ['strawberry', 'strawberry jam', 'strawberry ice cream']],
+      ['Blackberry', 1, 1350, 513, [PK, BL], ['blackberry', 'blueberry', 'blackcurrant', 'black currant', 'cassis', 'dark berry', 'black fruit', 'dark fruit']],
+      ['Banana', 4, 725, 380, '#3d2417', ['banana', 'green banana', 'ripe banana']],
+      ['Honey', 4, 603, 417, '#3b2c13', ['honey', 'honeyed', 'acacia honey', 'clover honey', 'golden honey']],
+      ['Lychee', 4, 847, 416, '#3d1b1a', ['lychee', 'litchi', 'grape', 'green grape', 'white grape', 'apple', 'green apple', 'baked apple', 'hot buttered apple', 'pear', 'spiced pear']],
+      ['Plum', 4, 931, 515, '#301812', ['plum', 'mirabelle plum', 'dark cherry', 'black cherry', 'cherry jam', 'jam', 'jammy', 'stone fruit']],
+      ['Raisin', 4, 847, 615, '#1f2b22', ['raisin', 'sultana', 'fig', 'dried fig', 'mission fig', 'dried fruit', 'brown dried fruit', 'ripe fruit']],
+      ['Rum', 4, 725, 653, '#1c2518', ['rum', 'whisky', 'whiskey', 'brandy', 'cognac', 'liqueur', 'boozy', 'bourbon']],
+      ['Dairy', 4, 603, 617, '#1d2719', ['dairy', 'cream', 'creamy', 'creaminess', 'fresh cream', 'ice cream', 'milk', 'milky', 'creamy milk', 'lactic', 'fior di latte', 'butter', 'buttery', 'yogurt', 'yoghurt', 'greek yogurt', 'turkish yogurt', 'blueberry yogurt', 'custard', 'custardy', 'gelato', 'vanilla', 'cheesecake']],
+      ['Almond', 4, 518, 516, '#251c12', ['almond', 'amond', 'roasted almond', 'marzipan', 'nut', 'nutty', 'nuttiness', 'cashew', 'peanut', 'peanut butter', 'roasted peanut', 'brazil nut', 'macadamia', 'pistachio']],
+      ['Chocolatey', 4, 725, 515, '#160d08', ['chocolatey', 'chocolaty', 'brownie', 'chocolate cake', 'black forest cake', 'fudge', 'truffle', 'chocolate truffle', 'rich cocoa', 'cocoa']],
+      ['Walnut', 2, 111, 518, [Y, GR], ['walnut', 'black walnut', 'pecan', 'pecan nut', 'honeyed pecan']],
+      ['Hazelnut', 2, 313, 517, '#2f5a1f', ['hazelnut', 'gianduja', 'praline']],
+      ['Coconut', 2, 413, 697, DG, ['coconut']],
+      ['Olive', 2, 200, 733, GR, ['olive', 'green olive', 'black olive']],
+      ['Grassy', 2, 578, 773, DG, ['grassy', 'grass', 'green', 'vegetal', 'fresh herbs', 'green pepper']],
+      ['Woody', 2, 384, 858, '#4f9a45', ['woody', 'wood', 'oak', 'cedar', 'ceder', 'sandalwood', 'cade', 'pine', 'pine tree', 'moist wood', 'scented wood', 'tropical wood', 'palo santo', 'palo santo smoke', 'bark']],
+      ['Loam', 2, 561, 912, '#3e8a35', ['loam', 'earthy', 'earth', 'undergrowth', 'forest floor', 'mushroom', 'umami', 'miso', 'mineral']],
+      ['Cocoa powder', 2, 725, 792, '#1f4a2c', ['cocoa powder', 'roasted cocoa', 'roasted cocoa bean', 'raw cocoa', 'cocoa nib', 'nib', 'roasted and peppery fine cocoa']],
+      ['Coffee', 2, 725, 927, ['#3e8a35', BL], ['coffee', 'mocha', 'espresso', 'turkish coffee', 'café con leche', 'roasted', 'roast', 'toast', 'toasted', 'toasty', 'malt', 'roasted malt', 'bread', 'bread crust', 'banana bread', 'biscuit', 'cookie', 'pie crust', 'graham cracker', 'cereal', 'smoke', 'smoky', 'smoked']],
+      ['Winey', 3, 1038, 695, TL, ['winey', 'winy', 'wine', 'red wine', 'white wine', 'chardonnay', 'cabernet', 'cabernet grape', 'port', 'porto wine', 'sherry', 'balsamic', 'balsamic vinegar', 'vinegar', 'sake', 'beer', 'cider', 'fermented']],
+      ['Mulberry', 3, 1255, 730, BL, ['mulberry']],
+      ['Prune', 3, 873, 772, TL, ['prune', 'dried plum', 'date']],
+      ['Dark sugars', 3, 1070, 858, BL, ['dark sugar', 'brown sugar', 'muscovado', 'panela', 'rapadura', 'jaggery', 'caramel', 'caramelized', 'caramelised', 'caramelized sugar', 'toffee', 'butterscotch', 'dulce de leche', 'goat milk caramel', 'maple', 'maple syrup', 'treacle']],
+      ['Molasses', 3, 888, 912, BL, ['molasses', 'licorice', 'liquorice', 'liquorice stick', 'fennel', 'fennel seed']],
+    ];
+    const CHOC = NODES.findIndex(n => n[0] === 'Chocolatey');
+    // Phrases about the base chocolate or its taste balance, not a point on the map
+    const IGNORE = ['milk chocolate', 'dark chocolate', 'rich chocolate', 'chocolate flavor', 'chocolate flavour', 'chocolatey base', 'cocoa base', 'base chocolate', 'low bitterness', 'minimal acidity', 'low acidity'];
+
+    const PHRASES = [];   // [phrase, nodeIndex], longest first
+    NODES.forEach(([, , , , , words], i) => words.forEach(w => PHRASES.push([w, i])));
+    IGNORE.forEach(w => PHRASES.push([w, -1]));
+    PHRASES.sort((a, b) => b[0].length - a[0].length);
+    const reFor = w => {
+      const body = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '[\\s-]+');
+      const word = /[^aeiou]y$/.test(w) ? body.slice(0, -1) + '(y|ies)' : body + '(e?s)?';   // cherry / cherries
+      return new RegExp('(^|[^a-zà-ÿ])' + word + '(?=$|[^a-zà-ÿ])', 'g');
+    };
+    PHRASES.forEach(p => p.push(reFor(p[0])));
+
+    function notesOf(text) {
+      let t = ' ' + String(text).toLowerCase().replace(/\(from description\)|\(inferred translation\)/g, ' ') + ' ';
+      const hits = new Set();
+      for (const [, i, re] of PHRASES) {
+        re.lastIndex = 0;
+        if (!re.test(t)) continue;
+        if (i >= 0) hits.add(i);
+        re.lastIndex = 0;
+        t = t.replace(re, m => ' '.repeat(m.length));
+      }
+      return hits;
+    }
+
+    let bars = [], showMode = 'all', selected = null, focusBar = null;
+    let previewBar = null;   // related bar whose notes the map is showing; focusBar stays pinned in the panel
+    // selected is { node: i } or { quad: q }
+
+    function shown() {
+      return bars.filter(b => showMode === 'all' || (showMode === 'fav' && isFav(b.r)) ||
+        (showMode === 'tried' && isTried(b.r)) || (showMode === 'owned' && !isTried(b.r)));
+    }
+    const inSel = (b, sel) => sel.node != null ? b.notes.has(sel.node) : [...b.notes].some(i => NODES[i][1] === sel.quad);
+    function barsFor(sel) {
+      const list = shown();
+      return sel ? list.filter(b => inSel(b, sel)) : list.filter(b => b.notes.size);
+    }
+
+    /* ---------- Map ---------- */
+    function drawMap() {
+      const list = shown();
+      const count = new Map();
+      for (const b of list) for (const i of b.notes) count.set(i, (count.get(i) || 0) + 1);
+      const max = Math.max(1, ...count.values());
+      const focusNotes = focusBar ? (previewBar || focusBar).notes : null;
+      const pinnedNotes = previewBar ? focusBar.notes : null;   // kept faintly lit, to show the overlap
+      let svg = '<defs>';
+      NODES.forEach(([, , , , col], i) => {
+        if (Array.isArray(col)) svg += '<linearGradient id="g' + i + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0.2" stop-color="' + col[0] + '"/><stop offset="0.8" stop-color="' + col[1] + '"/></linearGradient>';
+      });
+      svg += '</defs>';
+      // quadrant backgrounds, the three rings, the axes
+      const qr = [[20, 20], [730, 20], [20, 520], [730, 520]];
+      QUADS.slice(0, 4).forEach(([, bg], q) => svg += '<rect x="' + qr[q][0] + '" y="' + qr[q][1] + '" width="710" height="500" fill="' + bg + '"/>');
+      [[700, 480, 0.45], [520, 350, 0.45], [330, 215, 0.5]].forEach(([rx, ry, o]) =>
+        svg += '<ellipse cx="730" cy="520" rx="' + rx + '" ry="' + ry + '" fill="#c8913f" opacity="' + o + '"/>');
+      svg += '<line x1="730" y1="20" x2="730" y2="1020" stroke="#5a4030" stroke-width="2"/><line x1="20" y1="520" x2="1440" y2="520" stroke="#5a4030" stroke-width="2"/>';
+      QUADS.slice(0, 4).forEach(([name, , fg, x, y, anchor], q) => {
+        const s = selected && selected.quad === q;
+        svg += '<text class="quad' + (s ? ' sel' : '') + '" data-q="' + q + '" x="' + x + '" y="' + y + '" text-anchor="' + anchor + '" fill="' + fg + '">' + esc(name.toUpperCase()) + '</text>';
+      });
+      NODES.forEach(([name, , x, y, col], i) => {
+        const n = count.get(i) || 0;
+        const hit = focusNotes ? focusNotes.has(i) : n > 0;
+        const soft = !hit && !!pinnedNotes && pinnedNotes.has(i);
+        const o = focusNotes ? (hit ? 1 : soft ? 0.5 : 0.18) : (n ? 0.45 + 0.55 * Math.sqrt(n / max) : 0.2);
+        const s = selected && selected.node === i;
+        const fill = Array.isArray(col) ? 'url(#g' + i + ')' : col;
+        const cls = i === CHOC ? 'choc' : col === Y ? 'dark' : '';
+        const words = name.length > 10 && name.includes(' ') ? name.split(' ') : [name];
+        const showN = n > 0 && !focusNotes;
+        const y0 = y + 5 - (words.length - 1) * 14 - (showN ? 11 : 0);
+        svg += '<g class="node' + (s ? ' sel' : '') + '" data-i="' + i + '" opacity="' + o.toFixed(2) + '"><title>' + esc(name) + ': ' + n + (n === 1 ? ' bar' : ' bars') + '</title>' +
+          '<circle cx="' + x + '" cy="' + (y + 5) + '" r="' + (i === CHOC ? 66 : 60) + '" fill="' + fill + '"/>' +
+          words.map((w, k) => '<text class="' + cls + (name.length > 11 ? ' long' : '') + '" x="' + x + '" y="' + (y0 + k * 28) + '">' + esc(w) + '</text>').join('') +
+          (showN ? '<text class="n ' + cls + '" x="' + x + '" y="' + (y0 + words.length * 26) + '">' + n + '</text>' : '') + '</g>';
+      });
+      const el = $('map');
+      el.innerHTML = svg;
+      el.querySelectorAll('.node').forEach(g => g.onclick = () => {
+        const i = +g.dataset.i;
+        selected = selected && selected.node === i ? null : { node: i };
+        previewBar = null; render();
+      });
+      el.querySelectorAll('.quad').forEach(t => t.onclick = () => {
+        const q = +t.dataset.q;
+        selected = selected && selected.quad === q ? null : { quad: q };
+        previewBar = null; render();
+      });
+    }
+
+    /* ---------- Side panel ---------- */
+    const noteNames = b => [...b.notes].sort((x, y) => x - y).map(i => NODES[i][0]);
+    const triedTag = r => isTried(r) ? '<span class="tried" title="' + esc(r['Course sample'] || '') + '">tried once</span>' : '';
+    function barCard(b, highlight) {
+      const r = b.r;
+      return '<a class="bar' + (isFav(r) ? ' fav' : '') + '" href="./?bar=' + encodeURIComponent(r.id) + '">' +
+        (r.photos && r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
+        '<span><b>' + esc(r['Bar name']) + '</b>' + triedTag(r) + '<div class="m">' + esc([r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', b.copies > 1 ? b.copies + ' copies' : ''].filter(Boolean).join(' · ')) + '</div>' +
+        '<div class="n">' + noteNames(b).map(n => n === highlight ? '<b>' + esc(n) + '</b>' : esc(n)).join(', ') + '</div></span></a>';
+    }
+    // Shared points count for more when they are rare; sharing only a quadrant counts a little
+    function relatedTo(anchor) {
+      const df = new Map();
+      for (const b of bars) for (const i of b.notes) df.set(i, (df.get(i) || 0) + 1);
+      const quadsOf = b => new Set([...b.notes].map(i => NODES[i][1]));
+      const anchorQ = quadsOf(anchor);
+      return barsFor(selected).filter(b => b !== anchor).map(b => {
+        let score = 0;
+        for (const i of b.notes) if (anchor.notes.has(i)) score += Math.log(bars.length / df.get(i));
+        for (const q of quadsOf(b)) if (anchorQ.has(q)) score += 0.5;
+        return { b, score: score / Math.pow(b.notes.size, 0.25) };
+      }).filter(x => x.score > 0).sort((x, y) => y.score - x.score || y.b.copies - x.b.copies).slice(0, 30).map(x => x.b);
+    }
+    const selName = () => !selected ? '' : selected.node != null ? NODES[selected.node][0] : QUADS[selected.quad][0];
+    function renderRelated(side, foot) {
+      const r = focusBar.r, related = relatedTo(focusBar), filter = selName(), mine = noteNames(focusBar);
+      side.innerHTML =
+        '<div class="pinned' + (previewBar ? '' : ' on') + '" id="pinned">' +
+          '<div class="top">' + (r.photos && r.photos[0] ? '<img alt="" src="collection/thumb/' + encodeURIComponent(r.photos[0]) + '"/>' : '') +
+          '<div><h2>' + esc(r['Bar name']) + triedTag(r) + '</h2><div class="sub">' + esc(r['Brand']) + '<br>' + esc(r['Tasting notes (EN)'] || 'No published tasting notes.') + '</div></div></div>' +
+          '<div class="tags">' + mine.map(n => '<span>' + esc(n) + '</span>').join('') + '</div>' +
+          '<a class="btn" href="./?bar=' + encodeURIComponent(r.id) + '">Open in Collection</a>' +
+        '</div>' +
+        '<h3>Related' + (filter ? ': ' + esc(filter) : '') + '</h3>' +
+        (related.length ? '' : '<div class="sub">No related bars' + (filter ? ' with this note' : '') + '.</div>') +
+        related.map((b, i) => {
+          const names = noteNames(b), shared = names.filter(n => mine.includes(n)), others = names.filter(n => !mine.includes(n));
+          return '<div class="bar rel' + (isFav(b.r) ? ' fav' : '') + (b === previewBar ? ' on' : '') + '" data-i="' + i + '">' +
+            (b.r.photos && b.r.photos[0] ? '<img loading="lazy" alt="" src="collection/thumb/' + encodeURIComponent(b.r.photos[0]) + '"/>' : '') +
+            '<span><b>' + esc(b.r['Bar name']) + '</b>' + triedTag(b.r) + '<div class="m">' + esc([b.r['Brand'], b.r['Cacao %'] ? b.r['Cacao %'] + '%' : ''].filter(Boolean).join(' · ')) + '</div>' +
+            '<div class="n">' + shared.map(n => '<b>' + esc(n) + '</b>').concat(others.map(esc)).join(', ') + '</div>' +
+            '<a class="open" href="./?bar=' + encodeURIComponent(b.r.id) + '">Open in Collection</a></span></div>';
+        }).join('') + foot;
+      $('pinned').onclick = e => { if (e.target.closest('a')) return; previewBar = null; render(); };
+      side.querySelectorAll('.rel').forEach(el => el.onclick = e => {
+        if (e.target.closest('a')) return;
+        const b = related[+el.dataset.i]; previewBar = previewBar === b ? null : b; render();
+        // On a phone the map sits above the list, so bring it back into view to show what changed
+        if (matchMedia('(max-width: 900px)').matches) document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    function renderSide() {
+      const side = $('side');
+      const foot = '<div class="foot">Only includes bars with tasting notes printed on the wrapper, or, for bars I tried once, published by the maker. Notes with no point on the map are left out.</div>';
+      if (focusBar) { renderRelated(side, foot); return; }
+      const list = barsFor(selected).sort((x, y) => y.copies - x.copies || x.r['Brand'].localeCompare(y.r['Brand']));
+      const title = selName() || 'All flavours';
+      side.innerHTML = '<h2>' + esc(title) + '</h2>' +
+        '<div class="sub">' + list.length + (list.length === 1 ? ' bar' : ' bars') + '</div>' +
+        list.map(b => barCard(b, selected && selected.node != null ? title : null)).join('') + foot;
+    }
+
+    function render() { drawMap(); renderSide(); }
+    function syncUrl() {
+      const u = new URL(location.href);
+      if (focusBar) u.searchParams.set('bar', focusBar.r.id); else u.searchParams.delete('bar');
+      history.replaceState(null, '', u);
+    }
+    $('show').querySelectorAll('button').forEach(b => b.onclick = () => {
+      showMode = b.dataset.v; $('show').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render();
+    });
+    // a click on the map background clears the selection and the pinned bar
+    $('map').addEventListener('click', e => { if (!e.target.closest('.node, .quad')) { selected = null; focusBar = null; previewBar = null; syncUrl(); render(); } });
+
+    fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()).then(arr => {
+      const g = new Map();
+      for (const r of arr) {
+        const k = r['Brand'] + '|' + r['Bar name'];
+        if (!g.has(k)) g.set(k, { r, copies: 0, ids: [] });
+        g.get(k).copies++; g.get(k).ids.push(r.id);
+      }
+      bars = [...g.values()].map(b => ({ ...b, notes: notesOf(b.r['Tasting notes (EN)'] || '') }));
+      const id = new URL(location.href).searchParams.get('bar');
+      if (id) focusBar = bars.find(b => b.ids.includes(id)) || null;
+      render();
+    }).catch(() => { $('side').textContent = 'Could not load the collection.'; });
+  </script>
+</body>
+</html>

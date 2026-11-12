@@ -78,6 +78,7 @@
     dl { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 6px 14px; font-size: 13px; margin: 0; }
     dt { color: var(--muted); }
     dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .tried { display: inline-block; font-size: 11px; padding: 1px 5px; border: 1px solid var(--muted); color: var(--muted); white-space: nowrap; }
     .copies { font-size: 13px; margin: 0 0 14px; }
     .copies a { cursor: pointer; margin-right: 10px; }
     .copies a.cur { color: var(--text); font-weight: 700; text-decoration: none; }
@@ -97,12 +98,14 @@
   <header class="site-bar">
     <div class="site-name">Cacao Map</div>
     <button class="site-btn" data-theme-toggle>Black &amp; white</button>
-    <nav class="site-nav"><a class="site-btn on" href="./" aria-current="page">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn" href="wheel.html">Tasting Wheel</a></nav>
+    <nav class="site-nav"><a class="site-btn on" href="./" aria-current="page">Collection</a><a class="site-btn" href="map.html">Map</a><a class="site-btn" href="flavour-map.html">Flavour Map</a></nav>
   </header>
   <div class="controls">
-    <div class="seg" id="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">
+    <div class="seg" id="fav">
       <button data-v="all" class="on">All</button>
-      <button data-v="fav">&#9733; Favorites</button>
+      <button data-v="fav" title="Favorite makers: Castronovo, Domori, Idilio, Qantu, Spinnaker">&#9733; Favorites</button>
+      <button data-v="owned">In my collection</button>
+      <button data-v="tried" title="Bars I tasted once, in the IICCT Level 2 course kit">Tried once</button>
     </div>
     <input id="q" type="search" placeholder="Search" />
     <button class="btn" id="cols-btn">Columns ▾</button>
@@ -124,6 +127,7 @@
     const COL_KEY = 'chocolate-collection-cols-v4';
     const FAVORITE_BRANDS = new Set(['Castronovo Chocolate', 'Domori', 'Idilio Origins', 'Qantu', 'Spinnaker Chocolate']);
     const isFav = r => FAVORITE_BRANDS.has(r['Brand']);
+    const isTried = r => r['Status'] === 'Tried once';   // tasted once (course kit), not in the collection
 
     // [field, label, default-visible, kind]
     // Same columns as chocolatelist_processed, plus photo / copies / map place
@@ -190,6 +194,8 @@
       const ql = q.toLowerCase();
       return rows.filter(r => {
         if (favMode === 'fav' && !isFav(r)) return false;
+        if (favMode === 'owned' && isTried(r)) return false;
+        if (favMode === 'tried' && !isTried(r)) return false;
         if (pinFilter && !(r.pins || []).includes(pinFilter.id)) return false;
         for (const [k, set] of Object.entries(filters)) if (!set.has(String(val(r, k)))) return false;
         if (!ql) return true;
@@ -231,7 +237,10 @@
           } else if (c[3] === 'star') {
             td.className = 'star'; td.textContent = val(r, '_fav');
           } else if (c[0] === '_count') {
-            const s = document.createElement('span'); s.className = 'count' + (r._count > 1 ? ' multi' : ''); s.textContent = r._count; td.appendChild(s); td.className = 'num';
+            const s = document.createElement('span');
+            if (isTried(r)) { s.className = 'tried'; s.textContent = 'tried once'; s.title = r['Course sample'] || ''; }
+            else { s.className = 'count' + (r._count > 1 ? ' multi' : ''); s.textContent = r._count; }
+            td.appendChild(s); td.className = 'num';
           } else {
             const v = val(r, c[0]); td.title = String(v).length > 40 ? v : '';
             if (c[3] === 'wrap') { const d = document.createElement('div'); d.textContent = v; td.appendChild(d); td.className = 'wrap'; }
@@ -341,10 +350,10 @@
           copies.map((c, i) => '<a data-id="' + esc(c.id) + '"' + (c.id === r.id ? ' class="cur"' : '') + '>copy ' + (i + 1) + '</a>').join('') + '</div>' : '') +
         '<div class="photos"></div>' +
         '<p>' + (r.lat != null ? '<a class="btn" href="map.html?bar=' + encodeURIComponent(r.id) + '">Show origin on map</a> ' : '') +
-        (r['Tasting notes (EN)'] ? '<a class="btn" href="wheel.html?bar=' + encodeURIComponent(r.id) + '">Show on Tasting Wheel</a>' : '') + '</p>' +
+        (r['Tasting notes (EN)'] ? '<a class="btn" href="flavour-map.html?bar=' + encodeURIComponent(r.id) + '">Show on Flavour Map</a>' : '') + '</p>' +
         '<dl></dl>';
       p.querySelector('h2').textContent = r['Bar name'];
-      p.querySelector('.sub').textContent = [r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r['Chocolate type'], r.place].filter(Boolean).join(' · ');
+      p.querySelector('.sub').textContent = [isTried(r) ? 'Tried once' + (r['Course sample'] ? ' (' + r['Course sample'] + ')' : '') : '', r['Brand'], r['Cacao %'] ? r['Cacao %'] + '%' : '', r['Chocolate type'], r.place].filter(Boolean).join(' · ');
       p.querySelectorAll('.copies a').forEach(a => a.onclick = () => openDetail(a.dataset.id));
       const ph = p.querySelector('.photos');
       for (const f of r.photos || []) {
@@ -384,7 +393,7 @@
 
     Promise.all([fetch('data/collection.json', { cache: 'no-store' }).then(r => r.json()), fetch('data/pins.json', { cache: 'no-store' }).then(r => r.json()).catch(() => [])]).then(([arr, mapPins]) => {
       const counts = new Map(); arr.forEach(r => counts.set(barKey(r), (counts.get(barKey(r)) || 0) + 1));
-      data = arr.map(r => ({ ...r, _count: counts.get(barKey(r)) }));
+      data = arr.map(r => ({ ...r, _count: isTried(r) ? 0 : counts.get(barKey(r)) }));
       const place = new URL(location.href).searchParams.get('place');
       if (place) filters.place = new Set([place]);
       const pinId = new URL(location.href).searchParams.get('pin');

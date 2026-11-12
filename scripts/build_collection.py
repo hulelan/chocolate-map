@@ -97,6 +97,7 @@ PLACES = [
     (["kelantan"], 5.30, 102.00, "Kelantan, Malaysia", "region"),
     (["chiang mai"], 18.79, 98.98, "Chiang Mai, Thailand", "region"),
     (["chumphon"], 10.49, 99.18, "Chumphon, Thailand", "region"),
+    (["chanthaburi"], 12.61, 102.10, "Chanthaburi, Thailand", "region"),
     (["prachuap"], 11.81, 99.80, "Prachuap Khiri Khan, Thailand", "region"),
     (["pingtung"], 22.55, 120.55, "Pingtung, Taiwan", "region"),
     (["malekula"], -16.20, 167.50, "Malekula Island, Vanuatu", "region"),
@@ -105,6 +106,8 @@ PLACES = [
     (["oahu", "mapele"], 21.60, -158.05, "Oʻahu, Hawaii", "region"),
     (["alto beni"], -15.50, -67.30, "Alto Beni, Bolivia", "region"),
     (["ilhéus", "ilheus", "riachuelo"], -14.79, -39.05, "Ilhéus, Bahia, Brazil", "region"),
+    (["bahia"], -14.80, -39.40, "Southern Bahia, Brazil", "region"),
+    (["rondônia", "rondonia", "ouro preto do oeste"], -10.72, -62.25, "Ouro Preto do Oeste, Rondônia, Brazil", "region"),
 ]
 COUNTRIES = {  # fallback: country centroid
     "venezuela": (7.5, -66.0), "colombia": (4.5, -74.0), "peru": (-9.5, -75.0), "ecuador": (-1.5, -78.5),
@@ -115,6 +118,7 @@ COUNTRIES = {  # fallback: country centroid
     "sri lanka": (7.6, 80.7), "trinidad": (10.45, -61.3), "grenada": (12.1, -61.7), "jamaica": (18.1, -77.3),
     "haiti": (19.0, -72.3), "costa rica": (9.9, -84.1), "taiwan": (23.7, 121.0), "malaysia": (4.2, 102.0),
     "vanuatu": (-15.4, 166.9), "honduras": (14.9, -87.98),
+    "el salvador": (13.7, -89.2),
 }
 
 # Map pins in data/pins.json -> the bars they apply to.
@@ -176,6 +180,32 @@ def web_copy(src, name):
     big = im.copy(); big.thumbnail((1400, 1400)); big.save(out, "JPEG", quality=78, optimize=True, progressive=True)
     sm = im.copy(); sm.thumbnail((360, 360)); sm.save(th, "JPEG", quality=75, optimize=True)
 
+# Bars I tasted once (the IICCT Level 2 course kit) but don't own: same fields as the spreadsheet,
+# plus "Course sample" / "Course notes". Photos are maker or shop product photos, kept beside the file.
+TRIED_JSON = os.path.expanduser("~/Desktop/chocolate_tasting/tried_once.json")
+TRIED_PHOTOS = os.path.expanduser("~/Desktop/chocolate_tasting/tried_once_photos")
+
+def tried_once(unplaced):
+    if not os.path.exists(TRIED_JSON): return []
+    out = []
+    for r in json.load(open(TRIED_JSON, encoding="utf-8")):
+        slug = r["slug"]
+        folder = os.path.join(TRIED_PHOTOS, slug)
+        files = sorted(f for f in os.listdir(folder) if not f.startswith(".")) if os.path.isdir(folder) else []
+        names = []
+        for k, f in enumerate(files, 1):
+            n = norm_name(f"tried_{slug}_{k}") + ".jpg"
+            web_copy(os.path.join(folder, f), n); names.append(n)
+        rec = {k: v for k, v in r.items() if k not in ("slug", "Photos") and v not in ("", None)}
+        rec["id"] = "tried-" + slug; rec["photos"] = names; rec["Status"] = "Tried once"
+        rec["country"] = clean_country(r.get("Cacao origin: Country", ""))
+        rec["pins"] = pins_for(r)
+        loc = locate(r)
+        if loc: rec["lat"], rec["lng"], rec["place"], rec["precision"] = loc
+        else: unplaced.append(f'(tried) {r["Brand"]} | {r["Bar name"]}')
+        out.append(rec)
+    return out
+
 def main():
     os.makedirs(IMG_DIR, exist_ok=True); os.makedirs(THUMB_DIR, exist_ok=True)
     rows = list(csv.DictReader(open(SRC_CSV, encoding="utf-8-sig")))
@@ -201,6 +231,7 @@ def main():
         if loc: rec["lat"], rec["lng"], rec["place"], rec["precision"] = loc
         else: unplaced.append(f'{r["Brand"]} | {r["Bar name"]}')
         out.append(rec)
+    out += tried_once(unplaced)
     json.dump(out, open(os.path.join(ROOT, "data/collection.json"), "w"), ensure_ascii=False, separators=(",", ":"))
     print(len(out), "records;", len(out) - len(unplaced), "mapped;", len({(o.get('lat'), o.get('lng')) for o in out if 'lat' in o}), "map points")
     from collections import Counter

@@ -19,19 +19,23 @@ URL parameters: `?bar=<id>` opens a bar (on the map, it puts that bar and its fa
 
 `collection.html` redirects to the home page so old links keep working.
 
-## Tasting wheel (`wheel.html`)
+## Flavour map (`flavour-map.html`)
 
-Bars placed on a flavour wheel from their printed tasting notes (`Tasting notes (EN)`). The word lists for each note are `WHEEL` in the page. Click a segment to list the bars; `?bar=<id>` shows one bar's notes.
+Bars placed on a flavour map laid out after the IICCT Flavour Projection map (four quadrants around Chocolatey), from their printed or published tasting notes (`Tasting notes (EN)`). The words that count as each point are `NODES` in the page. Click a point or a quadrant name to list the bars; `?bar=<id>` shows one bar's notes. `wheel.html`, the old tasting wheel, now redirects here.
 
 ## Favorites and black and white
 
-The favorite makers are `FAVORITE_BRANDS` in `index.html` and `wheel.html`. The black-and-white version is `bw.css`, switched by `theme.js` and remembered per browser (`?bw=1` forces it). It changes the page around the map and the wheel, which both stay in colour.
+The favorite makers are `FAVORITE_BRANDS` in `index.html` and `flavour-map.html`. The black-and-white version is `bw.css`, switched by `theme.js` and remembered per browser (`?bw=1` forces it). It changes the page around the map and the wheel, which both stay in colour.
 
 ## Updating the collection
 
 1. Update `~/Desktop/chocolate_tasting/chocolate_collection.csv`.
 2. Run `python3 scripts/build_collection.py` from the repo root. It writes `data/collection.json` and web-size photos to `collection/img` and `collection/thumb`.
 3. Commit and push.
+
+## Bars tried once
+
+Bars I tasted once but don't own (the IICCT Level 2 course kit) are in `~/Desktop/chocolate_tasting/tried_once.json`, with the same fields as the spreadsheet plus `Course sample` and `Course notes`; their photos (maker or shop product photos, see `Photo source`) are in `~/Desktop/chocolate_tasting/tried_once_photos/<slug>/`. The build adds them with `"Status": "Tried once"`; the pages label them and have a "Tried once" filter.
 
 The script re-encodes every photo, which drops all metadata. The original iPhone photos contain GPS coordinates, so never commit them.
 
